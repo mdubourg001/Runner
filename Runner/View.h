@@ -22,6 +22,7 @@ private:
     sf::Sprite _backgroundSprite;
     int _xsprite;
     int _ysprite;
+
 public:
     View(int w, int h);
     ~View();

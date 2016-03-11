@@ -5,7 +5,7 @@ Player::Player()
 }
 
 Player::Player(int posx, int posy, int width, int height, int mvtx, int mvty)
-    :_posx(posx), _posy(posy), _width(width), _height(height), _mvtx(mvtx), _mvty(mvty)
+    :_posx(posx), _posy(posy), _width(width), _height(height), _mvtx(mvtx), _mvty(mvty), dir(r)
 {
 
 }
@@ -17,8 +17,8 @@ Player::~Player()
 
 void Player::move()
 {
-    _posx += _mvtx;
-    _posy += _mvty;
+        _posx += _mvtx;
+        _posy += _mvty;
 }
 
 void Player::setMvtx(int mvtx)
@@ -39,5 +39,15 @@ const int Player::getPosx()
 const int Player::getPosy()
 {
     return _posy;
+}
+
+direction Player::getDirection()
+{
+    return dir;
+}
+
+void Player::changeDirection(direction d)
+{
+    dir = d;
 }
 

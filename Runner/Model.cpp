@@ -22,7 +22,7 @@ Model::~Model(){}
 //=======================================
 void Model::nextStep()
 {
-    movePlayer();
+
 }
 
 //=======================================
@@ -34,20 +34,41 @@ void Model::getPlayerPosition(int &x, int &y)
     y = _player.getPosy();
 }
 
-void Model::setPlayerDirection(bool left)
+Player* Model::getPlayer()
 {
-    if(left)
-    {
-        _player.setMvtx(-5);
-    }
-
-    else
-    {
-        _player.setMvtx(5);
-    }
+    Player* ptr = &_player;
+    return ptr;
 }
 
-void Model::movePlayer()
+void Model::setPlayerDirection(direction d)
+{
+    if(d == none)
+    {
+        _player.changeDirection(none);
+        _player.setMvtx(0);
+        _player.setMvty(0);
+    }
+
+    else if(d == l)
+    {
+        _player.changeDirection(l);
+        _player.setMvtx(-10);
+    }
+
+    else if(d == r)
+    {
+        _player.changeDirection(r);
+        _player.setMvtx(10);
+    }
+
+    else if(d == up)
+        ;
+
+    else
+        ;
+}
+
+void Model::movePlayer(direction d)
 {
     _player.move();
 }

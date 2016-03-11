@@ -11,6 +11,7 @@ private:
     int _height;
     int _mvtx;
     int _mvty;
+    direction dir;
 
 public:
     Player();
@@ -20,6 +21,9 @@ public:
     void move();
     void setMvtx(int mvtx);
     void setMvty(int mvty);
+
+    direction getDirection();
+    void changeDirection(direction d);
     const int getPosx();
     const int getPosy();
 };

@@ -15,7 +15,8 @@ using namespace std;
 View::View(int w, int h)
     : _w(w),_h(h), _xsprite(SCREEN_WIDTH/15), _ysprite(SCREEN_HEIGHT-SCREEN_HEIGHT/5)
 {
-    _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D
+    _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D  
+    _window->setFramerateLimit(60);
 
     if (!_background.loadFromFile(BACKGROUND_IMAGE)) //charge le fichier city.png et le place dans la texture background
     {
@@ -39,6 +40,7 @@ View::View(int w, int h)
     {
         _playerSprite.setTexture(_player);
         _playerSprite.setPosition(sf::Vector2f(_xsprite, _ysprite));
+        _playerSprite.setOrigin(sf::Vector2f(_player.getSize().x/2, _player.getSize().y/2));
     }
 }
 
@@ -76,6 +78,8 @@ void View::draw()
 
     _model->getPlayerPosition(_xsprite, _ysprite);
     _playerSprite.setPosition(sf::Vector2f(_xsprite, _ysprite));
+    _playerSprite.rotate(10);
+    _model->movePlayer(_model->getPlayer()->getDirection());
     _window->draw(_playerSprite);
 
 //--------------------
@@ -107,8 +111,21 @@ bool View::treatEvents()
 
             else if (event.type == sf::Event::KeyPressed)
             {
-                if(event.type == sf::Keyboard::Left)
-                    _model->setPlayerDirection(true);
+                if(event.key.code == sf::Keyboard::Left)
+                {
+                    _model->setPlayerDirection(l);
+                }
+
+                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+                {
+                    _model->setPlayerDirection(r);
+                }
+
+            }
+
+            else if(event.type == sf::Event::KeyReleased)
+            {
+                _model->setPlayerDirection(none);
             }
         }
     }

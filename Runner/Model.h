@@ -14,8 +14,9 @@ public:
     ~Model();
 
     void nextStep();
+    Player* getPlayer();
     void getPlayerPosition(int &x, int &y);
-    void setPlayerDirection(bool left);
-    void movePlayer();
+    void setPlayerDirection(direction d);
+    void movePlayer(direction d);
 };
 #endif
