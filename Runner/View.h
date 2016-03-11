@@ -17,11 +17,11 @@ private:
 
     sf::Texture _player;
     sf::Sprite _playerSprite;
+    int _x_player;
+    int _y_player;
 
     sf::Texture _background;
     sf::Sprite _backgroundSprite;
-    int _xsprite;
-    int _ysprite;
 
 public:
     View(int w, int h);

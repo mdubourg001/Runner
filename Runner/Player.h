@@ -11,6 +11,8 @@ private:
     int _height;
     int _mvtx;
     int _mvty;
+    bool _jumping;
+    bool _falling;
     direction dir;
 
 public:
@@ -19,13 +21,20 @@ public:
     Player(int posx, int posy, int width, int height, int mvtx, int mvty);
 
     void move();
+    void jump();
     void setMvtx(int mvtx);
     void setMvty(int mvty);
+    void setJumping(bool isjumping);
+
 
     direction getDirection();
     void changeDirection(direction d);
     const int getPosx();
     const int getPosy();
+    const int getMvtx();
+    const int getMvty();
+    const bool isJumping();
+    const bool isFalling();
 };
 
 #endif // PLAYER_H

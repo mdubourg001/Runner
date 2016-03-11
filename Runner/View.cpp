@@ -13,10 +13,11 @@ using namespace std;
 // Constructeur
 //=======================================
 View::View(int w, int h)
-    : _w(w),_h(h), _xsprite(SCREEN_WIDTH/15), _ysprite(SCREEN_HEIGHT-SCREEN_HEIGHT/5)
+    : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D  
-    _window->setFramerateLimit(60);
+    _window->setFramerateLimit(60); //fixe la limite de fps
+    _window->setKeyRepeatEnabled(false); //désactive la répétition des touches
 
     if (!_background.loadFromFile(BACKGROUND_IMAGE)) //charge le fichier city.png et le place dans la texture background
     {
@@ -39,8 +40,9 @@ View::View(int w, int h)
     else
     {
         _playerSprite.setTexture(_player);
-        _playerSprite.setPosition(sf::Vector2f(_xsprite, _ysprite));
+        _playerSprite.setPosition(sf::Vector2f(_x_player, _y_player));
         _playerSprite.setOrigin(sf::Vector2f(_player.getSize().x/2, _player.getSize().y/2));
+        _playerSprite.setRotation(10);
     }
 }
 
@@ -76,10 +78,8 @@ void View::draw()
 
 //dessin de la balle
 
-    _model->getPlayerPosition(_xsprite, _ysprite);
-    _playerSprite.setPosition(sf::Vector2f(_xsprite, _ysprite));
+    _playerSprite.setPosition(sf::Vector2f(_model->getPlayer()->getPosx(), _model->getPlayer()->getPosy()));
     _playerSprite.rotate(10);
-    _model->movePlayer(_model->getPlayer()->getDirection());
     _window->draw(_playerSprite);
 
 //--------------------
@@ -93,6 +93,7 @@ void View::draw()
 bool View::treatEvents()
 {
     bool result = false;
+
     if(_window->isOpen())
     {
         result = true;
@@ -111,21 +112,28 @@ bool View::treatEvents()
 
             else if (event.type == sf::Event::KeyPressed)
             {
+                if(event.key.code == sf::Keyboard::Up)
+                {
+                    _model->setPlayerDirection(up);
+                }
+
                 if(event.key.code == sf::Keyboard::Left)
                 {
                     _model->setPlayerDirection(l);
+//                    _playerSprite.setRotation(-15);
                 }
 
-                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+                else if(event.key.code == sf::Keyboard::Right)
                 {
                     _model->setPlayerDirection(r);
+//                    _playerSprite.setRotation(15);
                 }
-
             }
 
             else if(event.type == sf::Event::KeyReleased)
             {
                 _model->setPlayerDirection(none);
+//                _playerSprite.setRotation(10);
             }
         }
     }

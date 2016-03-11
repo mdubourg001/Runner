@@ -22,7 +22,10 @@ Model::~Model(){}
 //=======================================
 void Model::nextStep()
 {
+    movePlayer(_player.getDirection());
 
+//    if(_player.isJumping())
+//        _player.jump();
 }
 
 //=======================================
@@ -46,7 +49,6 @@ void Model::setPlayerDirection(direction d)
     {
         _player.changeDirection(none);
         _player.setMvtx(0);
-        _player.setMvty(0);
     }
 
     else if(d == l)
@@ -62,7 +64,11 @@ void Model::setPlayerDirection(direction d)
     }
 
     else if(d == up)
+    {
         ;
+//        _player.setJumping(true);
+//        _player.setMvty(-10);
+    }
 
     else
         ;
