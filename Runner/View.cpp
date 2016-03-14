@@ -17,7 +17,7 @@ View::View(int w, int h)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D  
     _window->setFramerateLimit(60); //fixe la limite de fps
-    _window->setKeyRepeatEnabled(false); //désactive la répétition des touches
+    _window->setKeyRepeatEnabled(true); //désactive la répétition des touches
 
     if (!_background.loadFromFile(BACKGROUND_IMAGE)) //charge le fichier city.png et le place dans la texture background
     {

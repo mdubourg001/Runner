@@ -1,5 +1,15 @@
 #include "Player.h"
 
+int Player::getWidth() const
+{
+    return _width;
+}
+
+int Player::getHeight() const
+{
+    return _height;
+}
+
 Player::Player()
 {
 }
@@ -54,25 +64,25 @@ void Player::setMvty(int mvty)
 void Player::changeDirection(direction d)
 { dir = d; }
 
-const int Player::getMvtx()
+int Player::getMvtx() const
 { return _mvtx; }
 
-const int Player::getMvty()
+int Player::getMvty() const
 { return _mvty; }
 
-const int Player::getPosx()
+int Player::getPosx() const
 { return _posx; }
 
-const int Player::getPosy()
+int Player::getPosy() const
 { return _posy; }
 
-const bool Player::isJumping()
+bool Player::isJumping() const
 { return _jumping; }
 
-const bool Player::isFalling()
+bool Player::isFalling() const
 { return _falling; }
 
-direction Player::getDirection()
+direction Player::getDirection() const
 { return dir; }
 
 
