@@ -25,7 +25,9 @@ void Model::nextStep()
     movePlayer(_player.getDirection());
 
     if(_player.isJumping())
+    {
         _player.jump();
+    }
 }
 
 //=======================================
@@ -65,9 +67,8 @@ void Model::setPlayerDirection(direction d)
 
     else if(d == up)
     {
-        ;
         _player.setJumping(true);
-        _player.setMvty(-10);
+        _player.setMvty(-JUMP_HEIGHT);
     }
 
     else

@@ -79,7 +79,8 @@ void View::draw()
 //dessin de la balle
 
     _playerSprite.setPosition(sf::Vector2f(_model->getPlayer()->getPosx(), _model->getPlayer()->getPosy()));
-    _playerSprite.rotate(10);
+    if(!_model->getPlayer()->isJumping())
+        _playerSprite.rotate(10);
     _window->draw(_playerSprite);
 
 //--------------------
@@ -101,8 +102,6 @@ bool View::treatEvents()
         sf::Event event;
         while (_window->pollEvent(event)) //tant qu'un évenement est détécté
         {
-            cout << "Event detected" << endl; //on affiche "Event detected"
-
             if ((event.type == sf::Event::Closed) || //si on clique sur la croix de fermeture
                     ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))) //on dit que l'évenement est "échap préssé"
             {
@@ -112,7 +111,7 @@ bool View::treatEvents()
 
             else if (event.type == sf::Event::KeyPressed)
             {
-                if(event.key.code == sf::Keyboard::Up)
+                if((event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::Space) && !_model->getPlayer()->isJumping())
                 {
                     _model->setPlayerDirection(up);
                 }
@@ -120,20 +119,21 @@ bool View::treatEvents()
                 if(event.key.code == sf::Keyboard::Left)
                 {
                     _model->setPlayerDirection(l);
-//                    _playerSprite.setRotation(-15);
+                    //_playerSprite.setRotation(-15);
                 }
 
-                else if(event.key.code == sf::Keyboard::Right)
+                if(event.key.code == sf::Keyboard::Right)
                 {
                     _model->setPlayerDirection(r);
-//                    _playerSprite.setRotation(15);
+                    //_playerSprite.setRotation(15);
                 }
             }
 
             else if(event.type == sf::Event::KeyReleased)
             {
-                _model->setPlayerDirection(none);
-//                _playerSprite.setRotation(10);
+                if(event.key.code != sf::Keyboard::Up && event.key.code != sf::Keyboard::Space)
+                    _model->setPlayerDirection(none);
+                //_playerSprite.setRotation(10);
             }
         }
     }

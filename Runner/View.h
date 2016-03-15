@@ -13,7 +13,7 @@ private:
     int _w, _h;
 
     sf::RenderWindow * _window;
-    Model * _model;
+    Model* _model;
 
     sf::Texture _player;
     sf::Sprite _playerSprite;

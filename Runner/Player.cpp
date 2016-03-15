@@ -26,26 +26,24 @@ Player::~Player()
 }
 
 void Player::move()
-{
-    _posx += _mvtx;
+{       
+    if((_posx-_width/2 >= 0 && _posx+_width/2 <= SCREEN_WIDTH)
+            || (_posx-_width/2 < 0 && _mvtx > 0) || (_posx+_width/2 > SCREEN_WIDTH && _mvtx < 0))
+    {
+        _posx += _mvtx;
+    }
     _posy += _mvty;
 }
 
 void Player::jump() //non fonctionelle
 {
-    if(_posy > SCREEN_HEIGHT-SCREEN_HEIGHT/5)
+    if(_posy >= SCREEN_HEIGHT-SCREEN_HEIGHT/5)
     {
-        if(_posy >= 300)
-        {
-            _mvty = 10;
-        }
-
-        else if(_posy <= SCREEN_HEIGHT-SCREEN_HEIGHT/5)
-        {
-            _jumping = false;
-            _mvty = 0;
-        }
+        setJumping(false);
+        setMvty(0);
     }
+    else
+        setMvty(getMvty()+1);
 }
 
 
