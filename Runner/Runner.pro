@@ -15,7 +15,11 @@ SOURCES += main.cpp \
     View.cpp \
     Time.cpp \
     Timer.cpp \
-    MovableElement.cpp
+    MovableElement.cpp \
+    Intro_View.cpp \
+    Intro_Model.cpp \
+    Menu_View.cpp \
+    Menu_Model.cpp
 
 HEADERS += \
     Player.h \
@@ -27,4 +31,8 @@ HEADERS += \
     main.h \
     Time.h \
     Timer.h \
-    MovableElement.h
+    MovableElement.h \
+    Intro_View.h \
+    Intro_Model.h \
+    Menu_View.h \
+    Menu_Model.h

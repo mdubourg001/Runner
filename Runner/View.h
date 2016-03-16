@@ -3,8 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-const std::string BACKGROUND_IMAGE = "res/city.png";
-const std::string BALL_IMAGE = "res/ball.png";
+
 
 class Model;
 
@@ -26,6 +25,7 @@ private:
 public:
     View(int w, int h);
     ~View();
+
 
     void setModel(Model * model);
     void draw();

@@ -139,4 +139,3 @@ bool View::treatEvents()
     }
     return result;
 }
-
