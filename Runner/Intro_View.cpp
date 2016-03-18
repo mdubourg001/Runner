@@ -33,10 +33,9 @@ Intro_View::Intro_View(int w, int h)
 
     _font.loadFromFile(POLICE);
     _text.setFont(_font);
-    _text.setColor(sf::Color::Blue);
-    _text.setString("Appuyer sur Espace pour continuer");
-    _text.setPosition(350,650);
-
+    _text.setColor(sf::Color::Black);
+    _text.setString("<  PRESS SPACE TO START  >");
+    _text.setPosition(510,650);
 }
 
 //=======================================
@@ -98,7 +97,7 @@ bool Intro_View::treatEvents()
             }
             else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Space))
             {
-                _text.setString("EH BAH NON C ETAIT UNE BLAGUE !");
+                _text.setString("TODO");
 
             }
         }

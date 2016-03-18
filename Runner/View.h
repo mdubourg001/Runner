@@ -2,6 +2,7 @@
 #define _VIEW_
 
 #include <SFML/Graphics.hpp>
+#include "SlidingBackground.h"
 
 
 
@@ -19,8 +20,7 @@ private:
     int _x_player;
     int _y_player;
 
-    sf::Texture _background;
-    sf::Sprite _backgroundSprite;
+    SlidingBackground _background;
 
 public:
     View(int w, int h);
@@ -29,6 +29,7 @@ public:
 
     void setModel(Model * model);
     void draw();
+    void synchronise();
     bool treatEvents();
 
 };

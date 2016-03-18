@@ -13,22 +13,18 @@ using namespace std;
 // Constructeur
 //=======================================
 View::View(int w, int h)
-    : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5)
+    : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(SCREEN_WIDTH, SCREEN_HEIGHT, 5)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D  
     _window->setFramerateLimit(60); //fixe la limite de fps
+    _window->setVerticalSyncEnabled(true);
     _window->setKeyRepeatEnabled(true); //désactive la répétition des touches
 
-    if (!_background.loadFromFile(BACKGROUND_IMAGE)) //charge le fichier city.png et le place dans la texture background
+    if (!_background.loadTextures(BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_R)) //charge le fichier city.png et le place dans la texture background
     {
         std::cerr << "ERROR when loading image file: "
-                  << BACKGROUND_IMAGE << std::endl;
+                  << BACKGROUND_IMAGE_L << std::endl;
         exit(EXIT_FAILURE);
-    }
-    else
-    {
-        _backgroundSprite.setTexture(_background); //définie la texture background comme texture du sprite de background
-        _backgroundSprite.setPosition(sf::Vector2f(0.f,0.f)); //définie la position du sprite de background
     }
 
     if (!_player.loadFromFile(BALL_IMAGE))
@@ -63,6 +59,15 @@ void View::setModel(Model * model) //setter qui permet de modifier le modele ass
     _model = model;
 }
 
+void View::synchronise()
+{
+    _playerSprite.setPosition(sf::Vector2f(_model->getPlayer()->getPosx(), _model->getPlayer()->getPosy()));
+    if(!_model->getPlayer()->isJumping())
+        _playerSprite.rotate(10);
+
+    _background.move();
+}
+
 //=======================================
 // Fonction de dessin
 //=======================================
@@ -72,15 +77,13 @@ void View::draw()
 
 //dessin du background
 
-    _window->draw(_backgroundSprite);
+    _background.draw(_window);
 
 //--------------------
 
 //dessin de la balle
 
-    _playerSprite.setPosition(sf::Vector2f(_model->getPlayer()->getPosx(), _model->getPlayer()->getPosy()));
-    if(!_model->getPlayer()->isJumping())
-        _playerSprite.rotate(10);
+    _model->getPlayer()->drawShadow(_window);
     _window->draw(_playerSprite);
 
 //--------------------

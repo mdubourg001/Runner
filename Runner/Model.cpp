@@ -11,7 +11,6 @@ Model::Model(int w, int h)
 {
 
 }
-
 //=======================================
 // Destructeurs
 //=======================================
@@ -56,13 +55,19 @@ void Model::setPlayerDirection(direction d)
     else if(d == l)
     {
         _player.changeDirection(l);
-        _player.setMvtx(-10);
+        if(!_player.isJumping())
+            _player.setMvtx(-10);
+        else
+            _player.setMvtx(-2);
     }
 
     else if(d == r)
     {
         _player.changeDirection(r);
-        _player.setMvtx(10);
+        if(!_player.isJumping())
+            _player.setMvtx(10);
+        else
+            _player.setMvtx(2);
     }
 
     else if(d == up)
@@ -70,9 +75,6 @@ void Model::setPlayerDirection(direction d)
         _player.setJumping(true);
         _player.setMvty(-JUMP_HEIGHT);
     }
-
-    else
-        ;
 }
 
 void Model::movePlayer(direction d)

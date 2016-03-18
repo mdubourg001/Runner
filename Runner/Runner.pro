@@ -19,7 +19,8 @@ SOURCES += main.cpp \
     Intro_View.cpp \
     Intro_Model.cpp \
     Menu_View.cpp \
-    Menu_Model.cpp
+    Menu_Model.cpp \
+    SlidingBackground.cpp
 
 HEADERS += \
     Player.h \
@@ -35,4 +36,5 @@ HEADERS += \
     Intro_View.h \
     Intro_Model.h \
     Menu_View.h \
-    Menu_Model.h
+    Menu_Model.h \
+    SlidingBackground.h

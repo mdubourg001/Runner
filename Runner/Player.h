@@ -6,6 +6,7 @@ class Player : public MovableElement
 {
 private:
     bool _jumping;
+    sf::CircleShape _shadow;
 
 public:
     Player();
@@ -15,6 +16,7 @@ public:
     bool isJumping() const;
     void setJumping(bool isjumping);
     void jump();
+    void drawShadow(sf::RenderWindow *window);
 };
 
 #endif // PLAYER_H
