@@ -1,6 +1,7 @@
 #include "Coin.h"
 
-Coin::Coin()
+Coin::Coin(std::string texture)
+    : AnimatedSprite(texture)
 {
 
 }

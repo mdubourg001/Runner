@@ -52,6 +52,18 @@ void Player::jump()
     }
 }
 
+void Player::rotate(sf::Sprite &p)
+{
+    if(dir == none)
+        p.rotate(10);
+
+    else if(dir == l)
+        p.rotate(-15);
+
+    else if(dir == r)
+        p.rotate(15);
+}
+
 void Player::drawShadow(sf::RenderWindow* window)
 {
     _shadow.setPosition(sf::Vector2f(_posx, SCREEN_HEIGHT-SCREEN_HEIGHT/6));

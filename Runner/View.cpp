@@ -63,7 +63,7 @@ void View::synchronise()
 {
     _playerSprite.setPosition(sf::Vector2f(_model->getPlayer()->getPosx(), _model->getPlayer()->getPosy()));
     if(!_model->getPlayer()->isJumping())
-        _playerSprite.rotate(10);
+        _model->getPlayer()->rotate(_playerSprite);
 
     _background.move();
 }
