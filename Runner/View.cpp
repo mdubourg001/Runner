@@ -66,7 +66,7 @@ void View::synchronise()
         _model->getPlayer()->rotate(_playerSprite);
 
     _background.move();
-    //for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->move();});
+    for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->move();});
 }
 
 //=======================================
@@ -84,7 +84,8 @@ void View::draw()
 
 //dessin des pièces
 
-    //for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){});
+    for(int i=0; i<_model->Coins()->size() ; i++)
+        _window->draw(*_model->Coins()->at(i));
 
 //--------------------
 
