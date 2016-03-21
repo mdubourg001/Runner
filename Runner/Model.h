@@ -10,18 +10,21 @@ class Model
 protected:
     int _w, _h;
     Player _player;
+    Timer _timer;
+    std::vector<Coin*> _coins;
 
 
 public:
-
-        std::vector<Coin> _coins;
     Model(int w, int h);
     ~Model();
 
     void nextStep();
     Player* getPlayer();
+    std::vector<Coin *> *Coins();
     void getPlayerPosition(int &x, int &y);
     void setPlayerDirection(direction d);
-    void movePlayer(direction d);
+    void movePlayer();
+    void addCoin();
+    void drawCoin(sf::RenderWindow* window, Coin* coin);
 };
 #endif

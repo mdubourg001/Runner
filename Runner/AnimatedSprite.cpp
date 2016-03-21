@@ -1,6 +1,7 @@
 #include "AnimatedSprite.h"
 
-AnimatedSprite::AnimatedSprite(std::string texture)
+AnimatedSprite::AnimatedSprite(std::string texture, int ms, int posx, int posy)
+    : _movespeed {ms}
 {
     if(!_texture.loadFromFile(texture))
     {
@@ -8,6 +9,7 @@ AnimatedSprite::AnimatedSprite(std::string texture)
         exit(EXIT_FAILURE);
     }
 
+    setPosition(sf::Vector2f(posx, posy));
     setTexture(_texture);
     setOrigin(sf::Vector2f(_texture.getSize().x/2, _texture.getSize().y/2));
 }
@@ -15,5 +17,5 @@ AnimatedSprite::AnimatedSprite(std::string texture)
 
 void AnimatedSprite::move()
 {
-
+    setPosition(sf::Vector2f(getPosition().x - _movespeed, getPosition().y));
 }

@@ -9,7 +9,7 @@ using namespace std;
 Model::Model(int w, int h)
   :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0)
 {
-
+    _timer.start();
 }
 //=======================================
 // Destructeurs
@@ -21,12 +21,15 @@ Model::~Model(){}
 //=======================================
 void Model::nextStep()
 {
-    movePlayer(_player.getDirection());
+    movePlayer();
 
     if(_player.isJumping())
     {
         _player.jump();
     }
+
+    if(_timer.getValue().getSec()%3 == 0)
+        addCoin();
 }
 
 //=======================================
@@ -41,6 +44,12 @@ void Model::getPlayerPosition(int &x, int &y)
 Player* Model::getPlayer()
 {
     Player* ptr = &_player;
+    return ptr;
+}
+
+std::vector<Coin*>* Model::Coins()
+{
+    std::vector<Coin*>* ptr = &_coins;
     return ptr;
 }
 
@@ -77,7 +86,17 @@ void Model::setPlayerDirection(direction d)
     }
 }
 
-void Model::movePlayer(direction d)
+void Model::movePlayer()
 {
     _player.move();
+}
+
+void Model::addCoin()
+{
+    _coins.push_back(new Coin("res/coin.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/3));
+}
+
+void Model::drawCoin(sf::RenderWindow* window, Coin* coin)
+{
+    window->draw(*coin);
 }

@@ -14,7 +14,7 @@ Player::Player(int posx, int posy, int width, int height, int mvtx, int mvty)
     _shadow.setScale(2, 1);
     _shadow.setOrigin(sf::Vector2f(10, 10));
     _shadow.setPosition(sf::Vector2f(_posx, SCREEN_HEIGHT-SCREEN_HEIGHT/6));
-    _shadow.setFillColor(sf::Color(120, 120, 120, 40));
+    _shadow.setFillColor(sf::Color(120, 120, 120, 60));
 }
 
 Player::~Player()

@@ -66,6 +66,7 @@ void View::synchronise()
         _model->getPlayer()->rotate(_playerSprite);
 
     _background.move();
+    //for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->move();});
 }
 
 //=======================================
@@ -81,12 +82,20 @@ void View::draw()
 
 //--------------------
 
+//dessin des pièces
+
+    //for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){});
+
+//--------------------
+
 //dessin de la balle
 
     _model->getPlayer()->drawShadow(_window);
     _window->draw(_playerSprite);
 
 //--------------------
+
+
 
     _window->display();
 }
