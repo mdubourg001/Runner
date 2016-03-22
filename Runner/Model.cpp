@@ -1,16 +1,18 @@
 #include "Model.h"
 #include <iostream>
 #include <fstream>
+#include "time.h"
 using namespace std;
 
 //=======================================
 // Constructeurs
 //=======================================
 Model::Model(int w, int h)
-  :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0),
-    _cpt(180), _coin_counter(0, SCREEN_WIDTH - 100, SCREEN_HEIGHT - 100, 50, 50)
+  :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0), _canpop(true),
+    _framecpt(FRAMERATE_LIMIT), _coin_counter(0, SCREEN_WIDTH - 100, SCREEN_HEIGHT - 100, 50, 50)
 {
     _coin_counter.setTexture("res/coin.png");
+    srand(time(NULL));
 }
 //=======================================
 // Destructeurs
@@ -22,7 +24,7 @@ Model::~Model(){}
 //=======================================
 void Model::nextStep()
 {
-    _cpt--;
+    _framecpt--;
     movePlayer();
     _player.treatCollisions(_coins);
 
@@ -31,12 +33,16 @@ void Model::nextStep()
         _player.jump();
     }
 
-    if(_cpt==0)
-    {
-        addCoin();
-        _cpt = 180;
-    }
+    if(_framecpt == 0)
+        _canpop = true;
 
+    if(_canpop)
+        if(rand()%40 == 0)
+        {
+            addCoin();
+            _canpop = false;
+            _framecpt = 15;
+        }
     for(int i=0 ; i<_coins.size() ; i++) //supprime les pièces qui ne sont plus affichées à l'écran
         if(_coins.at(i)->getPosition().x < 0 || _coins.at(i)->isPicked())
         {

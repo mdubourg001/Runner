@@ -55,10 +55,10 @@ void Player::jump()
 void Player::treatCollisions(std::vector<Coin *> coins)
 {
     for(int i=0 ; i<coins.size() ; i++) //collision entre la balle est les pièces
-        if((_posx - 25 < coins.at(i)->getPosition().x + 25 && _posx - 25 > coins.at(i)->getPosition().x -25
-                && _posy - 25 < coins.at(i)->getPosition().y + 25 && _posy - 25 > coins.at(i)->getPosition().y -25)
-                || (_posx + 25 > coins.at(i)->getPosition().x - 25 && _posx + 25 < coins.at(i)->getPosition().x + 25
-                && _posy + 25 > coins.at(i)->getPosition().y - 25 && _posy + 25 < coins.at(i)->getPosition().y + 25))
+        if((_posx - 25 <= coins.at(i)->getPosition().x + 25 && _posx - 25 >= coins.at(i)->getPosition().x -25
+                && _posy - 25 <= coins.at(i)->getPosition().y + 25 && _posy - 25 >= coins.at(i)->getPosition().y -25)
+                || (_posx + 25 >= coins.at(i)->getPosition().x - 25 && _posx + 25 <= coins.at(i)->getPosition().x + 25
+                && _posy + 25 >= coins.at(i)->getPosition().y - 25 && _posy + 25 <= coins.at(i)->getPosition().y + 25))
             coins.at(i)->setPicked(true);
 }
 
