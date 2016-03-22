@@ -13,7 +13,7 @@ using namespace std;
 // Constructeur
 //=======================================
 View::View(int w, int h)
-    : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(SCREEN_WIDTH, SCREEN_HEIGHT, 5)
+    : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(SCREEN_WIDTH, SCREEN_HEIGHT, 5), _cpt(160)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D  
     _window->setFramerateLimit(FRAMERATE_LIMIT); //fixe la limite de fps
@@ -61,12 +61,31 @@ void View::setModel(Model * model) //setter qui permet de modifier le modele ass
 
 void View::synchronise()
 {
+    _cpt--;
+
+//===SYNCHRO PLAYER===//
+
     _playerSprite.setPosition(sf::Vector2f(_model->getPlayer()->getPosx(), _model->getPlayer()->getPosy()));
     if(!_model->getPlayer()->isJumping())
         _model->getPlayer()->rotate(_playerSprite);
 
+//====================//
+//===SYNCHRO BACKGROUND===//
+
     _background.move();
+
+//=======================//
+//===SYNCHRO PIECES===//
+
+    for(int i=0 ; i<_model->Coins()->size() ; i++) //supprime les pièces qui ne sont plus affichées à l'écran
+        if(_model->Coins()->at(i)->getPosition().x < 0)
+            _model->Coins()->erase(_model->Coins()->begin() + i);
+
     for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->move();});
+    if(_cpt % 5 == 0)
+        for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->animate(50);});
+
+//===================//
 }
 
 //=======================================

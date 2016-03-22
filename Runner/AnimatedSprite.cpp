@@ -1,9 +1,14 @@
 #include "AnimatedSprite.h"
 
-AnimatedSprite::AnimatedSprite(std::string texture, int ms, int posx, int posy)
-    : _movespeed {ms}
+AnimatedSprite::AnimatedSprite(std::string texture, int ms,
+                               int posx, int posy, int width, int height, int nbrsprites)
+    : _movespeed {ms}, _nbrsprites(nbrsprites)
 {
-    if(!_texture.loadFromFile(texture))
+    _sourceRect.width = width;
+    _sourceRect.height = height;
+    _sourceRect.left = _sourceRect.top = 0;
+
+    if(!_texture.loadFromFile(texture, _sourceRect))
     {
         std::cerr << "ERROR WHEN LOADING IMAGE FILE: " << texture << std::endl;
         exit(EXIT_FAILURE);
@@ -19,3 +24,16 @@ void AnimatedSprite::move()
 {
     setPosition(sf::Vector2f(getPosition().x - _movespeed, getPosition().y));
 }
+
+void AnimatedSprite::animate(int value)
+{
+    if(_sourceRect.left  >= _nbrsprites*value)
+        _sourceRect.left = 0;
+
+    else
+    {
+        _sourceRect.left += value;
+        _texture.loadFromFile("res/coinsprite.png", _sourceRect);
+    }
+}
+

@@ -10,7 +10,7 @@ protected:
     int _value;
 
 public:
-    Coin(std::string texture, int ms, int posx, int posy);
+    Coin(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites);
 };
 
 #endif // COIN_H

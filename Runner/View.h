@@ -22,6 +22,8 @@ private:
 
     SlidingBackground _background;
 
+    int _cpt;
+
 public:
     View(int w, int h);
     ~View();

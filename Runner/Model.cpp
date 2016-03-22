@@ -97,6 +97,6 @@ void Model::movePlayer()
 
 void Model::addCoin()
 {
-    _coins.push_back(new Coin("res/coin.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/3));
+    _coins.push_back(new Coin("res/coinsprite.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 47, 50, 8));
 }
 
