@@ -6,6 +6,7 @@
 
 const int SCREEN_WIDTH = 1366;
 const int SCREEN_HEIGHT = 768;
+const int FRAMERATE_LIMIT = 60;
 
 const int JUMP_HEIGHT = 25;
 
