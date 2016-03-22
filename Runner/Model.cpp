@@ -24,6 +24,7 @@ void Model::nextStep()
 {
     _cpt--;
     movePlayer();
+    _player.treatCollisions(_coins);
 
     if(_player.isJumping())
     {
@@ -33,9 +34,18 @@ void Model::nextStep()
     if(_cpt==0)
     {
         addCoin();
-        _coin_counter.increment();
         _cpt = 180;
     }
+
+    for(int i=0 ; i<_coins.size() ; i++) //supprime les pièces qui ne sont plus affichées à l'écran
+        if(_coins.at(i)->getPosition().x < 0 || _coins.at(i)->isPicked())
+        {
+            if(_coins.at(i)->isPicked())
+                _coin_counter.increment();
+            _coins.erase(_coins.begin() + i );
+        }
+
+    for_each(_coins.begin(), _coins.end(), [](Coin* &c){c->move();});
 }
 
 //=======================================

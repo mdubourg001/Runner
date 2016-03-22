@@ -1,6 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "MovableElement.h"
+#include "Coin.h"
 
 class Player : public MovableElement
 {
@@ -18,6 +19,7 @@ public:
     void jump();
     void rotate(sf::Sprite &p);
     void drawShadow(sf::RenderWindow *window);
+    void treatCollisions(std::vector<Coin*> coins);
 };
 
 #endif // PLAYER_H

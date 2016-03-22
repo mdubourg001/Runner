@@ -77,11 +77,6 @@ void View::synchronise()
 //=======================//
 //===SYNCHRO PIECES===//
 
-    for(int i=0 ; i<_model->Coins()->size() ; i++) //supprime les pièces qui ne sont plus affichées à l'écran
-        if(_model->Coins()->at(i)->getPosition().x < 0)
-            _model->Coins()->erase(_model->Coins()->begin() + i);
-
-    for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->move();});
     if(_cpt % 5 == 0)
         for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->animate(50);});
 

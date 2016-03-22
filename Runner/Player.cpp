@@ -52,6 +52,16 @@ void Player::jump()
     }
 }
 
+void Player::treatCollisions(std::vector<Coin *> coins)
+{
+    for(int i=0 ; i<coins.size() ; i++) //collision entre la balle est les pièces
+        if((_posx - 25 < coins.at(i)->getPosition().x + 25 && _posx - 25 > coins.at(i)->getPosition().x -25
+                && _posy - 25 < coins.at(i)->getPosition().y + 25 && _posy - 25 > coins.at(i)->getPosition().y -25)
+                || (_posx + 25 > coins.at(i)->getPosition().x - 25 && _posx + 25 < coins.at(i)->getPosition().x + 25
+                && _posy + 25 > coins.at(i)->getPosition().y - 25 && _posy + 25 < coins.at(i)->getPosition().y + 25))
+            coins.at(i)->setPicked(true);
+}
+
 void Player::rotate(sf::Sprite &p)
 {
     if(dir == none)
@@ -69,6 +79,4 @@ void Player::drawShadow(sf::RenderWindow* window)
     _shadow.setPosition(sf::Vector2f(_posx, SCREEN_HEIGHT-SCREEN_HEIGHT/6));
     window->draw(_shadow);
 }
-
-
 
