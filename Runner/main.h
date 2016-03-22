@@ -9,6 +9,7 @@ const int SCREEN_WIDTH = 1366;
 const int SCREEN_HEIGHT = 768;
 
 const int JUMP_HEIGHT = 25;
+const int FRAMERATE_LIMIT = 60;
 
 const std::string BACKGROUND_IMAGE_L = "res/city.png";
 const std::string BACKGROUND_IMAGE_R = "res/city2.png";

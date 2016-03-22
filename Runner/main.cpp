@@ -14,7 +14,7 @@ int main()
 {
     srand(time(NULL));
 
-/*Model model(SCREEN_WIDTH, SCREEN_HEIGHT);
+    /*Model model(SCREEN_WIDTH, SCREEN_HEIGHT);
     View view(SCREEN_WIDTH, SCREEN_HEIGHT);
     view.setModel(&model);
 
