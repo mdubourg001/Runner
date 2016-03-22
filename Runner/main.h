@@ -3,10 +3,10 @@
 
 #include <SFML/Graphics.hpp>
 #include "Timer.h"
+#include "Item.h"
 
 const int SCREEN_WIDTH = 1366;
 const int SCREEN_HEIGHT = 768;
-const int FRAMERATE_LIMIT = 60;
 
 const int JUMP_HEIGHT = 25;
 
@@ -32,5 +32,6 @@ enum gamestates
     menu,
     game
 };
+
 
 #endif // MAIN_H

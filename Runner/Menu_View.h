@@ -18,7 +18,10 @@ private:
     sf::Sprite _backgroundMenuSprite;
 
     sf::Font _font;
-    sf::Text _text;
+    sf::Text _textGame;
+    sf::Text _textExit;
+    sf::Text _textSettings;
+    sf::Text _textShop;
 
 
 public:

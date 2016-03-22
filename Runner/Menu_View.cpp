@@ -32,10 +32,25 @@ Menu_View::Menu_View(int w, int h)
     }
 
     _font.loadFromFile(POLICE);
-    _text.setFont(_font);
-    _text.setColor(sf::Color::Blue);
-    _text.setString("Appuyer sur Espace pour continuer");
-    _text.setPosition(300,500);
+    _textGame.setFont(_font);
+    _textGame.setColor(sf::Color::Blue);
+    _textGame.setString("Jouer");
+    _textGame.setPosition(300,300);
+
+    _textExit.setFont(_font);
+    _textExit.setColor(sf::Color::Blue);
+    _textExit.setString("Quitter");
+    _textExit.setPosition(300,450);
+
+    _textSettings.setFont(_font);
+    _textSettings.setColor(sf::Color::Blue);
+    _textSettings.setString("Parametres");
+    _textSettings.setPosition(300,400);
+
+    _textShop.setFont(_font);
+    _textShop.setColor(sf::Color::Blue);
+    _textShop.setString("Achat");
+    _textShop.setPosition(300,350);
 
 }
 
@@ -66,7 +81,11 @@ void Menu_View::draw()
 //dessin du background
 
     _window->draw(_backgroundMenuSprite);
-    _window->draw(_text);
+    _window->draw(_textGame);
+    _window->draw(_textExit);
+    _window->draw(_textShop);
+    _window->draw(_textSettings);
+
 
 //--------------------
 
@@ -88,19 +107,65 @@ bool Menu_View::treatEvents()
         result = true;
 
         sf::Event event;
+        int x;
+        int y;
+
         while (_window->pollEvent(event)) //tant qu'un évenement est détécté
         {
+
+
             if ((event.type == sf::Event::Closed) || //si on clique sur la croix de fermeture
                     ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))) //on dit que l'évenement est "échap préssé"
             {
                 _window->close(); //la fenetre est fermée
                 result = false;
             }
-            else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Space))
+            else if (event.type == sf::Event::MouseButtonPressed)
             {
-                _text.setString("EH BAH NON C ETAIT UNE BLAGUE !");
+                x = event.mouseButton.x;
+                y = event.mouseButton.y;
+
+
+                if(x>=300 && x<=380 && y>=306 && y<=330)
+                    cout << "Jouer" << endl;
+                else if(x>=300 && x<=385 && y>=356 && y<=380)
+                    cout << "Achat" << endl;
+                else if(x>=300 && x<=463 && y>=407 && y<=430)
+                    cout << "Parametres" << endl;
+                else if(x>=300 && x<=404 && y>=457 && y<=479)
+                {
+                    _window->close();
+                    result = false;
+                }
 
             }
+            else if (event.type == sf::Event::MouseMoved)
+                 {
+                    int xM = event.mouseMove.x;
+                    int yM = event.mouseMove.y;
+
+                    if(xM>=300 && xM<=380 && yM>=306 && yM<=330)
+                        _textGame.setColor(sf::Color::Red);
+                    else
+                        _textGame.setColor(sf::Color::Blue);
+
+                    if(xM>=300 && xM<=385 && yM>=356 && yM<=380)
+                        _textShop.setColor(sf::Color::Red);
+                    else
+                        _textShop.setColor(sf::Color::Blue);
+
+                    if(xM>=300 && xM<=463 && yM>=407 && yM<=430)
+                        _textSettings.setColor(sf::Color::Red);
+                    else
+                        _textSettings.setColor(sf::Color::Blue);
+
+                    if(xM>=300 && xM<=404 && yM>=457 && yM<=479)
+                        _textExit.setColor(sf::Color::Red);
+                    else
+                        _textExit.setColor(sf::Color::Blue);
+
+
+                 }
         }
     }
     return result;
