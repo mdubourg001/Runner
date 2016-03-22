@@ -8,7 +8,8 @@
 
 class Model;
 
-class View {
+class View
+{
 private:
     int _w, _h;
 

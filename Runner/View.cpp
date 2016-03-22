@@ -115,6 +115,7 @@ void View::draw()
 
 //--------------------
 
+    _model->drawInterface(_window);
 
 
     _window->display();

@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "AnimatedSprite.h"
 #include "Coin.h"
+#include "Counter.h"
 
 class Model
 {
@@ -12,7 +13,7 @@ protected:
     Player _player;
     int _cpt;
     std::vector<Coin*> _coins;
-
+    Counter _coin_counter;
 
 public:
     Model(int w, int h);
@@ -25,5 +26,6 @@ public:
     void setPlayerDirection(direction d);
     void movePlayer();
     void addCoin();
+    void drawInterface(sf::RenderWindow *w);
 };
 #endif

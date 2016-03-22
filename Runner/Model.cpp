@@ -7,9 +7,10 @@ using namespace std;
 // Constructeurs
 //=======================================
 Model::Model(int w, int h)
-  :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0), _cpt(180)
+  :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0),
+    _cpt(180), _coin_counter(0, SCREEN_WIDTH - 100, SCREEN_HEIGHT - 100, 50, 50)
 {
-
+    _coin_counter.setTexture("res/coin.png");
 }
 //=======================================
 // Destructeurs
@@ -32,6 +33,7 @@ void Model::nextStep()
     if(_cpt==0)
     {
         addCoin();
+        _coin_counter.increment();
         _cpt = 180;
     }
 }
@@ -100,3 +102,7 @@ void Model::addCoin()
     _coins.push_back(new Coin("res/coinsprite.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 47, 50, 8));
 }
 
+void Model::drawInterface(sf::RenderWindow *w)
+{
+    _coin_counter.draw(w); //dessin du compteur de pièces
+}

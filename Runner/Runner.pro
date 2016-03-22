@@ -21,7 +21,8 @@ SOURCES += main.cpp \
     Menu_View.cpp \
     Menu_Model.cpp \
     SlidingBackground.cpp \
-    AnimatedSprite.cpp
+    AnimatedSprite.cpp \
+    Counter.cpp
 
 HEADERS += \
     Player.h \
@@ -39,4 +40,5 @@ HEADERS += \
     Menu_View.h \
     Menu_Model.h \
     SlidingBackground.h \
-    AnimatedSprite.h
+    AnimatedSprite.h \
+    Counter.h
