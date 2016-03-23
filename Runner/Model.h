@@ -8,6 +8,17 @@
 #include "Diamond.h"
 #include "Bonus.h"
 
+enum BonusType
+{
+    magnet,
+    randombonus,
+    shield,
+    health,
+    star,
+    feather,
+    hourglass
+};
+
 class Model
 {
 protected:
@@ -22,6 +33,8 @@ protected:
     Counter _diamond_counter;
     int _framecpt;
     bool _canpop;
+
+    BonusType bt;
 
 public:
     Model(int w, int h);

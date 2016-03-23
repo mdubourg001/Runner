@@ -53,7 +53,7 @@ void Model::nextStep()
             _canpop = false;
             _framecpt = 15;
         }
-        else if (rand()%400 == 0)
+        else if (rand()%50 == 0 && _bonus.size()<1)
         {
             addBonus();
             _canpop = false;
@@ -85,7 +85,32 @@ void Model::nextStep()
         if (_bonus.at(i)->getPosition().x < 0 || _bonus.at(i)->isPicked())
         {
             if(_bonus.at(i)->isPicked())
-                //_diamond_counter.increment();
+            {
+                switch(bt)
+                {
+                case magnet:
+                    cout << "Magnet " << endl;
+                    break;
+                case randombonus:
+                    cout << "Random " << endl;
+                    break;
+                case shield:
+                    cout << "Shield " << endl;
+                    break;
+                case health:
+                    cout << "Health " << endl;
+                    break;
+                case star:
+                    cout << "Star " << endl;
+                    break;
+                case feather:
+                    cout << "Feather " << endl;
+                    break;
+                case hourglass:
+                    cout << "Hourglass " << endl;
+                    break;
+                }
+            }
             _bonus.erase(_bonus.begin() + i);
         }
     }
@@ -174,12 +199,43 @@ void Model::addCoin()
 
 void Model::addDiamond()
 {
-    _diamonds.push_back(new Diamond("res/diamond.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 47, 50, 0));
+    _diamonds.push_back(new Diamond("res/diamond.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
 }
 
 void Model::addBonus()
 {
-    _bonus.push_back(new Bonus("res/sablier.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 47, 50, 0));
+    switch(rand()%8)
+    {
+    case 1:
+        _bonus.push_back(new Bonus("res/aimant.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+        bt = magnet;
+        break;
+    case 2:
+        _bonus.push_back(new Bonus("res/aleatoire.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+        bt = randombonus;
+        break;
+    case 3:
+        _bonus.push_back(new Bonus("res/bouclier.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+        bt = shield;
+        break;
+    case 4:
+        _bonus.push_back(new Bonus("res/sante.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+        bt = health;
+        break;
+    case 5:
+        _bonus.push_back(new Bonus("res/etoile.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+        bt = star;
+        break;
+    case 6:
+        _bonus.push_back(new Bonus("res/plume.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+        bt = feather;
+        break;
+    case 7:
+        _bonus.push_back(new Bonus("res/sablier.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+        bt = hourglass;
+        break;
+    }
+
 }
 
 void Model::drawInterface(sf::RenderWindow *w)
