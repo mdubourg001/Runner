@@ -19,6 +19,7 @@ protected:
 public:
     SlidingBackground();
     SlidingBackground(int w, int h, int s);
+    SlidingBackground(int posx, int posy, int w, int h, int s);
 
     void move();
     bool loadTextures(std::string left, std::string right);

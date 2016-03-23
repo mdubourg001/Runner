@@ -1,5 +1,5 @@
-#include "Shop_view.h"
-#include "Shop_model.h"
+#include "Shop_View.h"
+#include "Shop_Model.h"
 #include "main.h"
 
 #include <fstream>
@@ -13,7 +13,7 @@ using namespace std;
 // Constructeur
 //=======================================
 Shop_View::Shop_View(int w, int h)
-    : _w(w),_h(h)
+    : _w(w),_h(h), cs(ball)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D
     _window->setFramerateLimit(60); //fixe la limite de fps
@@ -33,10 +33,20 @@ Shop_View::Shop_View(int w, int h)
 
     _rectBall.setSize(sf::Vector2f(SCREEN_WIDTH/2,50));
     _rectBall.setFillColor(sf::Color(100,100,100,255));
+    _rectBall.setOutlineThickness(3);
+    _rectBall.setOutlineColor(sf::Color::Black);
 
     _rectBack.setSize(sf::Vector2f(SCREEN_WIDTH/2,50));
     _rectBack.setPosition(SCREEN_WIDTH/2,0);
     _rectBack.setFillColor(sf::Color(150,150,150,255));
+    _rectBack.setOutlineThickness(3);
+    _rectBack.setOutlineColor(sf::Color::Black);
+
+    _rectScreen.setSize(sf::Vector2f(SCREEN_WIDTH-SCREEN_WIDTH/6,SCREEN_HEIGHT-56));
+    _rectScreen.setPosition((SCREEN_WIDTH/6)-3,53);
+    _rectScreen.setFillColor(sf::Color(255,127,36,255));
+    _rectScreen.setOutlineThickness(3);
+    _rectScreen.setOutlineColor(sf::Color::Black);
 
 
     _font.loadFromFile(POLICE);
@@ -65,7 +75,6 @@ Shop_View::Shop_View(int w, int h)
     }
 
     _items.at(0)->setSelected(true);
-    _items.at(5)->setName("dsfsdfs");
 
 }
 
@@ -94,15 +103,17 @@ void Shop_View::draw()
    // _window->draw(_backgroundShopSprite);
     _window->draw(_rectBall);
     _window->draw(_rectBack);
+    _window->draw(_rectScreen);
     _window->draw(_textBall);
     _window->draw(_textBack);
 
     for(int i=0;i<_items.size();i++)
     {
         _window->draw(*_items.at(i));
+       // _items.at(i)->drawPreview(_window);
         _items.at(i)->drawText(_window);
     }
-
+    _items.at(0)->drawPreview(_window);
 
     //--------------------
 
@@ -138,15 +149,19 @@ bool Shop_View::treatEvents()
                 {
                     _rectBall.setFillColor(sf::Color(150,150,150,255));
                     _rectBack.setFillColor(sf::Color(100,100,100,255));
+                    cs = back;
                 }
                 else
                 {
                     _rectBall.setFillColor(sf::Color(100,100,100,255));
                     _rectBack.setFillColor(sf::Color(150,150,150,255));
+                    cs = ball;
                 }
                 for(int i=1;i<_items.size();i++)
                     _items.at(i)->setSelected(false);
                 _items.at(0)->setSelected(true);
+
+
             }
 
             else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Left))
@@ -155,11 +170,13 @@ bool Shop_View::treatEvents()
                 {
                     _rectBall.setFillColor(sf::Color(150,150,150,255));
                     _rectBack.setFillColor(sf::Color(100,100,100,255));
+                    cs = back;
                 }
                 else
                 {
                     _rectBall.setFillColor(sf::Color(100,100,100,255));
                     _rectBack.setFillColor(sf::Color(150,150,150,255));
+                    cs = ball;
                 }
                 for(int i=1;i<_items.size();i++)
                     _items.at(i)->setSelected(false);
@@ -215,4 +232,15 @@ void Shop_View::synchronise()
     else
         _items.at(i)->setFillColor(sf::Color(200,200,200,255));
     }
+
+    for(int i=0;i<_items.size();i++)
+    {
+        if (cs == ball)
+            _items.at(i)->setName("Ball " + std::to_string(i+1));
+        else
+            _items.at(i)->setName("Background " + std::to_string(i+1));
+    }
+
+
+
 }

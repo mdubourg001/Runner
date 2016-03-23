@@ -25,9 +25,10 @@ SOURCES += main.cpp \
     Counter.cpp \
     Settings_Model.cpp \
     Settings_View.cpp \
-    Shop_model.cpp \
-    Shop_view.cpp \
-    Item.cpp
+    Item.cpp \
+    Shop_View.cpp \
+    Shop_Model.cpp \
+    Preview.cpp
 
 HEADERS += \
     Player.h \
@@ -49,6 +50,7 @@ HEADERS += \
     Counter.h \
     Settings_Model.h \
     Settings_View.h \
-    Shop_model.h \
-    Shop_view.h \
-    Item.h
+    Item.h \
+    Shop_Model.h \
+    Shop_View.h \
+    Preview.h

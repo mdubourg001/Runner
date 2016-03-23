@@ -3,7 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 #include "Timer.h"
-#include "Item.h"
 
 const int SCREEN_WIDTH = 1366;
 const int SCREEN_HEIGHT = 768;
@@ -13,6 +12,8 @@ const int FRAMERATE_LIMIT = 60;
 
 const std::string BACKGROUND_IMAGE_L = "res/city.png";
 const std::string BACKGROUND_IMAGE_R = "res/city2.png";
+const std::string BACKGROUND_IMAGE_PREVIEW_L = "res/city_preview.png";
+const std::string BACKGROUND_IMAGE_PREVIEW_R = "res/city2_preview.png";
 const std::string BALL_IMAGE = "res/ball.png";
 const std::string BACKGROUND_INTRO_IMAGE = "res/backgroundIntro.png";
 const std::string POLICE = "res/slapstick.ttf";

@@ -7,14 +7,14 @@
 #include "Menu_View.h"
 #include "Settings_Model.h"
 #include "Settings_View.h"
-#include "Shop_model.h"
-#include "Shop_view.h"
+#include "Shop_Model.h"
+#include "Shop_View.h"
 
 int main()
 {
     srand(time(NULL));
 
-    /*Model model(SCREEN_WIDTH, SCREEN_HEIGHT);
+    Model model(SCREEN_WIDTH, SCREEN_HEIGHT);
     View view(SCREEN_WIDTH, SCREEN_HEIGHT);
     view.setModel(&model);
 
@@ -23,7 +23,7 @@ int main()
         model.nextStep();
         view.synchronise();
         view.draw();
-    }*/
+    }
 
     /*Intro_Model intro_model(SCREEN_WIDTH, SCREEN_HEIGHT);
     Intro_View intro_view(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -54,7 +54,7 @@ int main()
         settings_view.draw();
     }*/
 
-    Shop_Model shop_model(SCREEN_WIDTH, SCREEN_HEIGHT);
+    /*Shop_Model shop_model(SCREEN_WIDTH, SCREEN_HEIGHT);
     Shop_View shop_view(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 
@@ -63,7 +63,7 @@ int main()
         shop_model.nextStep();
         shop_view.draw();
         shop_view.synchronise();
-    }
+    }*/
 
     return EXIT_SUCCESS;
 }

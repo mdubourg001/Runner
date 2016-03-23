@@ -3,11 +3,11 @@
 
 #include <SFML/Graphics.hpp>
 #include "main.h"
+#include "Item.h"
 #include <iostream>
 
 enum choixShop
 {
-    gene,
     ball,
     back
 };
@@ -28,6 +28,7 @@ private:
 
     sf::RectangleShape _rectBall;
     sf::RectangleShape _rectBack;
+    sf::RectangleShape _rectScreen;
 
     std::vector<Item*> _items;
 

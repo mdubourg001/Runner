@@ -12,6 +12,13 @@ SlidingBackground::SlidingBackground(int w, int h, int s)
     _left.setPosition(sf::Vector2f(0, 0));
 }
 
+SlidingBackground::SlidingBackground(int posx, int posy, int w, int h, int s)
+    : _width {w}, _height {h}, _speed {s}
+{
+    _right.setPosition(sf::Vector2f(_width, posy));
+    _left.setPosition(sf::Vector2f(posx, posy));
+}
+
 //========================================
 //========================================
 

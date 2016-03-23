@@ -6,6 +6,7 @@ Item::Item()
     _name.setFont(_font);
     _name.setColor(sf::Color::Black);
     _selected = false;
+    _preview = new Preview();
 }
 
 sf::Text Item::getName()
@@ -33,3 +34,9 @@ void Item::drawText(sf::RenderWindow *w)
     _name.setPosition(sf::Vector2f(getPosition().x + 20, getPosition().y + 10));
     w->draw(_name);
 }
+
+void Item::drawPreview(sf::RenderWindow *w)
+{
+    _preview->draw(w);
+}
+
