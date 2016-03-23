@@ -1,9 +1,14 @@
 #ifndef OBSTACLE_H
 #define OBSTACLE_H
+#include "main.h"
+#include "AnimatedSprite.h"
 
 
-class Obstacle
+class Obstacle : public AnimatedSprite
 {
+protected:
+
+
 public:
     Obstacle();
 };

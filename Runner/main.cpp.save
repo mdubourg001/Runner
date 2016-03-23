@@ -54,6 +54,17 @@ int main()
         settings_view.draw();
     }*/
 
+    /*Shop_Model shop_model(SCREEN_WIDTH, SCREEN_HEIGHT);
+    Shop_View shop_view(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+
+    while(shop_view.treatEvents())
+    {
+        shop_model.nextStep();
+        shop_view.draw();
+        shop_view.synchronise();
+    }*/
+=======
 //    Shop_Model shop_model(SCREEN_WIDTH, SCREEN_HEIGHT);
 //    Shop_View shop_view(SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -64,6 +75,7 @@ int main()
 //        shop_view.draw();
 //        shop_view.synchronise();
 //    }
+>>>>>>> 6d18dcbd79eb0bee7924d54ce690a1efda4da47d
 
     return EXIT_SUCCESS;
 }

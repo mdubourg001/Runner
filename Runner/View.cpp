@@ -147,13 +147,11 @@ bool View::treatEvents()
                 if(event.key.code == sf::Keyboard::Left)
                 {
                     _model->setPlayerDirection(l);
-                    //_playerSprite.setRotation(-15);
                 }
 
                 if(event.key.code == sf::Keyboard::Right)
                 {
                     _model->setPlayerDirection(r);
-                    //_playerSprite.setRotation(15);
                 }
             }
 
