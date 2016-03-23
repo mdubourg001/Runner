@@ -2,6 +2,8 @@
 #define PLAYER_H
 #include "MovableElement.h"
 #include "Coin.h"
+#include "Diamond.h"
+#include "Bonus.h"
 
 class Player : public MovableElement
 {
@@ -19,7 +21,7 @@ public:
     void jump();
     void rotate(sf::Sprite &p);
     void drawShadow(sf::RenderWindow *window);
-    void treatCollisions(std::vector<Coin*> coins);
+    void treatCollisions(std::vector<Coin*> coins, std::vector<Diamond*> diamonds, std::vector<Bonus*> bonus);
 };
 
 #endif // PLAYER_H

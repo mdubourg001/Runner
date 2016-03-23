@@ -81,6 +81,14 @@ void View::synchronise()
         for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->animate(50);});
 
 //===================//
+
+//=======================//
+//===SYNCHRO DIAMANTS===//
+
+    if(_cpt % 5 == 0)
+        for_each(_model->Diamonds()->begin(), _model->Diamonds()->end(), [](Diamond* &d){d->animate(50);});
+
+//===================//
 }
 
 //=======================================
@@ -100,6 +108,20 @@ void View::draw()
 
     for(int i=0; i<_model->Coins()->size() ; i++)
         _window->draw(*_model->Coins()->at(i));
+
+//--------------------
+
+//dessin des diamants
+
+    for(int i=0; i<_model->Diamonds()->size() ; i++)
+        _window->draw(*_model->Diamonds()->at(i));
+
+//--------------------
+
+//dessin des bonus
+
+     for(int i=0; i<_model->Awards()->size() ; i++)
+        _window->draw(*_model->Awards()->at(i));
 
 //--------------------
 

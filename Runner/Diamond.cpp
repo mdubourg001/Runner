@@ -1,22 +1,22 @@
-#include "Bonus.h"
+#include "Diamond.h"
 
-Bonus::Bonus(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites)
+Diamond::Diamond(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites)
     : AnimatedSprite(texture, ms, posx, posy, width, height, nbrsprites), _picked(false)
 {
 
 }
 
-void Bonus::move()
+void Diamond::move()
 {
     setPosition(sf::Vector2f(getPosition().x - _movespeed, getPosition().y));
 }
 
-void Bonus::setPicked(bool picked)
+void Diamond::setPicked(bool picked)
 {
     _picked = picked;
 }
 
-bool Bonus::isPicked() const
+bool Diamond::isPicked() const
 {
     return _picked;
 }

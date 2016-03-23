@@ -7,8 +7,8 @@
 #include "Menu_View.h"
 #include "Settings_Model.h"
 #include "Settings_View.h"
-#include "Shop_model.h"
-#include "Shop_view.h"
+#include "Shop_Model.h"
+#include "Shop_View.h"
 
 int main()
 {

@@ -53,14 +53,28 @@ void Player::jump()
     }
 }
 
-void Player::treatCollisions(std::vector<Coin *> coins)
+void Player::treatCollisions(std::vector<Coin *> coins, std::vector<Diamond *> diamonds, std::vector<Bonus *> bonus)
 {
-    for(int i=0 ; i<coins.size() ; i++) //collision entre la balle est les pièces
+    for(int i=0 ; i<coins.size() ; i++) //collision entre la balle et les pièces
         if((_posx - 25 <= coins.at(i)->getPosition().x + 25 && _posx - 25 >= coins.at(i)->getPosition().x -25
                 && _posy - 25 <= coins.at(i)->getPosition().y + 25 && _posy - 25 >= coins.at(i)->getPosition().y -25)
                 || (_posx + 25 >= coins.at(i)->getPosition().x - 25 && _posx + 25 <= coins.at(i)->getPosition().x + 25
                 && _posy + 25 >= coins.at(i)->getPosition().y - 25 && _posy + 25 <= coins.at(i)->getPosition().y + 25))
             coins.at(i)->setPicked(true);
+
+    for(int i=0 ; i<diamonds.size() ; i++) //collision entre la balle et les diamants
+        if((_posx - 25 <= diamonds.at(i)->getPosition().x + 25 && _posx - 25 >= diamonds.at(i)->getPosition().x -25
+                && _posy - 25 <= diamonds.at(i)->getPosition().y + 25 && _posy - 25 >= diamonds.at(i)->getPosition().y -25)
+                || (_posx + 25 >= diamonds.at(i)->getPosition().x - 25 && _posx + 25 <= diamonds.at(i)->getPosition().x + 25
+                && _posy + 25 >= diamonds.at(i)->getPosition().y - 25 && _posy + 25 <= diamonds.at(i)->getPosition().y + 25))
+            diamonds.at(i)->setPicked(true);
+
+    for(int i=0 ; i<bonus.size() ; i++) //collision entre la balle et les bonus
+        if((_posx - 25 <= bonus.at(i)->getPosition().x + 25 && _posx - 25 >= bonus.at(i)->getPosition().x -25
+                && _posy - 25 <= bonus.at(i)->getPosition().y + 25 && _posy - 25 >= bonus.at(i)->getPosition().y -25)
+                || (_posx + 25 >= bonus.at(i)->getPosition().x - 25 && _posx + 25 <= bonus.at(i)->getPosition().x + 25
+                && _posy + 25 >= bonus.at(i)->getPosition().y - 25 && _posy + 25 <= bonus.at(i)->getPosition().y + 25))
+            bonus.at(i)->setPicked(true);
 }
 
 void Player::rotate(sf::Sprite &p)

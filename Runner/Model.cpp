@@ -29,7 +29,7 @@ void Model::nextStep()
 {
     _framecpt--;
     movePlayer();
-    _player.treatCollisions(_coins);
+    _player.treatCollisions(_coins,_diamonds, _bonus);
 
     if(_player.isJumping())
     {
@@ -40,13 +40,29 @@ void Model::nextStep()
         _canpop = true;
 
     if(_canpop)
+    {
         if(rand()%40 == 0)
         {
             addCoin();
             _canpop = false;
             _framecpt = 15;
         }
-    for(int i=0 ; i<_coins.size() ; i++) //supprime les pièces qui ne sont plus affichées à l'écran
+        else if (rand()%4000 == 0)
+        {
+            addDiamond();
+            _canpop = false;
+            _framecpt = 15;
+        }
+        else if (rand()%400 == 0)
+        {
+            addBonus();
+            _canpop = false;
+            _framecpt = 15;
+        }
+    }
+
+    for(int i=0 ; i<_coins.size() ; i++) //supprime les pièces et diamants qui ne sont plus affichées à l'écran
+    {
         if(_coins.at(i)->getPosition().x < 0 || _coins.at(i)->isPicked())
         {
             if(_coins.at(i)->isPicked())
@@ -54,7 +70,30 @@ void Model::nextStep()
             _coins.erase(_coins.begin() + i );
         }
 
+    }
+    for(int i=0; i<_diamonds.size();i++)
+    {
+        if (_diamonds.at(i)->getPosition().x < 0 || _diamonds.at(i)->isPicked())
+        {
+            if(_diamonds.at(i)->isPicked())
+                _diamond_counter.increment();
+            _diamonds.erase(_diamonds.begin() + i);
+        }
+    }
+    for(int i=0; i<_bonus.size();i++)
+    {
+        if (_bonus.at(i)->getPosition().x < 0 || _bonus.at(i)->isPicked())
+        {
+            if(_bonus.at(i)->isPicked())
+                //_diamond_counter.increment();
+            _bonus.erase(_bonus.begin() + i);
+        }
+    }
+
     for_each(_coins.begin(), _coins.end(), [](Coin* &c){c->move();});
+    for_each(_diamonds.begin(), _diamonds.end(), [](Diamond* &d){d->move();});
+    for_each(_bonus.begin(), _bonus.end(), [](Bonus* &b){b->move();});
+
 }
 
 //=======================================
@@ -75,6 +114,18 @@ Player* Model::getPlayer()
 std::vector<Coin*>* Model::Coins()
 {
     std::vector<Coin*>* ptr = &_coins;
+    return ptr;
+}
+
+std::vector<Diamond*>* Model::Diamonds()
+{
+    std::vector<Diamond*>* ptr = &_diamonds;
+    return ptr;
+}
+
+std::vector<Bonus*>* Model::Awards()
+{
+    std::vector<Bonus*>* ptr = &_bonus;
     return ptr;
 }
 
@@ -119,6 +170,16 @@ void Model::movePlayer()
 void Model::addCoin()
 {
     _coins.push_back(new Coin("res/coinsprite.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 47, 50, 8));
+}
+
+void Model::addDiamond()
+{
+    _diamonds.push_back(new Diamond("res/diamond.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 47, 50, 0));
+}
+
+void Model::addBonus()
+{
+    _bonus.push_back(new Bonus("res/sablier.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 47, 50, 0));
 }
 
 void Model::drawInterface(sf::RenderWindow *w)

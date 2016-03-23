@@ -28,7 +28,8 @@ SOURCES += main.cpp \
     Item.cpp \
     Shop_View.cpp \
     Shop_Model.cpp \
-    Preview.cpp
+    Preview.cpp \
+    Diamond.cpp
 
 HEADERS += \
     Player.h \
@@ -53,4 +54,5 @@ HEADERS += \
     Item.h \
     Shop_Model.h \
     Shop_View.h \
-    Preview.h
+    Preview.h \
+    Diamond.h
