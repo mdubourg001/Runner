@@ -42,6 +42,7 @@ void Player::jump()
         setMvty(0);
         _shadow.setRadius(10);
     }
+
     else
     {
         setMvty(getMvty()+1);

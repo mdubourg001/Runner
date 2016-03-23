@@ -9,9 +9,12 @@ using namespace std;
 //=======================================
 Model::Model(int w, int h)
   :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0), _canpop(true),
-    _framecpt(FRAMERATE_LIMIT), _coin_counter(0, SCREEN_WIDTH - 100, SCREEN_HEIGHT - 100, 50, 50)
+    _framecpt(FRAMERATE_LIMIT), _coin_counter(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70, 50, 50),
+    _score_counter(0, SCREEN_WIDTH - 500, SCREEN_HEIGHT-70, 50, 50),
+    _diamond_counter(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70, 50, 50)
 {
     _coin_counter.setTexture("res/coin.png");
+    _diamond_counter.setTexture("res/diamond.png");
     srand(time(NULL));
 }
 //=======================================
@@ -121,4 +124,6 @@ void Model::addCoin()
 void Model::drawInterface(sf::RenderWindow *w)
 {
     _coin_counter.draw(w); //dessin du compteur de pièces
+    _score_counter.draw(w);
+    _diamond_counter.draw(w);
 }

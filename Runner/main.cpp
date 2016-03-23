@@ -14,7 +14,7 @@ int main()
 {
     srand(time(NULL));
 
-    /*Model model(SCREEN_WIDTH, SCREEN_HEIGHT);
+    Model model(SCREEN_WIDTH, SCREEN_HEIGHT);
     View view(SCREEN_WIDTH, SCREEN_HEIGHT);
     view.setModel(&model);
 
@@ -23,7 +23,7 @@ int main()
         model.nextStep();
         view.synchronise();
         view.draw();
-    }*/
+    }
 
     /*Intro_Model intro_model(SCREEN_WIDTH, SCREEN_HEIGHT);
     Intro_View intro_view(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -54,16 +54,16 @@ int main()
         settings_view.draw();
     }*/
 
-    Shop_Model shop_model(SCREEN_WIDTH, SCREEN_HEIGHT);
-    Shop_View shop_view(SCREEN_WIDTH, SCREEN_HEIGHT);
+//    Shop_Model shop_model(SCREEN_WIDTH, SCREEN_HEIGHT);
+//    Shop_View shop_view(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 
-    while(shop_view.treatEvents())
-    {
-        shop_model.nextStep();
-        shop_view.draw();
-        shop_view.synchronise();
-    }
+//    while(shop_view.treatEvents())
+//    {
+//        shop_model.nextStep();
+//        shop_view.draw();
+//        shop_view.synchronise();
+//    }
 
     return EXIT_SUCCESS;
 }

@@ -1,5 +1,10 @@
 #include "AnimatedSprite.h"
 
+AnimatedSprite::AnimatedSprite()
+{
+
+}
+
 AnimatedSprite::AnimatedSprite(std::string texture, int ms,
                                int posx, int posy, int width, int height, int nbrsprites)
     : _movespeed {ms}, _nbrsprites(nbrsprites)

@@ -14,6 +14,8 @@ protected:
     std::vector<Coin*> _coins;
 
     Counter _coin_counter;
+    Counter _score_counter;
+    Counter _diamond_counter;
     int _framecpt;
     bool _canpop;
 
