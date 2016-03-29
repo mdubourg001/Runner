@@ -7,6 +7,7 @@
 #include "Counter.h"
 #include "Diamond.h"
 #include "Bonus.h"
+#include "Obstacle.h"
 
 enum BonusType
 {
@@ -27,6 +28,7 @@ protected:
     std::vector<Coin*> _coins;
     std::vector<Diamond*> _diamonds;
     std::vector<Bonus*> _bonus;
+    std::vector<Obstacle*> _obstacles;
 
     Counter _coin_counter;
     Counter _score_counter;
@@ -45,12 +47,15 @@ public:
     std::vector<Coin *> *Coins();
     std::vector<Diamond *> *Diamonds();
     std::vector<Bonus *> *Awards();
+    std::vector<Obstacle*>* Obstacles();
+
     void getPlayerPosition(int &x, int &y);
     void setPlayerDirection(direction d);
     void movePlayer();
     void addCoin();
     void addDiamond();
     void addBonus();
+    void addObstacle();
     void drawInterface(sf::RenderWindow *w);
 };
 #endif

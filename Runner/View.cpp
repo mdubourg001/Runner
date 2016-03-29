@@ -93,7 +93,7 @@ void View::synchronise()
 
 //=======================================
 // Fonction de dessin
-//=======================================
+//======================================Awards=
 void View::draw()
 {
     _window->clear();
@@ -125,12 +125,21 @@ void View::draw()
 
 //--------------------
 
+//dessin des obstacles
+
+     for(int i=0; i<_model->Obstacles()->size() ; i++)
+        _window->draw(*_model->Obstacles()->at(i));
+
+//--------------------
+
 //dessin de la balle
 
     _model->getPlayer()->drawShadow(_window);
     _window->draw(_playerSprite);
 
 //--------------------
+
+
 
     _model->drawInterface(_window);
 
@@ -181,7 +190,6 @@ bool View::treatEvents()
             {
                 if(event.key.code != sf::Keyboard::Up && event.key.code != sf::Keyboard::Space)
                     _model->setPlayerDirection(none);
-                //_playerSprite.setRotation(10);
             }
         }
     }
