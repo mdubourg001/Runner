@@ -6,6 +6,7 @@ Bonus::Bonus(std::string texture, int ms, int posx, int posy, int width, int hei
 
 }
 
+
 void Bonus::move()
 {
     setPosition(sf::Vector2f(getPosition().x - _movespeed, getPosition().y));
@@ -20,4 +21,3 @@ bool Bonus::isPicked() const
 {
     return _picked;
 }
-

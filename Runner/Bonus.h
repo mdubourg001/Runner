@@ -12,9 +12,11 @@ protected:
 
 public:
     Bonus(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites);
+    Bonus(int slow);
     void move();
     void setPicked(bool picked);
     bool isPicked() const;
+
 };
 
 #endif // BONUS_H

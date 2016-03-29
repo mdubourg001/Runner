@@ -16,6 +16,29 @@ Model::Model(int w, int h)
     _coin_counter.setTexture("res/coin.png");
     _diamond_counter.setTexture("res/diamond.png");
     srand(time(NULL));
+
+    _font.loadFromFile(POLICE);
+
+    _healthText.setFont(_font);
+    _healthText.setColor(sf::Color::Black);
+    _healthText.setString("SANTE :");
+    _healthText.setCharacterSize(60);
+    _healthText.setPosition(10,690);
+
+    _healthRect.setSize(sf::Vector2f(400,50));
+    _healthRect.setPosition(200,710);
+    _healthRect.setFillColor(sf::Color(100,255,100,255));
+
+
+    _backhealthRect.setSize(sf::Vector2f(400,50));
+    _backhealthRect.setPosition(200,710);
+    _backhealthRect.setFillColor(sf::Color(255,100,100,255));
+    _backhealthRect.setOutlineThickness(3);
+    _backhealthRect.setOutlineColor(sf::Color::Black);
+
+    _shellRect.setSize(sf::Vector2f(-50,50));
+    _shellRect.setPosition(600,710);
+    _shellRect.setFillColor(sf::Color(170,170,170,255));
 }
 //=======================================
 // Destructeurs
@@ -53,7 +76,7 @@ void Model::nextStep()
             _canpop = false;
             _framecpt = 15;
         }
-        else if (rand()%50 == 0 && _bonus.size()<1)
+        else if (rand()%400 == 0 && _bonus.size()<1)
         {
             addBonus();
             _canpop = false;
@@ -61,7 +84,7 @@ void Model::nextStep()
         }
     }
 
-    for(int i=0 ; i<_coins.size() ; i++) //supprime les pièces et diamants qui ne sont plus affichées à l'écran
+    for(int i=0 ; i<_coins.size() ; i++) //supprime les pièces qui ne sont plus affichées à l'écran
     {
         if(_coins.at(i)->getPosition().x < 0 || _coins.at(i)->isPicked())
         {
@@ -94,11 +117,11 @@ void Model::nextStep()
                 case randombonus:
                     cout << "Random " << endl;
                     break;
-                case shield:
-                    cout << "Shield " << endl;
+                case shield:                    
+                    winLife();
                     break;
                 case health:
-                    cout << "Health " << endl;
+                    winLife();
                     break;
                 case star:
                     cout << "Star " << endl;
@@ -107,7 +130,10 @@ void Model::nextStep()
                     cout << "Feather " << endl;
                     break;
                 case hourglass:
-                    cout << "Hourglass " << endl;
+                    cout << "Hourglass" << endl;
+                    break;
+                case redcoin:
+                    _coin_counter.hundredincrement();
                     break;
                 }
             }
@@ -119,6 +145,7 @@ void Model::nextStep()
     for_each(_diamonds.begin(), _diamonds.end(), [](Diamond* &d){d->move();});
     for_each(_bonus.begin(), _bonus.end(), [](Bonus* &b){b->move();});
 
+    looseLife();
 }
 
 //=======================================
@@ -204,7 +231,7 @@ void Model::addDiamond()
 
 void Model::addBonus()
 {
-    switch(rand()%8)
+    switch(rand()%9)
     {
     case 1:
         _bonus.push_back(new Bonus("res/aimant.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
@@ -215,12 +242,20 @@ void Model::addBonus()
         bt = randombonus;
         break;
     case 3:
-        _bonus.push_back(new Bonus("res/bouclier.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
-        bt = shield;
+        _bonus.push_back(new Bonus("res/sablier.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+        bt = hourglass;
         break;
     case 4:
-        _bonus.push_back(new Bonus("res/sante.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
-        bt = health;
+        if(_healthRect.getSize().x < 400)
+        {
+            _bonus.push_back(new Bonus("res/sante.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+            bt = health;
+        }
+        else
+        {
+            _bonus.push_back(new Bonus("res/bouclier.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+            bt = shield;
+        }
         break;
     case 5:
         _bonus.push_back(new Bonus("res/etoile.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
@@ -231,8 +266,11 @@ void Model::addBonus()
         bt = feather;
         break;
     case 7:
-        _bonus.push_back(new Bonus("res/sablier.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
-        bt = hourglass;
+        _bonus.push_back(new Bonus("res/redcoin.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+        bt = redcoin;
+        break;
+    case 8:
+        //teleportation ou lance ball
         break;
     }
 
@@ -241,6 +279,26 @@ void Model::addBonus()
 void Model::drawInterface(sf::RenderWindow *w)
 {
     _coin_counter.draw(w); //dessin du compteur de pièces
-    _score_counter.draw(w);
-    _diamond_counter.draw(w);
+    _score_counter.draw(w); //dessin du compteur de score
+    _diamond_counter.draw(w); //dessin du compteur de diamants
+    w->draw(_backhealthRect);
+    w->draw(_healthRect);
+    w->draw(_healthText);
+    w->draw(_shellRect);
+}
+
+void Model::looseLife()
+{
+    if(_shellRect.getSize().x<0)
+        _shellRect.setSize(sf::Vector2f(_shellRect.getSize().x+1,_shellRect.getSize().y));
+    else if(_healthRect.getSize().x>0)
+        _healthRect.setSize(sf::Vector2f(_healthRect.getSize().x-1,_healthRect.getSize().y));
+}
+
+void Model::winLife()
+{
+    if(_healthRect.getSize().x<400)
+        _healthRect.setSize(sf::Vector2f(_healthRect.getSize().x+50,_healthRect.getSize().y));
+    else
+        _shellRect.setSize(sf::Vector2f(_shellRect.getSize().x-50,_shellRect.getSize().y));
 }

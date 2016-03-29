@@ -11,6 +11,7 @@ private:
     bool _jumping;
     sf::CircleShape _shadow;
 
+
 public:
     Player();
     Player(int posx, int posy, int width, int height, int mvtx, int mvty);

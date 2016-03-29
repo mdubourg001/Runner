@@ -16,7 +16,8 @@ enum BonusType
     health,
     star,
     feather,
-    hourglass
+    hourglass,
+    redcoin
 };
 
 class Model
@@ -36,6 +37,12 @@ protected:
 
     BonusType bt;
 
+    sf::RectangleShape _healthRect;
+    sf::RectangleShape _backhealthRect;
+    sf::RectangleShape _shellRect;
+    sf::Font _font;
+    sf::Text _healthText;
+
 public:
     Model(int w, int h);
     ~Model();
@@ -52,5 +59,7 @@ public:
     void addDiamond();
     void addBonus();
     void drawInterface(sf::RenderWindow *w);
+    void looseLife();
+    void winLife();
 };
 #endif
