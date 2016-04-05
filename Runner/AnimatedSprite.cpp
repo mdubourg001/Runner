@@ -1,4 +1,5 @@
 #include "AnimatedSprite.h"
+#include <iostream>
 
 AnimatedSprite::AnimatedSprite()
 {
@@ -12,6 +13,7 @@ AnimatedSprite::AnimatedSprite(std::string texture, int ms,
     _sourceRect.width = width;
     _sourceRect.height = height;
     _sourceRect.left = _sourceRect.top = 0;
+    _texturename = texture;
 
     if(!_texture.loadFromFile(texture, _sourceRect))
     {
@@ -38,7 +40,7 @@ void AnimatedSprite::animate(int value)
     else
     {
         _sourceRect.left += value;
-        _texture.loadFromFile("res/coinsprite.png", _sourceRect);
+        _texture.loadFromFile(_texturename, _sourceRect);
     }
 }
 

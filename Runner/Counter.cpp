@@ -1,4 +1,5 @@
 #include "Counter.h"
+#include <iostream>
 
 Counter::Counter()
     : _value {0}

@@ -15,7 +15,7 @@ using namespace std;
 View::View(int w, int h)
     : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(SCREEN_WIDTH, SCREEN_HEIGHT, 5), _cpt(160)
 {
-    _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D  
+    _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D
     _window->setFramerateLimit(FRAMERATE_LIMIT); //fixe la limite de fps
     _window->setVerticalSyncEnabled(true);
     _window->setKeyRepeatEnabled(true); //désactive la répétition des touches
@@ -63,32 +63,32 @@ void View::synchronise()
 {
     _cpt--;
 
-//===SYNCHRO PLAYER===//
+    //===SYNCHRO PLAYER===//
 
     _playerSprite.setPosition(sf::Vector2f(_model->getPlayer()->getPosx(), _model->getPlayer()->getPosy()));
     if(!_model->getPlayer()->isJumping())
         _model->getPlayer()->rotate(_playerSprite);
 
-//====================//
-//===SYNCHRO BACKGROUND===//
+    //====================//
+    //===SYNCHRO BACKGROUND===//
 
     _background.move();
 
-//=======================//
-//===SYNCHRO PIECES===//
+    //=======================//
+    //===SYNCHRO PIECES===//
 
     if(_cpt % 5 == 0)
         for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->animate(50);});
 
-//===================//
+    //===================//
 
-//=======================//
-//===SYNCHRO DIAMANTS===//
+    //=======================//
+    //===SYNCHRO DIAMANTS===//
 
     if(_cpt % 5 == 0)
         for_each(_model->Diamonds()->begin(), _model->Diamonds()->end(), [](Diamond* &d){d->animate(50);});
 
-//===================//
+    //===================//
 }
 
 //=======================================
@@ -98,46 +98,49 @@ void View::draw()
 {
     _window->clear();
 
-//dessin du background
+    //dessin du background
 
     _background.draw(_window);
 
-//--------------------
+    //--------------------
 
-//dessin des pièces
+    //dessin des pièces
 
     for(int i=0; i<_model->Coins()->size() ; i++)
         _window->draw(*_model->Coins()->at(i));
 
-//--------------------
+    //--------------------
 
-//dessin des diamants
+    //dessin des diamants
 
     for(int i=0; i<_model->Diamonds()->size() ; i++)
         _window->draw(*_model->Diamonds()->at(i));
 
-//--------------------
+    //--------------------
 
-//dessin des bonus
+    //dessin des bonus
 
-     for(int i=0; i<_model->Awards()->size() ; i++)
+    for(int i=0; i<_model->Awards()->size() ; i++)
         _window->draw(*_model->Awards()->at(i));
 
-//--------------------
+    //--------------------
 
-//dessin des obstacles
 
-     for(int i=0; i<_model->Obstacles()->size() ; i++)
-        _window->draw(*_model->Obstacles()->at(i));
-
-//--------------------
-
-//dessin de la balle
+    //dessin de la balle
 
     _model->getPlayer()->drawShadow(_window);
     _window->draw(_playerSprite);
 
-//--------------------
+    //--------------------
+
+    //dessin des obstacles
+
+    for(int i=0; i<_model->Obstacles()->size() ; i++)
+        _model->Obstacles()->at(i)->draw(_window);
+
+    //--------------------
+
+
 
 
 

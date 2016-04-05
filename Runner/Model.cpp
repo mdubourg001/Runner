@@ -60,12 +60,12 @@ void Model::nextStep()
             _framecpt = 15;
         }
 
-//        else if(rand()%40 == 0)
-//        {
-//            addObstacle();
-//            _canpop = false;
-//            _framecpt = 15;
-//        }
+        else if(rand()%80 == 0)
+        {
+            addObstacle();
+            _canpop = false;
+            _framecpt = 15;
+        }
     }
 
     for(int i=0 ; i<_coins.size() ; i++) //supprime les pièces et diamants qui ne sont plus affichées à l'écran
@@ -135,7 +135,6 @@ void Model::nextStep()
     for_each(_diamonds.begin(), _diamonds.end(), [](Diamond* &d){d->move();});
     for_each(_bonus.begin(), _bonus.end(), [](Bonus* &b){b->move();});
     for_each(_obstacles.begin(), _obstacles.end(), [](Obstacle* &o){o->move();});
-
 }
 
 //=======================================
@@ -263,7 +262,7 @@ void Model::addBonus()
 
 void Model::addObstacle()
 {
-    _obstacles.push_back(new Obstacle(rand()%3+1, rand()%5+1));
+    _obstacles.push_back(new Obstacle(rand()%3+1));
 }
 
 void Model::drawInterface(sf::RenderWindow *w)

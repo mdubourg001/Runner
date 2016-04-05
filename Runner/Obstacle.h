@@ -2,24 +2,26 @@
 #define OBSTACLE_H
 #include "main.h"
 #include "AnimatedSprite.h"
+#include "Cube.h"
+#include "ctime"
 
 
 class Obstacle : public sf::Sprite
 {
 protected:
     int _category; //attribut qui indique de combien de cubes est composé l'obstacle, {1, 2, 3}
-    int _color; //attribut qui défini la couleur de l'obstacle {orange, purple, green, red, blue}
-    int _movespeed;
+    static int _movespeed;
     bool _destroyed;
-    sf::Texture _texture;
+    std::vector<Cube*> _cubes;
 
 public:
     Obstacle();
-    Obstacle(int category, int color);
+    Obstacle(int category);
 
     void move();
     void setDestroyed(bool destroyed);
     bool isDestroyed() const;
+    void draw(sf::RenderWindow* w);
 };
 
 #endif // OBSTACLE_H

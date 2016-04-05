@@ -13,8 +13,6 @@ SOURCES += main.cpp \
     Obstacle.cpp \
     Model.cpp \
     View.cpp \
-    Time.cpp \
-    Timer.cpp \
     MovableElement.cpp \
     Intro_View.cpp \
     Intro_Model.cpp \
@@ -40,8 +38,6 @@ HEADERS += \
     Model.h \
     View.h \
     main.h \
-    Time.h \
-    Timer.h \
     MovableElement.h \
     Intro_View.h \
     Intro_Model.h \
