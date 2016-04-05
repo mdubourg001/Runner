@@ -10,6 +10,7 @@
 
 enum BonusType
 {
+    no,
     magnet,
     randombonus,
     shield,
@@ -34,6 +35,8 @@ protected:
     Counter _diamond_counter;
     int _framecpt;
     bool _canpop;
+    bool _magnetpicked;
+    int _magnetcpt;
 
     BonusType bt;
 

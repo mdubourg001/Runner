@@ -92,3 +92,12 @@ void Player::drawShadow(sf::RenderWindow* window)
     window->draw(_shadow);
 }
 
+int Player::getPositionX()
+{
+    return 10;
+}
+
+int Player::getPositionY()
+{
+    return -1;
+}

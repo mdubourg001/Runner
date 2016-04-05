@@ -3,7 +3,6 @@
 #include "main.h"
 #include "AnimatedSprite.h"
 
-
 class Coin : public AnimatedSprite
 {
 protected:
@@ -13,6 +12,7 @@ protected:
 public:
     Coin(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites);
     void move();
+    void moveMagnet();
     void setPicked(bool picked);
     bool isPicked() const;
 };

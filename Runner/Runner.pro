@@ -53,6 +53,6 @@ HEADERS += \
     Settings_View.h \
     Item.h \
     Shop_Model.h \
-    Shop_View.h \
     Preview.h \
-    Diamond.h
+    Diamond.h \
+    Shop_View.h
