@@ -52,7 +52,7 @@ void Model::nextStep()
 {
     _framecpt--;
     movePlayer();
-    _player.treatCollisions(_coins,_diamonds, _bonus);
+    _player.treatCollisions(_coins,_diamonds, _bonus, _obstacles);
 
     if(_player.isJumping())
     {
@@ -82,6 +82,13 @@ void Model::nextStep()
             _canpop = false;
             _framecpt = 15;
         }
+
+//        else if(rand()%40 == 0)
+//        {
+//            addObstacle();
+//            _canpop = false;
+//            _framecpt = 15;
+//        }
     }
 
     for(int i=0 ; i<_coins.size() ; i++) //supprime les pièces qui ne sont plus affichées à l'écran
@@ -103,6 +110,15 @@ void Model::nextStep()
             _diamonds.erase(_diamonds.begin() + i);
         }
     }
+
+    for(int i=0; i<_obstacles.size();i++)
+    {
+        if (_obstacles.at(i)->getPosition().x < -100 || _obstacles.at(i)->isDestroyed())
+        {
+            _obstacles.erase(_obstacles.begin() + i);
+        }
+    }
+
     for(int i=0; i<_bonus.size();i++)
     {
         if (_bonus.at(i)->getPosition().x < 0 || _bonus.at(i)->isPicked())
@@ -160,6 +176,7 @@ void Model::nextStep()
 
     for_each(_diamonds.begin(), _diamonds.end(), [](Diamond* &d){d->move();});
     for_each(_bonus.begin(), _bonus.end(), [](Bonus* &b){b->move();});
+    for_each(_obstacles.begin(), _obstacles.end(), [](Obstacle* &o){o->move();});
 
     looseLife();
 }
@@ -194,6 +211,12 @@ std::vector<Diamond*>* Model::Diamonds()
 std::vector<Bonus*>* Model::Awards()
 {
     std::vector<Bonus*>* ptr = &_bonus;
+    return ptr;
+}
+
+std::vector<Obstacle*>* Model::Obstacles()
+{
+    std::vector<Obstacle*>* ptr = &_obstacles;
     return ptr;
 }
 
@@ -290,6 +313,11 @@ void Model::addBonus()
         break;
     }
 
+}
+
+void Model::addObstacle()
+{
+    _obstacles.push_back(new Obstacle(rand()%3+1, rand()%5+1));
 }
 
 void Model::drawInterface(sf::RenderWindow *w)
