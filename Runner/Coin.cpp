@@ -1,4 +1,5 @@
 #include "Coin.h"
+#include "Player.h"
 
 Coin::Coin(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites)
     : AnimatedSprite(texture, ms, posx, posy, width, height, nbrsprites), _picked(false)
@@ -9,6 +10,11 @@ Coin::Coin(std::string texture, int ms, int posx, int posy, int width, int heigh
 void Coin::move()
 {
     setPosition(sf::Vector2f(getPosition().x - _movespeed, getPosition().y));
+}
+
+void Coin::moveMagnet()
+{
+    setPosition(sf::Vector2f(getPosition().x- Player::getPositionX(), getPosition().y - Player::getPositionY()));
 }
 
 void Coin::setPicked(bool picked)

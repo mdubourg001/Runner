@@ -27,7 +27,7 @@ Counter::Counter(int value, int posx, int posy, int width, int height)
     _sprite.setPosition(sf::Vector2f(posx, posy));
     _text.setFont(_font);
     _text.setColor(sf::Color::Black);
-    _text.setPosition(sf::Vector2f(_sprite.getPosition().x + 90, _sprite.getPosition().y));
+    _text.setPosition(sf::Vector2f(_sprite.getPosition().x + 60, _sprite.getPosition().y));
 }
 
 
@@ -44,6 +44,11 @@ void Counter::setValue(int value)
 void Counter::increment()
 {
     _value++;
+}
+
+void Counter::hundredincrement()
+{
+    _value+=100;
 }
 
 void Counter::decrement()

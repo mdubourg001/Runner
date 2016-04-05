@@ -11,13 +11,15 @@
 
 enum BonusType
 {
+    no,
     magnet,
     randombonus,
     shield,
     health,
     star,
     feather,
-    hourglass
+    hourglass,
+    redcoin
 };
 
 class Model
@@ -35,8 +37,16 @@ protected:
     Counter _diamond_counter;
     int _framecpt;
     bool _canpop;
+    bool _magnetpicked;
+    int _magnetcpt;
 
     BonusType bt;
+
+    sf::RectangleShape _healthRect;
+    sf::RectangleShape _backhealthRect;
+    sf::RectangleShape _shellRect;
+    sf::Font _font;
+    sf::Text _healthText;
 
 public:
     Model(int w, int h);
@@ -57,5 +67,7 @@ public:
     void addBonus();
     void addObstacle();
     void drawInterface(sf::RenderWindow *w);
+    void looseLife();
+    void winLife();
 };
 #endif

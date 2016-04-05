@@ -12,6 +12,7 @@ private:
     bool _jumping;
     sf::CircleShape _shadow;
 
+
 public:
     Player();
     Player(int posx, int posy, int width, int height, int mvtx, int mvty);
@@ -23,6 +24,8 @@ public:
     void rotate(sf::Sprite &p);
     void drawShadow(sf::RenderWindow *window);
     void treatCollisions(std::vector<Coin*> coins, std::vector<Diamond*> diamonds, std::vector<Bonus*> bonus, std::vector<Obstacle*> obstacles);
+    static int getPositionX();
+    static int getPositionY();
 };
 
 #endif // PLAYER_H

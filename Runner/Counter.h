@@ -21,6 +21,7 @@ public:
     void initSprite(int w, int h, int posx, int posy);
     void increment();
     void decrement();
+    void hundredincrement();
     void draw(sf::RenderWindow *w);
 };
 

@@ -13,16 +13,17 @@ using namespace std;
 // Constructeur
 //=======================================
 View::View(int w, int h)
-    : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(SCREEN_WIDTH, SCREEN_HEIGHT, 5), _cpt(160)
+    : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5), _cpt(160)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D
     _window->setFramerateLimit(FRAMERATE_LIMIT); //fixe la limite de fps
     _window->setVerticalSyncEnabled(true);
     _window->setKeyRepeatEnabled(true); //désactive la répétition des touches
 
-    if (!_background.loadTextures(BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_R)) //charge le fichier city.png et le place dans la texture background
+    if (!_background.loadTextures(BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
     {
         std::cerr << "ERROR when loading image file: "
+                  << BACKGROUND_IMAGE_B << "/"
                   << BACKGROUND_IMAGE_L << std::endl;
         exit(EXIT_FAILURE);
     }
@@ -40,6 +41,8 @@ View::View(int w, int h)
         _playerSprite.setOrigin(sf::Vector2f(_player.getSize().x/2, _player.getSize().y/2));
         _playerSprite.setRotation(10);
     }
+
+
 }
 
 //=======================================
@@ -88,7 +91,11 @@ void View::synchronise()
     if(_cpt % 5 == 0)
         for_each(_model->Diamonds()->begin(), _model->Diamonds()->end(), [](Diamond* &d){d->animate(50);});
 
+
     //===================//
+
+//===================//
+
 }
 
 //=======================================

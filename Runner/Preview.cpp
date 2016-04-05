@@ -3,8 +3,8 @@
 
 Preview::Preview()
 {
-    _background = new SlidingBackground(SCREEN_WIDTH/4,SCREEN_HEIGHT/4,600,337,5);
-    _background->loadTextures(BACKGROUND_IMAGE_PREVIEW_L,BACKGROUND_IMAGE_PREVIEW_R);
+    _background = new SlidingBackground(SCREEN_WIDTH/4,SCREEN_HEIGHT/4,600,337,5,1);
+    _background->loadTextures(BACKGROUND_IMAGE_B,BACKGROUND_IMAGE_B,BACKGROUND_IMAGE_L,BACKGROUND_IMAGE_L);
 
     _playerTexture.loadFromFile(BALL_IMAGE);
     _playerSprite.setTexture(_playerTexture);

@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "SlidingBackground.h"
+#include "Bonus.h"
 
 
 
@@ -22,6 +23,9 @@ private:
     int _y_player;
 
     SlidingBackground _background;
+
+
+
 
     int _cpt;
 
