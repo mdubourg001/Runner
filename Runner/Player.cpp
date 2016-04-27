@@ -82,6 +82,15 @@ void Player::treatCollisions(std::vector<Coin *> coins, std::vector<Diamond *> d
             obstacles.at(i)->setDestroyed(true);
 }
 
+void Player::treatCollisions(Coin &coin) //fonction mise en place uniquement pour les tests de collision
+{
+    if((_posx -25 <= coin.getPosition().x +25 && _posx +25 >= coin.getPosition().x -25
+        && _posy -25 <= coin.getPosition().y +25 && _posy  -25 >= coin.getPosition().y -25)
+            || (_posx  +25 >= coin.getPosition().x  -25 && _posx +25 <= coin.getPosition().x +25
+                && _posy +25 >= coin.getPosition().y -25 && _posy  +25 <= coin.getPosition().y +25))
+        coin.setPicked(true);
+}
+
 void Player::rotate(sf::Sprite &p)
 {
     if(dir == none)

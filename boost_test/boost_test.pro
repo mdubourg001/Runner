@@ -19,7 +19,8 @@ SOURCES += \
     ../Runner/MovableElement.cpp \
     ../Runner/Obstacle.cpp \
     ../Runner/Player.cpp \
-    ../Runner/AnimatedSprite.cpp
+    ../Runner/AnimatedSprite.cpp \
+    ../Runner/Model.cpp
 
 HEADERS += \
     ../Runner/Bonus.h \
@@ -30,5 +31,6 @@ HEADERS += \
     ../Runner/MovableElement.h \
     ../Runner/Obstacle.h \
     ../Runner/Player.h \
-    ../Runner/AnimatedSprite.h
+    ../Runner/AnimatedSprite.h \
+    ../Runner/Model.h
 

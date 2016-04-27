@@ -7,6 +7,12 @@ Coin::Coin(std::string texture, int ms, int posx, int posy, int width, int heigh
 
 }
 
+Coin::Coin( int ms, int posx, int posy, int width, int height)
+    : AnimatedSprite(ms, posx, posy, width, height), _picked(false)
+{
+
+}
+
 void Coin::move()
 {
     setPosition(sf::Vector2f(getPosition().x - _movespeed, getPosition().y));
