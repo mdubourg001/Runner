@@ -5,13 +5,25 @@
 //=======================================
 
 
-Player::Player(int posx, int posy, int width, int height, int mvtx, int mvty)
-    :MovableElement(posx, posy, width, height, mvtx, mvty), _shadow(10)
+Player::Player(int posx, int posy, int width, int height, int mvtx, int mvty, int health, int shield)
+    :MovableElement(posx, posy, width, height, mvtx, mvty), _shadow(10), _health(health), _shield(shield)
 {
     _shadow.setScale(2, 1);
     _shadow.setOrigin(sf::Vector2f(10, 10));
     _shadow.setPosition(sf::Vector2f(_posx, SCREEN_HEIGHT-SCREEN_HEIGHT/6));
     _shadow.setFillColor(sf::Color(120, 120, 120, 60));
+}
+
+Player::Player(int posx, int posy, int width, int height, int mvtx, int mvty)
+    :MovableElement(posx, posy, width, height, mvtx, mvty)
+{
+
+}
+
+Player::Player(int health, int shield)
+    : _health{health}, _shield{shield}
+{
+
 }
 
 Player::~Player()
@@ -117,4 +129,38 @@ int Player::getPositionX()
 int Player::getPositionY()
 {
     return -1;
+}
+
+int Player::getHealth() const
+{
+    return _health;
+}
+int Player::getShield() const
+{
+    return _shield;
+}
+void Player::setHealth(int h)
+{
+    _health = h;
+}
+
+void Player::setShield(int s)
+{
+    _shield = s;
+}
+
+void Player::looseLife()
+{
+    if(_shield>0)
+        _shield-=80;
+    else
+        _health-=80;
+}
+
+void Player::winLife()
+{
+    if(_health<400)
+        _health+=80;
+    else if (_shield<400)
+        _shield+=80;
 }
