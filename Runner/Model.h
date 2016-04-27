@@ -44,7 +44,7 @@ protected:
 
     sf::RectangleShape _healthRect;
     sf::RectangleShape _backhealthRect;
-    sf::RectangleShape _shellRect;
+    sf::RectangleShape _shieldRect;
     sf::Font _font;
     sf::Text _healthText;
 
@@ -67,7 +67,6 @@ public:
     void addBonus();
     void addObstacle();
     void drawInterface(sf::RenderWindow *w);
-    void looseLife();
-    void winLife();
+
 };
 #endif

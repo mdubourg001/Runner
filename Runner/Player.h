@@ -11,11 +11,13 @@ class Player : public MovableElement
 private:
     bool _jumping;
     sf::CircleShape _shadow;
-
+    int _health;
+    int _shield;
 
 public:
     Player();
-    Player(int posx, int posy, int width, int height, int mvtx, int mvty);
+    Player(int posx, int posy, int width, int height, int mvtx, int mvty, int health, int shield);
+    Player(int health, int shield); // constructeur pour les test unitaires
     ~Player();
 
     bool isJumping() const;
@@ -26,6 +28,13 @@ public:
     void treatCollisions(std::vector<Coin*> coins, std::vector<Diamond*> diamonds, std::vector<Bonus*> bonus, std::vector<Obstacle*> obstacles);
     static int getPositionX();
     static int getPositionY();
+    int getHealth() const;
+    int getShield() const;
+    void setHealth(int h);
+    void setShield(int s);
+    void looseLife();
+    void winLife();
+
 };
 
 #endif // PLAYER_H

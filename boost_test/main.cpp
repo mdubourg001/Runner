@@ -3,6 +3,7 @@
 
 #include <boost/test/unit_test.hpp>
 #include <../Runner/Player.h>
+#include <../Runner/Counter.h>
 #include <iostream>
 
 //===========TEST DU MOUVEMENT DE LA BALLE SELON L'AXE X ==========//
@@ -16,7 +17,7 @@
 
 BOOST_AUTO_TEST_CASE(moveball)
 {
-    Player player(150, 450, 20, 20, 5, 0);
+    Player player(150, 450, 20, 20, 5, 0, 400, 0);
     BOOST_CHECK(player.getPosx() == 150);
     BOOST_CHECK(player.getWidth() == 20);
     BOOST_CHECK(player.getHeight() == 20);
@@ -47,7 +48,7 @@ BOOST_AUTO_TEST_CASE(jumpball)
 {
     int i = -26; // itérateur vérifiant la valeur du mouvement y de la balle
     int to_add = 0;
-    Player player(150, 450, 20, 20, 5, 0);
+    Player player(150, 450, 20, 20, 5, 0, 400, 0);
     BOOST_CHECK(player.getPosy() == 450);
     BOOST_CHECK(player.getMvty() == 0);
     player.setJumping(true);
@@ -71,9 +72,44 @@ BOOST_AUTO_TEST_CASE(movesprite)
     BOOST_CHECK(!(sprite.getPosition().x > 0 && sprite.getPosition().x < SCREEN_WIDTH));
     sprite.move(); //déplace l'objet de ms vers la gauche (soit 10 ici), l'objet est donc maintenant dans les limites de l'écran
     BOOST_CHECK((sprite.getPosition().x > 0 && sprite.getPosition().x < SCREEN_WIDTH));
-
-
 }
 
+//==================TEST DES FONCTIONS DE COMPTEUR=================//
+//=================================================================//
+//    Ici, on test les differents compteurs (pièce, score, etc...) //
+//    La fonction "incrémente" s'active lorsqu'une collision est   //
+//        repéré, ainsi elle augmente de 1 la valeur du compteur   //
+// Nous avons aussi imaginer une fonction "décremente" qui pourrait//
+//      s'activer lorsqu'un joueur se prend certains obstacles qui //
+//               lui feront perdre des pièces.                     //
+//    Nous avons aussi imaginer un bonus qui représente une pièce  //
+//    de valeur 100 points grâce à la fonction "hundredincrement"  //
 
+//=================================================================//
+//=================================================================//
 
+BOOST_AUTO_TEST_CASE(compteur)
+{
+    Counter cpt(0, 20, 20);
+    BOOST_CHECK(cpt.getValue() == 0);
+    cpt.increment();
+    BOOST_CHECK(cpt.getValue() == 1);
+    cpt.hundredincrement();
+    BOOST_CHECK(cpt.getValue() == 101);
+    cpt.decrement();
+    BOOST_CHECK(cpt.getValue() == 100);
+}
+
+BOOST_AUTO_TEST_CASE(vie)
+{
+    Player player(400,0);
+    BOOST_CHECK(player.getHealth() == 400);
+    BOOST_CHECK(player.getShield() == 0);
+    player.looseLife();
+    BOOST_CHECK(player.getHealth() == 320);
+    player.winLife();
+    BOOST_CHECK(player.getHealth() == 400);
+    player.winLife();
+    BOOST_CHECK(player.getShield() == 80);
+
+}

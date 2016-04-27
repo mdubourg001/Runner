@@ -11,6 +11,7 @@ protected:
 
 public:
     Coin(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites);
+    Coin(int ms, int posx, int posy, int width, int height); // constructeur pour les test unitaires
     void move();
     void moveMagnet();
     void setPicked(bool picked);
