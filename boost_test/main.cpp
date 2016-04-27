@@ -1,14 +1,12 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE
 
-
 #include <boost/test/unit_test.hpp>
-#include <../Runner/Player.h>
-#include <../Runner/Model.h>
-#include <../Runner/Coin.h>
-#include <../Runner/Counter.h>
+#include <Player.h>
+#include <Model.h>
+#include <Coin.h>
+#include <Counter.h>
 #include <iostream>
-
 
 //===========TEST DU MOUVEMENT DE LA BALLE SELON L'AXE X ==========//
 //=================================================================//
@@ -121,14 +119,14 @@ BOOST_AUTO_TEST_CASE(collisions)
 
 //==================TEST DES FONCTIONS DE COMPTEUR=================//
 //=================================================================//
-//    Ici, on test les differents compteurs (pièce, score, etc...) //
-//    La fonction "incrémente" s'active lorsqu'une collision est   //
-//        repéré, ainsi elle augmente de 1 la valeur du compteur   //
-// Nous avons aussi imaginer une fonction "décremente" qui pourrait//
-//      s'activer lorsqu'un joueur se prend certains obstacles qui //
-//               lui feront perdre des pièces.                     //
-//    Nous avons aussi imaginer un bonus qui représente une pièce  //
-//    de valeur 100 points grâce à la fonction "hundredincrement"  //
+//    Ici, on teste les differents compteurs (pièce, score, etc...)//
+//    La méthode increment() s'active lorsqu'une collision est     //
+//        repéré, ainsi elle augmente de 1 la valeur du compteur.  //
+// Nous avons aussi imaginé une méthode decrement() qui pourrait   //
+//      s'activer lorsqu'un joueur entre en collision avec         //
+//      certains obstacles qui lui feront perdre des pièces.       //
+//     Un des bonus est une pièce de couleur rouge qui octroie     //
+//                directement 100 pièces au joueur.                //
 //=================================================================//
 //=================================================================//
 

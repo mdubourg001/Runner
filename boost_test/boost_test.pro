@@ -11,26 +11,29 @@ QMAKE_CXXFLAGS += -std=c++11 -Wall -Wextra
 
 SOURCES += \
     main.cpp \
-    ../Runner/Bonus.cpp \
-    ../Runner/Coin.cpp \
-    ../Runner/Counter.cpp \
-    ../Runner/Cube.cpp \
-    ../Runner/Diamond.cpp \
-    ../Runner/MovableElement.cpp \
-    ../Runner/Obstacle.cpp \
-    ../Runner/Player.cpp \
-    ../Runner/AnimatedSprite.cpp \
-    ../Runner/Model.cpp
+    AnimatedSprite.cpp \
+    Bonus.cpp \
+    Coin.cpp \
+    Counter.cpp \
+    Cube.cpp \
+    Diamond.cpp \
+    Model.cpp \
+    Obstacle.cpp \
+    Player.cpp \
+    MovableElement.cpp
 
 HEADERS += \
-    ../Runner/Bonus.h \
-    ../Runner/Coin.h \
-    ../Runner/Counter.h \
-    ../Runner/Cube.h \
-    ../Runner/Diamond.h \
-    ../Runner/MovableElement.h \
-    ../Runner/Obstacle.h \
-    ../Runner/Player.h \
-    ../Runner/AnimatedSprite.h \
-    ../Runner/Model.h
+    AnimatedSprite.h \
+    Bonus.h \
+    Coin.h \
+    Counter.h \
+    Cube.h \
+    Diamond.h \
+    Model.h \
+    Obstacle.h \
+    Player.h \
+    main.h \
+    MovableElement.h
+
+DISTFILES +=
 
