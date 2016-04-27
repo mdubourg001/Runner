@@ -26,6 +26,19 @@ AnimatedSprite::AnimatedSprite(std::string texture, int ms,
     setOrigin(sf::Vector2f(_texture.getSize().x/2, _texture.getSize().y/2));
 }
 
+AnimatedSprite::AnimatedSprite(int ms, int posx, int posy, int width, int height)
+    //constructeur servant uniquement aux tests de la partie modèle,
+    //il n'initialise pas la texture et le nombre de sprites
+    : _movespeed {ms}
+{
+    _sourceRect.width = width;
+    _sourceRect.height = height;
+    _sourceRect.left = _sourceRect.top = 0;
+
+
+    setPosition(sf::Vector2f(posx, posy));
+}
+
 
 void AnimatedSprite::move()
 {

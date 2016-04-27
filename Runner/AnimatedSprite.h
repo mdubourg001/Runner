@@ -15,6 +15,7 @@ protected:
 public:
     AnimatedSprite();
     AnimatedSprite(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites);
+    AnimatedSprite(int ms, int posx, int posy, int width, int height); //constructeur servant aux tests unitaires
 
     void move();
     void animate(int value);

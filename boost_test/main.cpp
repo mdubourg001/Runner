@@ -65,5 +65,15 @@ BOOST_AUTO_TEST_CASE(jumpball)
     BOOST_CHECK(player.getMvty() == 0);
 }
 
+BOOST_AUTO_TEST_CASE(movesprite)
+{
+    AnimatedSprite sprite(10, SCREEN_WIDTH, 600, 50, 50); //on initialise la position du sprite en dehors de l'écran
+    BOOST_CHECK(!(sprite.getPosition().x > 0 && sprite.getPosition().x < SCREEN_WIDTH));
+    sprite.move(); //déplace l'objet de ms vers la gauche (soit 10 ici), l'objet est donc maintenant dans les limites de l'écran
+    BOOST_CHECK((sprite.getPosition().x > 0 && sprite.getPosition().x < SCREEN_WIDTH));
+
+
+}
+
 
 
