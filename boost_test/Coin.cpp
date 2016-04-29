@@ -13,12 +13,6 @@ Coin::Coin(int ms, int posx, int posy, int width, int height)
 
 }
 
-
-void Coin::moveMagnet()
-{
-    setPosition(sf::Vector2f(getPosition().x- Player::getPositionX(), getPosition().y - Player::getPositionY()));
-}
-
 void Coin::setPicked(bool picked)
 {
     _picked = picked;

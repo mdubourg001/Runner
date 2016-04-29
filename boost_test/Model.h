@@ -37,8 +37,7 @@ protected:
     Counter _diamond_counter; //compteur de diamants ramassés
     int _framecpt; //compteur de frame
     bool _canpop; //indique si un animated sprite peut apparaitre (afin d'éviter l'empilement)
-    bool _magnetpicked; //indique si le bonus magnet est ramassé
-    int _magnetcpt;
+
 
     BonusType bt; //voir ci-dessus
 

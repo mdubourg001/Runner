@@ -11,7 +11,6 @@ protected:
 public:
     Coin(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites);
     Coin(int ms, int posx, int posy, int width, int height); // constructeur pour les test unitaires
-    void moveMagnet(); //déplace les pièces lorsque le bonus 'aimant' est actif
     void setPicked(bool picked);
     bool isPicked() const;
 };

@@ -29,8 +29,6 @@ public:
     void drawShadow(sf::RenderWindow *window);
     void treatCollisions(std::vector<Coin*> coins, std::vector<Diamond*> diamonds, std::vector<Bonus*> bonus, std::vector<Obstacle*> obstacles);
     void treatCollisions(Coin &coin); //fonction mise en place uniquement pour les tests de collision
-    static int getPositionX();
-    static int getPositionY();
     int getHealth() const;
     int getShield() const;
     void setHealth(int h);

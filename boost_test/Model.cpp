@@ -8,7 +8,7 @@ using namespace std;
 // Constructeurs
 //=======================================
 Model::Model(int w, int h)
-  :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0), _canpop(true), _magnetpicked(false), _magnetcpt(-1),
+  :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0), _canpop(true),
     _framecpt(FRAMERATE_LIMIT), _coin_counter(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70, 50, 50),
     _score_counter(0, SCREEN_WIDTH - 500, SCREEN_HEIGHT-70, 50, 50),
     _diamond_counter(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70, 50, 50)
@@ -104,9 +104,6 @@ void Model::nextStep()
             {
                 switch(bt)
                 {
-                case magnet:
-                    _magnetpicked = true;
-                    _magnetcpt = 0;
                     break;
                 case shield:                    
                     _player.winLife();
@@ -123,21 +120,9 @@ void Model::nextStep()
         }
     }
 
-    if(bt==magnet && _magnetpicked == true)
-        for_each(_coins.begin(), _coins.end(), [](Coin* &c){c->moveMagnet();});
-    else
         for_each(_coins.begin(), _coins.end(), [](Coin* &c){c->move();});
 
-    if(_magnetcpt==2000)
-    {
-        _magnetpicked = false;
-        _magnetcpt = -1;
-    }
-    else if (_magnetcpt>-1)
-    {
-        _magnetcpt++;
-        cout << _magnetcpt << endl;
-    }
+
 
     for_each(_diamonds.begin(), _diamonds.end(), [](Diamond* &d){d->move();});
     for_each(_bonus.begin(), _bonus.end(), [](Bonus* &b){b->move();});
@@ -146,7 +131,6 @@ void Model::nextStep()
     _healthRect.setSize(sf::Vector2f(_player.getHealth(),_healthRect.getSize().y));
     _shieldRect.setSize(sf::Vector2f(-_player.getShield(),_shieldRect.getSize().y));
 
-    _player.winLife();
 
 }
 
@@ -254,7 +238,7 @@ void Model::addBonus()
         bt = hourglass;
         break;
     case 4:
-        if(_healthRect.getSize().x < 400)
+        if(_player.getHealth() < 400)
         {
             _bonus.push_back(new Bonus("res/sante.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
             bt = health;
