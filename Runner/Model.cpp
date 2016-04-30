@@ -17,27 +17,21 @@ Model::Model(int w, int h)
     _diamond_counter.setTexture("res/diamond.png");
     srand(time(NULL));
 
-    _font.loadFromFile(POLICE);
 
-    _healthText.setFont(_font);
-    _healthText.setColor(sf::Color::Black);
-    _healthText.setString("SANTE :");
-    _healthText.setCharacterSize(60);
-    _healthText.setPosition(10,690);
 
     _healthRect.setSize(sf::Vector2f(400,50));
-    _healthRect.setPosition(200,710);
+    _healthRect.setPosition(225,710);
     _healthRect.setFillColor(sf::Color(100,255,100,255));
 
 
     _backhealthRect.setSize(sf::Vector2f(400,50));
-    _backhealthRect.setPosition(200,710);
+    _backhealthRect.setPosition(225,710);
     _backhealthRect.setFillColor(sf::Color(255,100,100,255));
     _backhealthRect.setOutlineThickness(3);
     _backhealthRect.setOutlineColor(sf::Color::Black);
 
     _shieldRect.setSize(sf::Vector2f(-50,50));
-    _shieldRect.setPosition(600,710);
+    _shieldRect.setPosition(625,710);
     _shieldRect.setFillColor(sf::Color(170,170,170,255));
 }
 //=======================================
@@ -331,6 +325,5 @@ void Model::drawInterface(sf::RenderWindow *w)
     _diamond_counter.draw(w); //dessin du compteur de diamants
     w->draw(_backhealthRect); //dessin du fond de vie (rouge)
     w->draw(_healthRect); // dessin de la vie (vert)
-    w->draw(_healthText); // dessin du texte de la vie
     w->draw(_shieldRect); // dessin du bouclier
 }

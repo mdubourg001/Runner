@@ -45,8 +45,6 @@ protected:
     sf::RectangleShape _healthRect;
     sf::RectangleShape _backhealthRect;
     sf::RectangleShape _shieldRect;
-    sf::Font _font;
-    sf::Text _healthText;
 
 public:
     Model(int w, int h);
