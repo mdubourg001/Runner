@@ -1,10 +1,6 @@
 #include "View.h"
 #include "Model.h"
 #include "main.h"
-#include "Intro_View.h"
-#include "Intro_Model.h"
-#include "Menu_Model.h"
-#include "Menu_View.h"
 #include "Shop_Model.h"
 #include "Shop_View.h"
 
