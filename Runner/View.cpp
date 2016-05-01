@@ -42,7 +42,7 @@ View::View(int w, int h)
         _playerSprite.setRotation(10);
     }
 
-
+    _start = std::chrono::system_clock::now();
 }
 
 //=======================================
@@ -64,13 +64,13 @@ void View::setModel(Model * model) //setter qui permet de modifier le modele ass
 
 void View::synchronise()
 {
-    _cpt--;
+    _end = std::chrono::system_clock::now();
+    int timelapse = std::chrono::duration_cast<std::chrono::milliseconds>
+            (_end - _start).count();
 
     //===SYNCHRO PLAYER===//
 
     _playerSprite.setPosition(sf::Vector2f(_model->getPlayer()->getPosx(), _model->getPlayer()->getPosy()));
-    if(!_model->getPlayer()->isJumping())
-        _model->getPlayer()->rotate(_playerSprite);
 
     //====================//
     //===SYNCHRO BACKGROUND===//
@@ -78,21 +78,19 @@ void View::synchronise()
     _background.move();
 
     //=======================//
-    //===SYNCHRO PIECES===//
+    //===SYNCHRO PIECES ET DIAMANTS===//
 
-    if(_cpt % 5 == 0)
+    if(timelapse >= 55)
+    {
+        _start = std::chrono::system_clock::now();
         for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->animate(50);});
-
-    //===================//
-
-    //=======================//
-    //===SYNCHRO DIAMANTS===//
-
-    if(_cpt % 5 == 0)
         for_each(_model->Diamonds()->begin(), _model->Diamonds()->end(), [](Diamond* &d){d->animate(50);});
+    }
 
+    if(!_model->getPlayer()->isJumping())
+        _model->getPlayer()->rotate(_playerSprite);
 
-    //===================//
+    //===============================//
 
     //===================//
 
@@ -146,9 +144,6 @@ void View::draw()
         _model->Obstacles()->at(i)->draw(_window);
 
     //--------------------
-
-
-
 
 
     _model->drawInterface(_window);

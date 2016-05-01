@@ -23,12 +23,12 @@ AnimatedSprite::AnimatedSprite(std::string texture, int ms,
 
     setPosition(sf::Vector2f(posx, posy));
     setTexture(_texture);
-    setOrigin(sf::Vector2f(_texture.getSize().x/2, _texture.getSize().y/2));
+    setOrigin(sf::Vector2f(_texture.getSize().x/2, _texture.getSize().y/2));;
 }
 
 AnimatedSprite::AnimatedSprite(int ms, int posx, int posy, int width, int height)
-    //constructeur servant uniquement aux tests de la partie modèle,
-    //il n'initialise pas la texture et le nombre de sprites
+//constructeur servant uniquement aux tests de la partie modèle,
+//il n'initialise pas la texture et le nombre de sprites
     : _movespeed {ms}
 {
     _sourceRect.width = width;
@@ -52,8 +52,10 @@ void AnimatedSprite::animate(int value)
 
     else
     {
+
         _sourceRect.left += value;
         _texture.loadFromFile(_texturename, _sourceRect);
+
     }
 }
 

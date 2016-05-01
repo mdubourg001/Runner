@@ -24,8 +24,7 @@ private:
 
     SlidingBackground _background;
 
-
-
+    std::chrono::time_point<std::chrono::system_clock> _start, _end;
 
     int _cpt;
 
