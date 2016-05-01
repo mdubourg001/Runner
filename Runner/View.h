@@ -41,6 +41,8 @@ private:
 
     SlidingBackground _background;
 
+    std::chrono::time_point<std::chrono::system_clock> _start, _end;
+
     sf::Texture _backgroundIntro;
     sf::Sprite _backgroundIntroSprite;
 
@@ -70,7 +72,6 @@ private:
 
 
     choixParametres cp;
-
 
     int _cpt;
 

@@ -19,7 +19,7 @@ void Coin::move()
 }
 
 void Coin::moveMagnet()
-{
+{   
     setPosition(sf::Vector2f(getPosition().x- Player::getPositionX(), getPosition().y - Player::getPositionY()));
 }
 

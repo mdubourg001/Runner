@@ -9,6 +9,9 @@
 #include "Bonus.h"
 #include "Obstacle.h"
 
+#include <chrono>
+#include <ctime>
+
 enum BonusType
 {
     no,
@@ -36,6 +39,7 @@ protected:
     Counter _score_counter;
     Counter _diamond_counter;
     int _framecpt;
+    std::chrono::time_point<std::chrono::system_clock> _start, _end;
     bool _canpop;
     bool _magnetpicked;
     int _magnetcpt;

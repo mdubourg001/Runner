@@ -3,11 +3,11 @@
 
 #include <SFML/Graphics.hpp>
 
-const int SCREEN_WIDTH = 1366;
-const int SCREEN_HEIGHT = 768;
+#define SCREEN_WIDTH 1366
+#define SCREEN_HEIGHT 768
 
-const int JUMP_HEIGHT = 25;
-const int FRAMERATE_LIMIT = 60;
+#define JUMP_INITIAL_SPEED 25
+#define FRAMERATE_LIMIT 60
 
 const std::string BACKGROUND_IMAGE_L = "res/city_1.png";
 const std::string BACKGROUND_IMAGE_B = "res/city2.png";

@@ -2,6 +2,8 @@
 #define ANIMATEDSPRITE_H
 #include "main.h"
 
+#include <chrono>
+
 
 class AnimatedSprite : public sf::Sprite
 {

@@ -33,6 +33,8 @@ Model::Model(int w, int h)
     _shieldRect.setSize(sf::Vector2f(-50,50));
     _shieldRect.setPosition(625,710);
     _shieldRect.setFillColor(sf::Color(170,170,170,255));
+
+    _start = std::chrono::system_clock::now();
 }
 //=======================================
 // Destructeurs
@@ -44,7 +46,12 @@ Model::~Model(){}
 //=======================================
 void Model::nextStep()
 {
-    _framecpt--;
+    _end = std::chrono::system_clock::now();
+    int timelapse = std::chrono::duration_cast<std::chrono::milliseconds>
+            (_end-_start).count();
+
+    _score_counter.increment();
+
     movePlayer();
     _player.treatCollisions(_coins,_diamonds, _bonus, _obstacles);
 
@@ -53,8 +60,11 @@ void Model::nextStep()
         _player.jump();
     }
 
-    if(_framecpt == 0)
+    if(timelapse >= 400)
+    {
         _canpop = true;
+        _start = std::chrono::system_clock::now();
+    }
 
     if(_canpop)
     {
@@ -62,26 +72,22 @@ void Model::nextStep()
         {
             addCoin();
             _canpop = false;
-            _framecpt = 15;
         }
         else if (rand()%4000 == 0)
         {
             addDiamond();
             _canpop = false;
-            _framecpt = 15;
         }
         else if (rand()%400 == 0 && _bonus.size()<1)
         {
             addBonus();
             _canpop = false;
-            _framecpt = 15;
         }
 
         else if(rand()%80 == 0)
         {
             addObstacle();
             _canpop = false;
-            _framecpt = 15;
         }
     }
 
@@ -104,7 +110,6 @@ void Model::nextStep()
             _diamonds.erase(_diamonds.begin() + i);
         }
     }
-
     for(int i=0; i<_obstacles.size();i++)
     {
         if (_obstacles.at(i)->getPosition().x < -100 || _obstacles.at(i)->isDestroyed())
@@ -112,7 +117,6 @@ void Model::nextStep()
             _obstacles.erase(_obstacles.begin() + i);
         }
     }
-
     for(int i=0; i<_bonus.size();i++)
     {
         if (_bonus.at(i)->getPosition().x < 0 || _bonus.at(i)->isPicked())
@@ -247,7 +251,7 @@ void Model::setPlayerDirection(direction d)
     else if(d == up)
     {
         _player.setJumping(true);
-        _player.setMvty(-JUMP_HEIGHT);
+        _player.setMvty(-JUMP_INITIAL_SPEED);
     }
 }
 
