@@ -27,12 +27,6 @@ enum direction
     none
 };
 
-enum gamestates
-{
-    intro,
-    menu,
-    game
-};
 
 
 #endif // MAIN_H
