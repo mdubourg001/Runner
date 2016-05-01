@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "SlidingBackground.h"
 #include "Bonus.h"
+#include "Item.h"
 
 enum gamestates
 {
@@ -11,7 +12,8 @@ enum gamestates
     menu,
     game,
     shop,
-    settings
+    settings,
+    highscores
 };
 
 enum choixParametres
@@ -21,8 +23,14 @@ enum choixParametres
     dif
 };
 
+enum choixShop
+{
+    ball,
+    back
+};
 
 class Model;
+class Item;
 
 class View
 {
@@ -52,14 +60,41 @@ private:
     sf::Texture _backgroundSettings;
     sf::Sprite _backgroundSettingsSprite;
 
+    sf::Texture _backgroundShop;
+    sf::Sprite _backgroundShopSprite;
+
+    sf::Texture _redButton;
+    sf::Texture _blueButton;
+
+    sf::Sprite _redButtonSpriteSettings;
+    sf::Sprite _blueButtonSpriteSettings;
+    sf::Sprite _redButtonSpriteHighscores;
+    sf::Sprite _blueButtonSpriteHighscores;
+    sf::Sprite _redButtonSpriteGame;
+    sf::Sprite _blueButtonSpriteGame;
+    sf::Sprite _redButtonSpriteShop;
+    sf::Sprite _blueButtonSpriteShop;
+    sf::Sprite _redButtonSpriteExit;
+    sf::Sprite _blueButtonSpriteExit;
+
+    bool SettingsSelected;
+    bool HighscoresSelected;
+    bool GameSelected;
+    bool ShopSelected;
+    bool ExitSelected;
+
+
+
 
     sf::Font _font;
+    sf::Font _fontmenu;
 
     sf::Text _textPass;
     sf::Text _textGame;
     sf::Text _textExit;
     sf::Text _textSettings;
     sf::Text _textShop;
+    sf::Text _textHighscores;
     sf::Text _textLang;
     sf::Text _textDiff;
     sf::Text _textFr;
@@ -68,9 +103,17 @@ private:
     sf::Text _textMoy;
     sf::Text _textDur;
     sf::Text _healthText;
+    sf::Text _textBall;
+    sf::Text _textBack;
 
 
+    sf::RectangleShape _rectBall;
+    sf::RectangleShape _rectBack;
+    sf::RectangleShape _rectScreen;
 
+    std::vector<Item*> _items;
+
+    choixShop cs;
     choixParametres cp;
 
     int _cpt;
@@ -85,9 +128,11 @@ public:
     void drawIntro();
     void drawMenu();
     void drawSettings();
+    void drawShop();
     void toEnglish();
     void toFrench();
     void synchronise();
+    void synchroniseShop();
     bool treatEvents();
     gamestates getGs();
 

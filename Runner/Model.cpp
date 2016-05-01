@@ -179,8 +179,6 @@ void Model::nextStep()
     _healthRect.setSize(sf::Vector2f(_player.getHealth(),_healthRect.getSize().y));
     _shieldRect.setSize(sf::Vector2f(-_player.getShield(),_shieldRect.getSize().y));
 
-    _player.winLife();
-
 }
 
 //=======================================

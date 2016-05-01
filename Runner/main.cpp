@@ -1,8 +1,6 @@
 #include "View.h"
 #include "Model.h"
 #include "main.h"
-#include "Shop_Model.h"
-#include "Shop_View.h"
 
 int main()
 {
@@ -28,23 +26,15 @@ int main()
             view.drawMenu();
             break;
         case shop:
+            view.drawShop();
+            view.synchroniseShop();
             break;
+        case highscores:
         case settings:
             view.drawSettings();
             break;
         }
     }
-
-//    Shop_Model shop_model(SCREEN_WIDTH, SCREEN_HEIGHT);
-//    Shop_View shop_view(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-
-//    while(shop_view.treatEvents())
-//    {
-//        shop_model.nextStep();
-//        shop_view.draw();
-//        shop_view.synchronise();
-//    }
 
     return EXIT_SUCCESS;
 }

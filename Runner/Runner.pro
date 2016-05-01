@@ -18,8 +18,6 @@ SOURCES += main.cpp \
     AnimatedSprite.cpp \
     Counter.cpp \
     Item.cpp \
-    Shop_View.cpp \
-    Shop_Model.cpp \
     Preview.cpp \
     Diamond.cpp \
     Cube.cpp
@@ -37,8 +35,6 @@ HEADERS += \
     AnimatedSprite.h \
     Counter.h \
     Item.h \
-    Shop_Model.h \
-    Shop_View.h \
     Preview.h \
     Diamond.h \
     Cube.h

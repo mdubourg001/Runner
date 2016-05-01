@@ -13,7 +13,8 @@ using namespace std;
 // Constructeur
 //=======================================
 View::View(int w, int h)
-    : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5), _cpt(160) ,gs(intro), cp(gen)
+    : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5),
+      _cpt(160) ,gs(intro), cp(gen), SettingsSelected(false), HighscoresSelected(false), GameSelected(false), ShopSelected(false), ExitSelected(false)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D
     _window->setFramerateLimit(FRAMERATE_LIMIT); //fixe la limite de fps
@@ -21,6 +22,7 @@ View::View(int w, int h)
     _window->setKeyRepeatEnabled(true); //désactive la répétition des touches
 
     _font.loadFromFile(POLICE);
+    _fontmenu.loadFromFile(POLICE);
 
 
     if (!_background.loadTextures(BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
@@ -73,6 +75,38 @@ View::View(int w, int h)
         _backgroundMenuSprite.setPosition(sf::Vector2f(0.f,0.f)); //définie la position du sprite de background
     }
 
+    if (!_redButton.loadFromFile(BOUTON_ROUGE))
+    {
+        std::cerr << "ERROR when loading image file: "
+                  << BOUTON_ROUGE << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        _redButtonSpriteSettings.setTexture(_redButton);
+        _redButtonSpriteHighscores.setTexture(_redButton);
+        _redButtonSpriteGame.setTexture(_redButton);
+        _redButtonSpriteShop.setTexture(_redButton);
+        _redButtonSpriteExit.setTexture(_redButton);
+
+    }
+
+    if (!_blueButton.loadFromFile(BOUTON_BLEU))
+    {
+        std::cerr << "ERROR when loading image file: "
+                  << BOUTON_BLEU << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        _blueButtonSpriteSettings.setTexture(_blueButton);
+        _blueButtonSpriteHighscores.setTexture(_blueButton);
+        _blueButtonSpriteGame.setTexture(_blueButton);
+        _blueButtonSpriteShop.setTexture(_blueButton);
+        _blueButtonSpriteExit.setTexture(_blueButton);
+
+    }
+
     if (!_backgroundSettings.loadFromFile(BACKGROUND_MENU_IMAGE)) //charge le fichier city.png et le place dans la texture background
     {
         std::cerr << "ERROR when loading image file: "
@@ -85,6 +119,18 @@ View::View(int w, int h)
         _backgroundSettingsSprite.setPosition(sf::Vector2f(0.f,0.f)); //définie la position du sprite de background
     }
 
+
+    _blueButtonSpriteSettings.setPosition(75,(SCREEN_HEIGHT/2)-100);
+    _blueButtonSpriteHighscores.setPosition(325,(SCREEN_HEIGHT/2)-100);
+    _blueButtonSpriteGame.setPosition(575,(SCREEN_HEIGHT/2)-100);
+    _blueButtonSpriteShop.setPosition(825,(SCREEN_HEIGHT/2)-100);
+    _blueButtonSpriteExit.setPosition(1075,(SCREEN_HEIGHT/2)-100);
+
+    _redButtonSpriteSettings.setPosition(75,(SCREEN_HEIGHT/2)-100);
+    _redButtonSpriteHighscores.setPosition(325,(SCREEN_HEIGHT/2)-100);
+    _redButtonSpriteGame.setPosition(575,(SCREEN_HEIGHT/2)-100);
+    _redButtonSpriteShop.setPosition(825,(SCREEN_HEIGHT/2)-100);
+    _redButtonSpriteExit.setPosition(1075,(SCREEN_HEIGHT/2)-100);
 
 
     _textLang.setFont(_font);
@@ -123,36 +169,86 @@ View::View(int w, int h)
     _textDur.setString("Difficile");
     _textDur.setPosition(800,450);
 
-    _textGame.setFont(_font);
-    _textGame.setColor(sf::Color::Blue);
+    _textGame.setFont(_fontmenu);
+    _textGame.setColor(sf::Color::Black);
     _textGame.setString("Jouer");
-    _textGame.setPosition(300,300);
+    _textGame.setPosition(675,SCREEN_HEIGHT/2);
 
-    _textExit.setFont(_font);
-    _textExit.setColor(sf::Color::Blue);
+    _textExit.setFont(_fontmenu);
+    _textExit.setColor(sf::Color::Black);
     _textExit.setString("Quitter");
-    _textExit.setPosition(300,450);
+    _textExit.setPosition(1175,SCREEN_HEIGHT/2);
 
-    _textSettings.setFont(_font);
-    _textSettings.setColor(sf::Color::Blue);
+    _textSettings.setFont(_fontmenu);
+    _textSettings.setColor(sf::Color::Black);
     _textSettings.setString("Parametres");
-    _textSettings.setPosition(300,400);
+    _textSettings.setPosition(175,SCREEN_HEIGHT/2);
 
-    _textShop.setFont(_font);
-    _textShop.setColor(sf::Color::Blue);
+    _textShop.setFont(_fontmenu);
+    _textShop.setColor(sf::Color::Black);
     _textShop.setString("Boutique");
-    _textShop.setPosition(300,350);
+    _textShop.setPosition(925,SCREEN_HEIGHT/2);
+
+    _textHighscores.setFont(_fontmenu);
+    _textHighscores.setColor(sf::Color::Black);
+    _textHighscores.setString("Top Scores");
+    _textHighscores.setPosition(425, SCREEN_HEIGHT/2);
+
 
     _textPass.setFont(_font);
     _textPass.setColor(sf::Color::Black);
     _textPass.setString("<  APPUYER SUR ESPACE POUR COMMENCER  >");
-    _textPass.setPosition(510,650);
+    _textPass.setPosition(450,650);
 
     _healthText.setFont(_font);
     _healthText.setColor(sf::Color::Black);
     _healthText.setString("SANTE :");
     _healthText.setCharacterSize(60);
     _healthText.setPosition(10,690);
+
+
+    _rectBall.setSize(sf::Vector2f(SCREEN_WIDTH/2,50));
+    _rectBall.setFillColor(sf::Color(100,100,100,255));
+    _rectBall.setOutlineThickness(3);
+    _rectBall.setOutlineColor(sf::Color::Black);
+
+    _rectBack.setSize(sf::Vector2f(SCREEN_WIDTH/2,50));
+    _rectBack.setPosition(SCREEN_WIDTH/2,0);
+    _rectBack.setFillColor(sf::Color(150,150,150,255));
+    _rectBack.setOutlineThickness(3);
+    _rectBack.setOutlineColor(sf::Color::Black);
+
+    _rectScreen.setSize(sf::Vector2f(SCREEN_WIDTH-SCREEN_WIDTH/6,SCREEN_HEIGHT-56));
+    _rectScreen.setPosition((SCREEN_WIDTH/6)-3,53);
+    _rectScreen.setFillColor(sf::Color(255,127,36,255));
+    _rectScreen.setOutlineThickness(3);
+    _rectScreen.setOutlineColor(sf::Color::Black);
+
+
+    _textBall.setFont(_font);
+    _textBall.setColor(sf::Color::Blue);
+    _textBall.setString("Ball : ");
+    _textBall.setPosition(10,10);
+
+    _textBack.setFont(_font);
+    _textBack.setColor(sf::Color::Blue);
+    _textBack.setString("Background : ");
+    _textBack.setPosition((SCREEN_WIDTH/2)+10,10);
+
+    for(int i=0;i<14;i++)
+        _items.push_back(new Item());
+
+
+    for(int i=0;i<_items.size();i++)
+    {
+        _items.at(i)->setPosition(3,53 + 51*i);
+        _items.at(i)->setOutlineThickness(3);
+        _items.at(i)->setOutlineColor(sf::Color::Black);
+        _items.at(i)->setSize(sf::Vector2f(SCREEN_WIDTH/6,50));
+
+    }
+
+    _items.at(0)->setSelected(true);
 }
 
 //=======================================
@@ -204,6 +300,25 @@ void View::synchronise()
 
     //===================//
 
+}
+
+void View::synchroniseShop()
+{
+    for(int i=0;i<_items.size();i++)
+    {
+    if(_items.at(i)->isSelected())
+        _items.at(i)->setFillColor(sf::Color(150,175,175,255));
+    else
+        _items.at(i)->setFillColor(sf::Color(200,200,200,255));
+    }
+
+    for(int i=0;i<_items.size();i++)
+    {
+        if (cs == ball)
+            _items.at(i)->setName("Ball " + std::to_string(i+1));
+        else
+            _items.at(i)->setName("Background " + std::to_string(i+1));
+    }
 }
 
 //=======================================
@@ -279,10 +394,38 @@ void View::drawMenu()
     _window->clear();
 
     _window->draw(_backgroundMenuSprite);
+
+    if(SettingsSelected == true)
+        _window->draw(_redButtonSpriteSettings);
+    else
+        _window->draw(_blueButtonSpriteSettings);
+
+    if(HighscoresSelected == true)
+        _window->draw(_redButtonSpriteHighscores);
+    else
+        _window->draw(_blueButtonSpriteHighscores);
+
+    if(GameSelected == true)
+        _window->draw(_redButtonSpriteGame);
+    else
+        _window->draw(_blueButtonSpriteGame);
+
+    if(ShopSelected == true)
+        _window->draw(_redButtonSpriteShop);
+    else
+        _window->draw(_blueButtonSpriteShop);
+
+    if(ExitSelected == true)
+        _window->draw(_redButtonSpriteExit);
+    else
+        _window->draw(_blueButtonSpriteExit);
+
+
     _window->draw(_textGame);
     _window->draw(_textExit);
     _window->draw(_textShop);
     _window->draw(_textSettings);
+    _window->draw(_textHighscores);
 
     _window->display();
 }
@@ -299,6 +442,35 @@ void View::drawSettings()
     _window->draw(_textFac);
     _window->draw(_textMoy);
     _window->draw(_textDur);
+
+    _window->display();
+}
+
+void View::drawShop()
+{
+    _window->clear(sf::Color::White);
+
+    //dessin du background
+
+   // _window->draw(_backgroundShopSprite);
+    _window->draw(_rectBall);
+    _window->draw(_rectBack);
+    _window->draw(_rectScreen);
+    _window->draw(_textBall);
+    _window->draw(_textBack);
+
+    for(int i=0;i<_items.size();i++)
+    {
+        _window->draw(*_items.at(i));
+       // _items.at(i)->drawPreview(_window);
+        _items.at(i)->drawText(_window);
+    }
+    _items.at(0)->drawPreview(_window);
+
+    //--------------------
+
+
+    //--------------------
 
     _window->display();
 }
@@ -527,6 +699,66 @@ bool View::treatEvents()
                     }
 
                 }
+                else if(event.key.code == sf::Keyboard::Right && gs==shop)
+                {
+                    if(_rectBall.getFillColor() == sf::Color(100,100,100,255))
+                    {
+                        _rectBall.setFillColor(sf::Color(150,150,150,255));
+                        _rectBack.setFillColor(sf::Color(100,100,100,255));
+                        cs = back;
+                    }
+                    else
+                    {
+                        _rectBall.setFillColor(sf::Color(100,100,100,255));
+                        _rectBack.setFillColor(sf::Color(150,150,150,255));
+                        cs = ball;
+                    }
+                    for(int i=1;i<_items.size();i++)
+                        _items.at(i)->setSelected(false);
+                    _items.at(0)->setSelected(true);
+                }
+                else if(event.key.code == sf::Keyboard::Left && gs==shop)
+                {
+                    if(_rectBall.getFillColor() == sf::Color(100,100,100,255))
+                    {
+                        _rectBall.setFillColor(sf::Color(150,150,150,255));
+                        _rectBack.setFillColor(sf::Color(100,100,100,255));
+                        cs = back;
+                    }
+                    else
+                    {
+                        _rectBall.setFillColor(sf::Color(100,100,100,255));
+                        _rectBack.setFillColor(sf::Color(150,150,150,255));
+                        cs = ball;
+                    }
+                    for(int i=1;i<_items.size();i++)
+                        _items.at(i)->setSelected(false);
+                    _items.at(0)->setSelected(true);
+                }
+                else if (event.key.code == sf::Keyboard::Down && gs==shop)
+                {
+                    for(int i=0;i<_items.size();i++)
+                    {
+                        if(_items.at(i)->isSelected() && i != 13)
+                        {
+                            _items.at(i)->setSelected(false);
+                            _items.at(i+1)->setSelected(true);
+                            break;
+                        }
+                    }
+                }
+                else if (event.key.code == sf::Keyboard::Up && gs==shop)
+                {
+                    for(int i=0;i<_items.size();i++)
+                    {
+                        if(_items.at(i)->isSelected() && i != 0)
+                        {
+                            _items.at(i)->setSelected(false);
+                            _items.at(i-1)->setSelected(true);
+                            break;
+                        }
+                    }
+                }
             }
 
             else if(event.type == sf::Event::KeyReleased)
@@ -540,14 +772,15 @@ bool View::treatEvents()
                 x = event.mouseButton.x;
                 y = event.mouseButton.y;
 
-
-                if(x>=300 && x<=380 && y>=306 && y<=330)
-                    gs = game;
-                else if(x>=300 && x<=385 && y>=356 && y<=380)
-                    gs = shop;
-                else if(x>=300 && x<=463 && y>=407 && y<=430)
+                if(x>=80 && x<=270 && y>=300 && y<=485)
                     gs = settings;
-                else if(x>=300 && x<=404 && y>=457 && y<=479)
+                else if(x>=340 && x<=520 && y>=300 && y<=485)
+                    gs = highscores;
+                else if(x>=575 && x<=770 && y>=300 && y<=485)
+                    gs = game;
+                else if(x>=835 && x<=1025 && y>=300 && y<=485)
+                    gs = shop;
+                else if (x>=1085 && x<=1275 && y>=300 && y<=485)
                 {
                     _window->close();
                     result = false;
@@ -559,27 +792,30 @@ bool View::treatEvents()
                 int xM = event.mouseMove.x;
                 int yM = event.mouseMove.y;
 
-                if(xM>=300 && xM<=380 && yM>=306 && yM<=330)
-                    _textGame.setColor(sf::Color::Red);
+                if(xM>=80 && xM<=270 && yM>=300 && yM<=485)
+                    SettingsSelected = true;
                 else
-                    _textGame.setColor(sf::Color::Blue);
+                    SettingsSelected = false;
 
-                if(xM>=300 && xM<=385 && yM>=356 && yM<=380)
-                    _textShop.setColor(sf::Color::Red);
+                if(xM>=340 && xM<=520 && yM>=300 && yM<=485)
+                    HighscoresSelected = true;
                 else
-                    _textShop.setColor(sf::Color::Blue);
+                    HighscoresSelected = false;
 
-                if(xM>=300 && xM<=463 && yM>=407 && yM<=430)
-                    _textSettings.setColor(sf::Color::Red);
+                if(xM>=575 && xM<=770 && yM>=300 && yM<=485)
+                    GameSelected = true;
                 else
-                    _textSettings.setColor(sf::Color::Blue);
+                    GameSelected = false;
 
-                if(xM>=300 && xM<=404 && yM>=457 && yM<=479)
-                    _textExit.setColor(sf::Color::Red);
+                if(xM>=835 && xM<=1025 && yM>=300 && yM<=485)
+                    ShopSelected = true;
                 else
-                    _textExit.setColor(sf::Color::Blue);
+                    ShopSelected = false;
 
-
+                if(xM>=1085 && xM<=1275 && yM>=300 && yM<=485)
+                    ExitSelected = true;
+                else
+                    ExitSelected = false;
             }
 
         }

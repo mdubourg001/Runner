@@ -16,7 +16,10 @@ const std::string BACKGROUND_IMAGE_PREVIEW_R = "res/city2_preview.png";
 const std::string BALL_IMAGE = "res/ball.png";
 const std::string BACKGROUND_INTRO_IMAGE = "res/backgroundIntro.png";
 const std::string POLICE = "res/slapstick.ttf";
+const std::string POLICEMENU = "res/slice.ttf";
 const std::string BACKGROUND_MENU_IMAGE = "res/background.png";
+const std::string BOUTON_ROUGE = "res/bouton_rouge.png";
+const std::string BOUTON_BLEU = "res/bouton_bleu.png";
 
 enum direction
 {
