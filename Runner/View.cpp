@@ -14,7 +14,7 @@ using namespace std;
 //=======================================
 View::View(int w, int h)
     : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5),
-      _cpt(160) ,gs(intro), cp(gen), SettingsSelected(false), HighscoresSelected(false), GameSelected(false), ShopSelected(false), ExitSelected(false)
+      _cpt(160) ,gs(intro), lg(fr), dif(facile),  SettingsSelected(false), HighscoresSelected(false), GameSelected(false), ShopSelected(false), ExitSelected(false)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D
     _window->setFramerateLimit(FRAMERATE_LIMIT); //fixe la limite de fps
@@ -88,6 +88,11 @@ View::View(int w, int h)
         _redButtonSpriteGame.setTexture(_redButton);
         _redButtonSpriteShop.setTexture(_redButton);
         _redButtonSpriteExit.setTexture(_redButton);
+        _redButtonSpriteFrancais.setTexture(_redButton);
+        _redButtonSpriteAnglais.setTexture(_redButton);
+        _redButtonSpriteFacile.setTexture(_redButton);
+        _redButtonSpriteMoyen.setTexture(_redButton);
+        _redButtonSpriteDifficile.setTexture(_redButton);
 
     }
 
@@ -104,6 +109,11 @@ View::View(int w, int h)
         _blueButtonSpriteGame.setTexture(_blueButton);
         _blueButtonSpriteShop.setTexture(_blueButton);
         _blueButtonSpriteExit.setTexture(_blueButton);
+        _blueButtonSpriteFrancais.setTexture(_blueButton);
+        _blueButtonSpriteAnglais.setTexture(_blueButton);
+        _blueButtonSpriteFacile.setTexture(_blueButton);
+        _blueButtonSpriteMoyen.setTexture(_blueButton);
+        _blueButtonSpriteDifficile.setTexture(_blueButton);
 
     }
 
@@ -126,48 +136,78 @@ View::View(int w, int h)
     _blueButtonSpriteShop.setPosition(825,(SCREEN_HEIGHT/2)-100);
     _blueButtonSpriteExit.setPosition(1075,(SCREEN_HEIGHT/2)-100);
 
+    _blueButtonSpriteFrancais.setPosition(575,(SCREEN_HEIGHT/4)-100);
+    _blueButtonSpriteAnglais.setPosition(825, (SCREEN_HEIGHT/4)-100);
+    _blueButtonSpriteFacile.setPosition(575,(3*(SCREEN_HEIGHT/4))-100);
+    _blueButtonSpriteMoyen.setPosition(825,(3*(SCREEN_HEIGHT/4))-100);
+    _blueButtonSpriteDifficile.setPosition(1075,(3*(SCREEN_HEIGHT/4))-100);
+
+
     _redButtonSpriteSettings.setPosition(75,(SCREEN_HEIGHT/2)-100);
     _redButtonSpriteHighscores.setPosition(325,(SCREEN_HEIGHT/2)-100);
     _redButtonSpriteGame.setPosition(575,(SCREEN_HEIGHT/2)-100);
     _redButtonSpriteShop.setPosition(825,(SCREEN_HEIGHT/2)-100);
     _redButtonSpriteExit.setPosition(1075,(SCREEN_HEIGHT/2)-100);
 
+    _redButtonSpriteFrancais.setPosition(575,(SCREEN_HEIGHT/4)-100);
+    _redButtonSpriteAnglais.setPosition(825, (SCREEN_HEIGHT/4)-100);
+    _redButtonSpriteFacile.setPosition(575,(3*(SCREEN_HEIGHT/4))-100);
+    _redButtonSpriteMoyen.setPosition(825,(3*(SCREEN_HEIGHT/4))-100);
+    _redButtonSpriteDifficile.setPosition(1075,(3*(SCREEN_HEIGHT/4))-100);
 
-    _textLang.setFont(_font);
-    _textLang.setColor(sf::Color::Blue);
+
+    _healthRect.setSize(sf::Vector2f(400,50));
+    _healthRect.setPosition(225,710);
+    _healthRect.setFillColor(sf::Color(100,255,100,255));
+
+
+    _backhealthRect.setSize(sf::Vector2f(400,50));
+    _backhealthRect.setPosition(225,710);
+    _backhealthRect.setFillColor(sf::Color(255,100,100,255));
+    _backhealthRect.setOutlineThickness(3);
+    _backhealthRect.setOutlineColor(sf::Color::Black);
+
+    _shieldRect.setSize(sf::Vector2f(-50,50));
+    _shieldRect.setPosition(625,710);
+    _shieldRect.setFillColor(sf::Color(170,170,170,255));
+
+
+
+
+    _textLang.setFont(_fontmenu);
+    _textLang.setColor(sf::Color::Black);
     _textLang.setString("Langue : ");
-    _textLang.setStyle(sf::Text::Underlined);
-    _textLang.setPosition(600,250);
+    _textLang.setPosition(275,(SCREEN_HEIGHT/4));
 
-    _textDiff.setFont(_font);
-    _textDiff.setColor(sf::Color::Blue);
+    _textDiff.setFont(_fontmenu);
+    _textDiff.setColor(sf::Color::Black);
     _textDiff.setString("Difficulte : ");
-    _textDiff.setPosition(600,350);
+    _textDiff.setPosition(275,(3*(SCREEN_HEIGHT/4)));
 
-    _textFr.setFont(_font);
-    _textFr.setColor(sf::Color::Red);
+    _textFr.setFont(_fontmenu);
+    _textFr.setColor(sf::Color::Black);
     _textFr.setString("Francais");
-    _textFr.setPosition(800,250);
+    _textFr.setPosition(675,(SCREEN_HEIGHT/4));
 
-    _textAng.setFont(_font);
-    _textAng.setColor(sf::Color::Blue);
+    _textAng.setFont(_fontmenu);
+    _textAng.setColor(sf::Color::Black);
     _textAng.setString("Anglais");
-    _textAng.setPosition(800,300);
+    _textAng.setPosition(925, (SCREEN_HEIGHT/4));
 
-    _textFac.setFont(_font);
-    _textFac.setColor(sf::Color::Red);
+    _textFac.setFont(_fontmenu);
+    _textFac.setColor(sf::Color::Black);
     _textFac.setString("Facile");
-    _textFac.setPosition(800,350);
+    _textFac.setPosition(675,(3*(SCREEN_HEIGHT/4)));
 
-    _textMoy.setFont(_font);
-    _textMoy.setColor(sf::Color::Blue);
+    _textMoy.setFont(_fontmenu);
+    _textMoy.setColor(sf::Color::Black);
     _textMoy.setString("Moyen");
-    _textMoy.setPosition(800,400);
+    _textMoy.setPosition(925,(3*(SCREEN_HEIGHT/4)));
 
-    _textDur.setFont(_font);
-    _textDur.setColor(sf::Color::Blue);
+    _textDur.setFont(_fontmenu);
+    _textDur.setColor(sf::Color::Black);
     _textDur.setString("Difficile");
-    _textDur.setPosition(800,450);
+    _textDur.setPosition(1175,(3*(SCREEN_HEIGHT/4)));
 
     _textGame.setFont(_fontmenu);
     _textGame.setColor(sf::Color::Black);
@@ -300,6 +340,10 @@ void View::synchronise()
 
     //===================//
 
+    _healthRect.setSize(sf::Vector2f(_model->getPlayer()->getHealth(),_healthRect.getSize().y));
+    _shieldRect.setSize(sf::Vector2f(-_model->getPlayer()->getShield(),_shieldRect.getSize().y));
+
+
 }
 
 void View::synchroniseShop()
@@ -373,6 +417,9 @@ void View::draw()
     _window->draw(_healthText);
 
     _model->drawInterface(_window);
+    _window->draw(_backhealthRect); //dessin du fond de vie (rouge)
+    _window->draw(_healthRect); // dessin de la vie (vert)
+    _window->draw(_shieldRect); // dessin du bouclier
 
 
     _window->display();
@@ -435,6 +482,32 @@ void View::drawSettings()
     _window->clear();
 
     _window->draw(_backgroundSettingsSprite);
+
+    if(lg == fr)
+        _window->draw(_redButtonSpriteFrancais);
+    else
+        _window->draw(_blueButtonSpriteFrancais);
+
+    if(lg == ang)
+        _window->draw(_redButtonSpriteAnglais);
+    else
+        _window->draw(_blueButtonSpriteAnglais);
+
+    if(dif == facile)
+        _window->draw(_redButtonSpriteFacile);
+    else
+        _window->draw(_blueButtonSpriteFacile);
+
+    if(dif == moyen)
+        _window->draw(_redButtonSpriteMoyen);
+    else
+        _window->draw(_blueButtonSpriteMoyen);
+
+    if(dif == difficile)
+        _window->draw(_redButtonSpriteDifficile);
+    else
+        _window->draw(_blueButtonSpriteDifficile);
+
     _window->draw(_textLang);
     _window->draw(_textDiff);
     _window->draw(_textFr);
@@ -475,6 +548,19 @@ void View::drawShop()
     _window->display();
 }
 
+void View::drawHighscores()
+{
+    _window->clear();
+
+    _window->draw(_backgroundMenuSprite);
+
+    _window->draw(_textHighscores);
+
+
+
+    _window->display();
+}
+
 //=======================================
 // Traitement des evenements
 //=======================================
@@ -501,6 +587,7 @@ bool View::treatEvents()
             else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs!= menu && gs!=intro)
             {
                 gs = menu;
+                // remettre a zero
             }
             else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs== menu)
             {
@@ -528,177 +615,7 @@ bool View::treatEvents()
                 {
                     gs = menu;
                 }
-                if((event.key.code == sf::Keyboard::Down && gs == settings))
-                {
-                    if(cp==gen)
-                    {
-                        if(_textLang.getStyle() == sf::Text::Underlined)
-                        {
-                            _textLang.setStyle(sf::Text::Regular);
-                            _textDiff.setStyle(sf::Text::Underlined);
-                        }
-                        else if(_textDiff.getStyle() == sf::Text::Underlined)
-                        {
-                            _textDiff.setStyle(sf::Text::Regular);
-                            _textLang.setStyle(sf::Text::Underlined);
-                        }
 
-                    }
-                    else if (cp==dif)
-                    {
-                        if(_textFac.getStyle() == sf::Text::Underlined)
-                        {
-                            _textFac.setStyle(sf::Text::Regular);
-                            _textMoy.setStyle(sf::Text::Underlined);
-                        }
-                        else if(_textMoy.getStyle() == sf::Text::Underlined)
-                        {
-                            _textMoy.setStyle(sf::Text::Regular);
-                            _textDur.setStyle(sf::Text::Underlined);
-                        }
-                        else if(_textDur.getStyle() == sf::Text::Underlined)
-                        {
-                            _textDur.setStyle(sf::Text::Regular);
-                            _textFac.setStyle(sf::Text::Underlined);
-                        }
-                    }
-
-                    else if(cp==lang)
-                    {
-                        if(_textFr.getStyle() == sf::Text::Underlined)
-                        {
-                            _textFr.setStyle(sf::Text::Regular);
-                            _textAng.setStyle(sf::Text::Underlined);
-                        }
-                        else if(_textAng.getStyle() == sf::Text::Underlined)
-                        {
-                            _textAng.setStyle(sf::Text::Regular);
-                            _textFr.setStyle(sf::Text::Underlined);
-                        }
-                    }
-                }
-                if((event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::Space) && !_model->getPlayer()->isJumping() && gs==settings)
-                {
-                    if(cp==gen)
-                    {
-                        if(_textLang.getStyle() == sf::Text::Underlined)
-                        {
-                            _textLang.setStyle(sf::Text::Regular);
-                            _textDiff.setStyle(sf::Text::Underlined);
-                        }
-                        else if(_textDiff.getStyle() == sf::Text::Underlined)
-                        {
-                            _textDiff.setStyle(sf::Text::Regular);
-                            _textLang.setStyle(sf::Text::Underlined);
-                        }
-                    }
-
-                    else if (cp==dif)
-                    {
-                        if(_textFac.getStyle() == sf::Text::Underlined)
-                        {
-                            _textFac.setStyle(sf::Text::Regular);
-                            _textDur.setStyle(sf::Text::Underlined);
-                        }
-                        else if(_textMoy.getStyle() == sf::Text::Underlined)
-                        {
-                            _textMoy.setStyle(sf::Text::Regular);
-                            _textFac.setStyle(sf::Text::Underlined);
-                        }
-                        else if(_textDur.getStyle() == sf::Text::Underlined)
-                        {
-                            _textDur.setStyle(sf::Text::Regular);
-                            _textMoy.setStyle(sf::Text::Underlined);
-                        }
-                    }
-
-                    else if (cp==lang)
-                    {
-                        if(_textFr.getStyle() == sf::Text::Underlined)
-                        {
-                            _textFr.setStyle(sf::Text::Regular);
-                            _textAng.setStyle(sf::Text::Underlined);
-                        }
-                        else if(_textAng.getStyle() == sf::Text::Underlined)
-                        {
-                            _textAng.setStyle(sf::Text::Regular);
-                            _textFr.setStyle(sf::Text::Underlined);
-                        }
-                    }
-                }
-                if(event.key.code == sf::Keyboard::Return && gs==settings)
-                {
-                    if(cp==gen)
-                    {
-                        if(_textDiff.getStyle() == sf::Text::Underlined)
-                        {
-                            _textDiff.setStyle(sf::Text::Regular);
-                            _textFac.setStyle(sf::Text::Underlined);
-                            cp = dif;
-                        }
-                        else if (_textLang.getStyle() == sf::Text::Underlined)
-                        {
-                            _textLang.setStyle(sf::Text::Regular);
-                            _textFr.setStyle(sf::Text::Underlined);
-                            cp = lang;
-                        }
-                    }
-                    else if (cp==lang)
-                    {
-                        if (_textFr.getStyle() == sf::Text::Underlined)
-                        {
-                            toFrench();
-                            _textFr.setColor(sf::Color::Red);
-                            _textAng.setColor(sf::Color::Blue);
-                            _textFr.setStyle(sf::Text::Regular);
-                            _textLang.setStyle(sf::Text::Underlined);
-                            cp = gen;
-                        }
-                        else if (_textAng.getStyle() == sf::Text::Underlined)
-                        {
-                            toEnglish();
-                            _textAng.setColor(sf::Color::Red);
-                            _textFr.setColor(sf::Color::Blue);
-                            _textAng.setStyle(sf::Text::Regular);
-                            _textLang.setStyle(sf::Text::Underlined);
-                            cp = gen;
-                        }
-                    }
-                    else if (cp==dif)
-                    {
-                        if (_textFac.getStyle() == sf::Text::Underlined)
-                        {
-                            // changer la difficulté
-                            _textFac.setColor(sf::Color::Red);
-                            _textMoy.setColor(sf::Color::Blue);
-                            _textDur.setColor(sf::Color::Blue);
-                            _textFac.setStyle(sf::Text::Regular);
-                            _textDiff.setStyle(sf::Text::Underlined);
-                            cp = gen;
-                        }
-                        else if (_textMoy.getStyle() == sf::Text::Underlined)
-                        {
-                            // changer la difficulté
-                            _textMoy.setColor(sf::Color::Red);
-                            _textFac.setColor(sf::Color::Blue);
-                            _textDur.setColor(sf::Color::Blue);
-                            _textMoy.setStyle(sf::Text::Regular);
-                            _textDiff.setStyle(sf::Text::Underlined);
-                            cp = gen;
-                        }
-                        else  if (_textDur.getStyle() == sf::Text::Underlined)
-                        {
-                            // changer la difficulté
-                            _textDur.setColor(sf::Color::Red);
-                            _textMoy.setColor(sf::Color::Blue);
-                            _textFac.setColor(sf::Color::Blue);
-                            _textDur.setStyle(sf::Text::Regular);
-                            _textDiff.setStyle(sf::Text::Underlined);
-                            cp = gen;
-                        }
-                    }
-
-                }
                 else if(event.key.code == sf::Keyboard::Right && gs==shop)
                 {
                     if(_rectBall.getFillColor() == sf::Color(100,100,100,255))
@@ -786,6 +703,28 @@ bool View::treatEvents()
                     result = false;
                 }
 
+            }
+            else if (event.type == sf::Event::MouseButtonPressed && gs == settings)
+            {
+                x = event.mouseButton.x;
+                y = event.mouseButton.y;
+
+                if(x>=570 && x<=770 && y>=100 && y<=295)
+                {
+                    lg = fr;
+                    toFrench();
+                }
+                else if(x>=830 && x<=1030 && y>=100 && y<=295)
+                {
+                    lg = ang;
+                    toEnglish();
+                }
+                else if(x>=570 && x<=770 && y>=495 && y<=670)
+                    dif = facile;
+                else if(x>=830 && x<=1030 && y>=495 && y<=670)
+                    dif = moyen;
+                else if (x>=1080 && x<=1270 && y>=495 && y<=670)
+                    dif = difficile;
             }
             else if (event.type == sf::Event::MouseMoved && gs == menu)
             {

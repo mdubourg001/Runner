@@ -16,11 +16,17 @@ enum gamestates
     highscores
 };
 
-enum choixParametres
+enum langue
 {
-    gen,
-    lang,
-    dif
+    fr,
+    ang
+};
+
+enum difficulte
+{
+    facile,
+    moyen,
+    difficile
 };
 
 enum choixShop
@@ -51,6 +57,10 @@ private:
 
     std::chrono::time_point<std::chrono::system_clock> _start, _end;
 
+    sf::RectangleShape _healthRect;
+    sf::RectangleShape _backhealthRect;
+    sf::RectangleShape _shieldRect;
+
     sf::Texture _backgroundIntro;
     sf::Sprite _backgroundIntroSprite;
 
@@ -76,13 +86,23 @@ private:
     sf::Sprite _blueButtonSpriteShop;
     sf::Sprite _redButtonSpriteExit;
     sf::Sprite _blueButtonSpriteExit;
+    sf::Sprite _redButtonSpriteFrancais;
+    sf::Sprite _blueButtonSpriteFrancais;
+    sf::Sprite _redButtonSpriteAnglais;
+    sf::Sprite _blueButtonSpriteAnglais;
+    sf::Sprite _redButtonSpriteFacile;
+    sf::Sprite _blueButtonSpriteFacile;
+    sf::Sprite _redButtonSpriteMoyen;
+    sf::Sprite _blueButtonSpriteMoyen;
+    sf::Sprite _redButtonSpriteDifficile;
+    sf::Sprite _blueButtonSpriteDifficile;
+
 
     bool SettingsSelected;
     bool HighscoresSelected;
     bool GameSelected;
     bool ShopSelected;
     bool ExitSelected;
-
 
 
 
@@ -114,7 +134,8 @@ private:
     std::vector<Item*> _items;
 
     choixShop cs;
-    choixParametres cp;
+    langue lg;
+    difficulte dif;
 
     int _cpt;
 
@@ -129,6 +150,7 @@ public:
     void drawMenu();
     void drawSettings();
     void drawShop();
+    void drawHighscores();
     void toEnglish();
     void toFrench();
     void synchronise();

@@ -30,6 +30,8 @@ int main()
             view.synchroniseShop();
             break;
         case highscores:
+            view.drawHighscores();
+            break;
         case settings:
             view.drawSettings();
             break;
