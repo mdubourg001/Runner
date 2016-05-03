@@ -162,6 +162,7 @@ public:
     void synchroniseShop();
     bool treatEvents();
     gamestates getGs();
+    difficulte getDiff();
     void recupBest();
     void recupCoins();
     void recupDiamonds();

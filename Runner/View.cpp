@@ -321,6 +321,11 @@ void View::setModel(Model * model) //setter qui permet de modifier le modele ass
     _model = model;
 }
 
+difficulte View::getDiff()
+{
+    return dif;
+}
+
 void View::synchronise()
 {
     _end = std::chrono::system_clock::now();

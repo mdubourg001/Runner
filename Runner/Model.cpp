@@ -44,7 +44,7 @@ void Model::nextStep()
         _player.jump();
     }
 
-    if(timelapse >= 400)
+    if(timelapse >= 3000)
     {
         _canpop = true;
         _start = std::chrono::system_clock::now();
