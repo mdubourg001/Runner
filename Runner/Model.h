@@ -38,8 +38,6 @@ protected:
     Counter _coin_counter;
     Counter _score_counter;
     Counter _diamond_counter;
-    int _framecpt;
-    std::chrono::time_point<std::chrono::system_clock> _start, _end;
     bool _canpop;
     bool _magnetpicked;
     int _magnetcpt;
@@ -49,6 +47,8 @@ protected:
     sf::RectangleShape _healthRect;
     sf::RectangleShape _backhealthRect;
     sf::RectangleShape _shieldRect;
+
+    std::chrono::time_point<std::chrono::system_clock> _start, _end;
 
 public:
     Model(int w, int h);

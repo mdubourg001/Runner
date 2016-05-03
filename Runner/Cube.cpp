@@ -121,3 +121,8 @@ void Cube::move(int movespeed)
     setPosition(getPosition().x - movespeed, getPosition().y);
 }
 
+sf::Vector2f Cube::getPos() const
+{
+    return getPosition();
+}
+

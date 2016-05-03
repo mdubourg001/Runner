@@ -22,7 +22,7 @@ View::View(int w, int h)
     _window->setKeyRepeatEnabled(true); //désactive la répétition des touches
 
     _font.loadFromFile(POLICE);
-    _fontmenu.loadFromFile(POLICE);
+    _fontmenu.loadFromFile(POLICEMENU);
 
 
     if (!_background.loadTextures(BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
@@ -249,6 +249,7 @@ View::View(int w, int h)
     }
 
     _items.at(0)->setSelected(true);
+
 }
 
 //=======================================
@@ -337,7 +338,10 @@ void View::draw()
     //dessin des pièces
 
     for(int i=0; i<_model->Coins()->size() ; i++)
+    {
         _window->draw(*_model->Coins()->at(i));
+        //_window->draw(*_model->Coins()->at(i)->Alpha());
+    }
 
     //--------------------
 

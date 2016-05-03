@@ -2,6 +2,7 @@
 #define _VIEW_
 
 #include <SFML/Graphics.hpp>
+#include <chrono>
 #include "SlidingBackground.h"
 #include "Bonus.h"
 #include "Item.h"

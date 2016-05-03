@@ -87,11 +87,15 @@ void Player::treatCollisions(std::vector<Coin *> coins, std::vector<Diamond *> d
 
 
     for(int i=0 ; i<obstacles.size() ; i++) //collision entre la balle et les obstacles
+
         if((_posx - 25 <= obstacles.at(i)->getPosition().x + 25 && _posx - 25 >= obstacles.at(i)->getPosition().x -25
                 && _posy - 25 <= obstacles.at(i)->getPosition().y + 25 && _posy - 25 >= obstacles.at(i)->getPosition().y -25)
                 || (_posx + 25 >= obstacles.at(i)->getPosition().x - 25 && _posx + 25 <= obstacles.at(i)->getPosition().x + 25
                 && _posy + 25 >= obstacles.at(i)->getPosition().y - 25 && _posy + 25 <= obstacles.at(i)->getPosition().y + 25))
+        {
             obstacles.at(i)->setDestroyed(true);
+            looseLife();
+        }
 }
 
 void Player::rotate(sf::Sprite &p)
@@ -106,11 +110,15 @@ void Player::rotate(sf::Sprite &p)
         p.rotate(15);
 }
 
+
+
 void Player::drawShadow(sf::RenderWindow* window)
 {
     _shadow.setPosition(sf::Vector2f(_posx, SCREEN_HEIGHT-SCREEN_HEIGHT/6));
     window->draw(_shadow);
 }
+
+
 
 int Player::getPositionX()
 {
@@ -140,6 +148,7 @@ void Player::setShield(int s)
     _shield = s;
 }
 
+
 void Player::looseLife()
 {
     if(_shield>0)
@@ -147,6 +156,7 @@ void Player::looseLife()
     else
         _health-=80;
 }
+
 
 void Player::winLife()
 {

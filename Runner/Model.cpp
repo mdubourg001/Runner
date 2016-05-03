@@ -9,7 +9,7 @@ using namespace std;
 //=======================================
 Model::Model(int w, int h)
   :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0), _canpop(true), _magnetpicked(false), _magnetcpt(-1),
-    _framecpt(FRAMERATE_LIMIT), _coin_counter(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70, 50, 50),
+     _coin_counter(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70, 50, 50),
     _score_counter(0, SCREEN_WIDTH - 500, SCREEN_HEIGHT-70, 50, 50),
     _diamond_counter(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70, 50, 50)
 {
@@ -60,7 +60,7 @@ void Model::nextStep()
         _player.jump();
     }
 
-    if(timelapse >= 400)
+    if(timelapse >= 800)
     {
         _canpop = true;
         _start = std::chrono::system_clock::now();
@@ -91,37 +91,50 @@ void Model::nextStep()
         }
     }
 
-    for(int i=0 ; i<_coins.size() ; i++) //supprime les pièces qui ne sont plus affichées à l'écran
+    for(auto c : _coins) //supprime les pièces qui ne sont plus affichées à l'écran
     {
-        if(_coins.at(i)->getPosition().x < 0 || _coins.at(i)->isPicked())
+        if(c->getPosition().x < 0 || c->isPicked())
         {
-            if(_coins.at(i)->isPicked())
+            if(c->isPicked())
+            {
                 _coin_counter.increment();
-            _coins.erase(_coins.begin() + i );
-        }
+                //c->drawAlpha();
+            }
 
+            std::vector<Coin*>::iterator it =
+                    std::find(_coins.begin(), _coins.end(), c);
+            _coins.erase(it);
+        }
     }
-    for(int i=0; i<_diamonds.size();i++)
+
+    for(auto d : _diamonds)
     {
-        if (_diamonds.at(i)->getPosition().x < 0 || _diamonds.at(i)->isPicked())
+        if (d->getPosition().x < 0 || d->isPicked())
         {
-            if(_diamonds.at(i)->isPicked())
+            if(d->isPicked())
                 _diamond_counter.increment();
-            _diamonds.erase(_diamonds.begin() + i);
+
+            std::vector<Diamond*>::iterator it =
+                    std::find(_diamonds.begin(), _diamonds.end(), d);
+            _diamonds.erase(it);
         }
     }
-    for(int i=0; i<_obstacles.size();i++)
+
+    for(auto o : _obstacles)
     {
-        if (_obstacles.at(i)->getPosition().x < -100 || _obstacles.at(i)->isDestroyed())
+        if (o->getPosition().x < -100 || o->isDestroyed())
         {
-            _obstacles.erase(_obstacles.begin() + i);
+            std::vector<Obstacle*>::iterator it =
+                    std::find(_obstacles.begin(), _obstacles.end(), o);
+            _obstacles.erase(it);
         }
     }
-    for(int i=0; i<_bonus.size();i++)
+
+    for(auto b : _bonus)
     {
-        if (_bonus.at(i)->getPosition().x < 0 || _bonus.at(i)->isPicked())
+        if (b->getPosition().x < 0 || b->isPicked())
         {
-            if(_bonus.at(i)->isPicked())
+            if(b->isPicked())
             {
                 switch(bt)
                 {
@@ -152,7 +165,10 @@ void Model::nextStep()
                     break;
                 }
             }
-            _bonus.erase(_bonus.begin() + i);
+
+            std::vector<Bonus*>::iterator it =
+                    std::find(_bonus.begin(), _bonus.end(), b);
+            _bonus.erase(it);
         }
     }
 

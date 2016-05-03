@@ -36,7 +36,6 @@ public:
     void setShield(int s);
     void looseLife();
     void winLife();
-
 };
 
 #endif // PLAYER_H
