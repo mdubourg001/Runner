@@ -42,11 +42,10 @@ protected:
     bool _magnetpicked;
     int _magnetcpt;
 
+
     BonusType bt;
 
-    sf::RectangleShape _healthRect;
-    sf::RectangleShape _backhealthRect;
-    sf::RectangleShape _shieldRect;
+
 
     std::chrono::time_point<std::chrono::system_clock> _start, _end;
 
@@ -69,6 +68,9 @@ public:
     void addBonus();
     void addObstacle();
     void drawInterface(sf::RenderWindow *w);
+    void saveScore();
+    void saveCoin();
+    void saveDiamond();
 
 };
 #endif

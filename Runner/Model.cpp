@@ -18,22 +18,6 @@ Model::Model(int w, int h)
     srand(time(NULL));
 
 
-
-    _healthRect.setSize(sf::Vector2f(400,50));
-    _healthRect.setPosition(225,710);
-    _healthRect.setFillColor(sf::Color(100,255,100,255));
-
-
-    _backhealthRect.setSize(sf::Vector2f(400,50));
-    _backhealthRect.setPosition(225,710);
-    _backhealthRect.setFillColor(sf::Color(255,100,100,255));
-    _backhealthRect.setOutlineThickness(3);
-    _backhealthRect.setOutlineColor(sf::Color::Black);
-
-    _shieldRect.setSize(sf::Vector2f(-50,50));
-    _shieldRect.setPosition(625,710);
-    _shieldRect.setFillColor(sf::Color(170,170,170,255));
-
     _start = std::chrono::system_clock::now();
 }
 //=======================================
@@ -172,28 +156,11 @@ void Model::nextStep()
         }
     }
 
-    if(bt==magnet && _magnetpicked == true)
-        for_each(_coins.begin(), _coins.end(), [](Coin* &c){c->moveMagnet();});
-    else
-        for_each(_coins.begin(), _coins.end(), [](Coin* &c){c->move();});
-
-    if(_magnetcpt==2000)
-    {
-        _magnetpicked = false;
-        _magnetcpt = -1;
-    }
-    else if (_magnetcpt>-1)
-    {
-        _magnetcpt++;
-        cout << _magnetcpt << endl;
-    }
-
+    for_each(_coins.begin(), _coins.end(), [](Coin* &c){c->move();});
     for_each(_diamonds.begin(), _diamonds.end(), [](Diamond* &d){d->move();});
     for_each(_bonus.begin(), _bonus.end(), [](Bonus* &b){b->move();});
     for_each(_obstacles.begin(), _obstacles.end(), [](Obstacle* &o){o->move();});
 
-    _healthRect.setSize(sf::Vector2f(_player.getHealth(),_healthRect.getSize().y));
-    _shieldRect.setSize(sf::Vector2f(-_player.getShield(),_shieldRect.getSize().y));
 
 }
 
@@ -301,7 +268,7 @@ void Model::addBonus()
         bt = hourglass;
         break;
     case 4:
-        if(_healthRect.getSize().x < 400)
+        if(_player.getHealth() < 400)
         {
             _bonus.push_back(new Bonus("res/sante.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
             bt = health;
@@ -341,7 +308,63 @@ void Model::drawInterface(sf::RenderWindow *w)
     _coin_counter.draw(w); //dessin du compteur de pièces
     _score_counter.draw(w); //dessin du compteur de score
     _diamond_counter.draw(w); //dessin du compteur de diamants
-    w->draw(_backhealthRect); //dessin du fond de vie (rouge)
-    w->draw(_healthRect); // dessin de la vie (vert)
-    w->draw(_shieldRect); // dessin du bouclier
 }
+
+/*void Model::saveScore()
+{
+    int best=0; // peut etre faire des attributs de classes pour pouvoir gérer plus facilement lorsqu'on veut afficher le best score ou bien le nombre de pieces dans le menu
+    fstream fichierScore;
+    fichierScore.open("scores.txt", ios::in );
+    if( fichierScore.fail() )
+    {
+        cerr << "ouverture en lecture impossible" << endl;
+        exit(EXIT_FAILURE);
+    }
+    fichierScore >> best;
+    fichierScore.close();
+
+    if(_score_counter > best)
+    {
+        fichierScore.open("scores.txt", ios::out);
+        fichierScore << to_string(_score_counter);
+        fichierScore.close();
+    }
+}
+
+void Model::saveCoin()
+{
+    int total=0;
+    fstream fichierCoins;
+    fichierCoins.open("coins.txt", ios::in );
+    if( fichierCoin.fail() )
+    {
+        cerr << "ouverture en lecture impossible" << endl;
+        exit(EXIT_FAILURE);
+    }
+    fichierCoins >> total;
+    total += _coin_counter;
+    fichierCoins.close();
+
+    fichierCoins.open("coins.txt", ios::out);
+    fichierCoins << total;
+    fichierCoins.close();
+}
+
+void Model::saveDiamond()
+{
+    int total=0;
+    fstream fichierDiamonds;
+    fichierDiamonds.open("diamonds.txt", ios::in );
+    if( fichierDiamonds.fail() )
+    {
+        cerr << "ouverture en lecture impossible" << endl;
+        exit(EXIT_FAILURE);
+    }
+    fichierDiamonds >> total;
+    total += _diamond_counter;
+    fichierDiamonds.close();
+
+    fichierDiamonds.open("diamonds.txt", ios::out);
+    fichierDiamonds << total;
+    fichierDiamonds.close();
+}*/

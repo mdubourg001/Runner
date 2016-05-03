@@ -24,11 +24,6 @@ void Coin::move()
     setPosition(sf::Vector2f(getPosition().x - _movespeed, getPosition().y));
 }
 
-void Coin::moveMagnet()
-{   
-    setPosition(sf::Vector2f(getPosition().x- Player::getPositionX(), getPosition().y - Player::getPositionY()));
-}
-
 void Coin::setPicked(bool picked)
 {
     _picked = picked;
