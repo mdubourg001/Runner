@@ -23,6 +23,7 @@ public:
 
     bool isJumping() const;
     void setJumping(bool isjumping);
+    void setPosition(int x, int y);
     void jump();
     void rotate(sf::Sprite &p);
     void drawShadow(sf::RenderWindow *window);

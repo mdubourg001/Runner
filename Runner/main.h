@@ -20,6 +20,10 @@ const std::string POLICEMENU = "res/slice.ttf";
 const std::string BACKGROUND_MENU_IMAGE = "res/city.png";
 const std::string BOUTON_ROUGE = "res/bouton_rouge.png";
 const std::string BOUTON_BLEU = "res/bouton_bleu.png";
+const std::string FICHIER_SCORE = "res/scores.txt";
+const std::string FICHIER_COIN = "res/coins.txt";
+const std::string FICHIER_DIAMOND = "res/diamonds.txt";
+
 
 enum direction
 {

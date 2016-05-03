@@ -55,6 +55,10 @@ public:
 
     void nextStep();
     Player* getPlayer();
+    Counter* getCounterScore();
+    Counter* getCounterCoin();
+    Counter* getCounterDiamond();
+
     std::vector<Coin *> *Coins();
     std::vector<Diamond *> *Diamonds();
     std::vector<Bonus *> *Awards();
@@ -71,6 +75,7 @@ public:
     void saveScore();
     void saveCoin();
     void saveDiamond();
-
+    void save();
+    void reset();
 };
 #endif
