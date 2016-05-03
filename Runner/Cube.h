@@ -8,6 +8,8 @@ class Cube : sf::Sprite
 protected:
     int _color; //1->red 2->blue 3->green 4->yellow 5->purple
     sf::Texture _texture;
+    bool _destroyed;
+
 public:
     Cube();
     Cube(int color, int stage);
@@ -15,6 +17,9 @@ public:
     void setColor(int color);
     void draw(sf::RenderWindow* w);
     void move(int movespeed);
+    void isDestroyed() const;
+    bool setDestroyed(bool destroyed);
+    sf::Vector2f getPos() const;
 };
 
 #endif // CUBE_H

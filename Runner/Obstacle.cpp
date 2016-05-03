@@ -41,6 +41,8 @@ void Obstacle::move()
     {
         _cubes.at(i)->move(_movespeed);
     }
+
+    setPosition(_cubes.at(0)->getPos());
 }
 
 void Obstacle::setDestroyed(bool destroyed)

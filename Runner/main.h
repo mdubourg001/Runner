@@ -2,6 +2,7 @@
 #define MAIN_H
 
 #include <SFML/Graphics.hpp>
+#include <chrono>
 
 #define SCREEN_WIDTH 1366
 #define SCREEN_HEIGHT 768
