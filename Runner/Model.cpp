@@ -4,11 +4,14 @@
 #include "time.h"
 using namespace std;
 
+
+int i =0;
+int randoume =0;
 //=======================================
 // Constructeurs
 //=======================================
 Model::Model(int w, int h)
-  :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0), _canpop(true), _magnetpicked(false), _magnetcpt(-1),
+  :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0), _canpop(true), _magnetpicked(false), _magnetcpt(-1), _difficulte(0),
      _coin_counter(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70, 50, 50),
     _score_counter(0, SCREEN_WIDTH - 500, SCREEN_HEIGHT-70, 50, 50),
     _diamond_counter(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70, 50, 50)
@@ -44,7 +47,15 @@ void Model::nextStep()
         _player.jump();
     }
 
-    if(timelapse >= 800)
+
+    if((_score_counter.getValue() % 1000) == 0)
+
+    {
+        if (2000 - _difficulte >= 500)
+            _difficulte += 200;
+    }
+
+    if(timelapse >= (2000-_difficulte))
     {
         _canpop = true;
         _start = std::chrono::system_clock::now();
@@ -52,23 +63,25 @@ void Model::nextStep()
 
     if(_canpop)
     {
-        if(rand()%40 == 0)
+        randoume = rand();
+
+        if(randoume%40 == 0)
         {
             addCoin();
             _canpop = false;
         }
-        else if (rand()%4000 == 0)
+        else if (randoume%4000 == 1)
         {
             addDiamond();
             _canpop = false;
         }
-        else if (rand()%400 == 0 && _bonus.size()<1)
+        else if (randoume%400 == 2 && _bonus.size()<1)
         {
             addBonus();
             _canpop = false;
         }
 
-        else if(rand()%80 == 0)
+        else if(randoume%80 == 3)
         {
             addObstacle();
             _canpop = false;
@@ -220,6 +233,11 @@ std::vector<Obstacle*>* Model::Obstacles()
     return ptr;
 }
 
+void Model::setDifficulte(int d)
+{
+    _difficulte = d;
+}
+
 void Model::setPlayerDirection(direction d)
 {
     if(d == none)
@@ -260,7 +278,7 @@ void Model::movePlayer()
 
 void Model::addCoin()
 {
-    _coins.push_back(new Coin("res/coinsprite.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 47, 50, 8));
+    _coins.push_back(new Coin("res/coinsprite.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 8));
 }
 
 void Model::addDiamond()

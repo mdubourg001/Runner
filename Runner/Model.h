@@ -41,6 +41,7 @@ protected:
     bool _canpop;
     bool _magnetpicked;
     int _magnetcpt;
+    int _difficulte;
 
 
     BonusType bt;
@@ -77,5 +78,6 @@ public:
     void saveDiamond();
     void save();
     void reset();
+    void setDifficulte(int d);
 };
 #endif

@@ -286,7 +286,7 @@ View::View(int w, int h)
 
     _topScores.setFont(_font);
     _topScores.setColor(sf::Color::Black);
-    _topScores.setPosition(_textHighscores.getPosition().x+200,_textHighscores.getPosition().y);
+    _topScores.setPosition(_textHighscores.getPosition().x+400,_textHighscores.getPosition().y);
 
     for(int i=0;i<14;i++)
         _items.push_back(new Item());
@@ -362,7 +362,15 @@ void View::synchronise()
     _healthRect.setSize(sf::Vector2f(_model->getPlayer()->getHealth(),_healthRect.getSize().y));
     _shieldRect.setSize(sf::Vector2f(-_model->getPlayer()->getShield(),_shieldRect.getSize().y));
 
-
+    /* Ne doit pas etre là */
+    if(_model->getPlayer()->getHealth() == 0)
+    {
+        gs = menu;
+        _model->save();
+        this->recup();
+        _model->reset();
+    }
+    /* --------------------*/
 }
 
 void View::synchroniseShop()
@@ -668,6 +676,8 @@ bool View::treatEvents()
             {
                 _window->close(); //la fenetre est fermée
                 result = false;
+                _model->save();
+
             }
             else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs!= menu && gs!=intro)
             {
@@ -807,11 +817,20 @@ bool View::treatEvents()
                     toEnglish();
                 }
                 else if(x>=570 && x<=770 && y>=495 && y<=670)
+                {
                     dif = facile;
+                    _model->setDifficulte(0);
+                }
                 else if(x>=830 && x<=1030 && y>=495 && y<=670)
+                {
                     dif = moyen;
+                    _model->setDifficulte(1000);
+                }
                 else if (x>=1080 && x<=1270 && y>=495 && y<=670)
+                {
                     dif = difficile;
+                    _model->setDifficulte(1300);
+                }
             }
             else if (event.type == sf::Event::MouseMoved && gs == menu)
             {
