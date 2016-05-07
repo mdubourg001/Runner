@@ -15,7 +15,8 @@ private:
 public:
     Preview();
     void draw(sf::RenderWindow *w);
-
+    void move();
+    void reset();
 };
 
 #endif // PREVIEW_H

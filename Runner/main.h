@@ -12,8 +12,8 @@
 
 const std::string BACKGROUND_IMAGE_L = "res/city_1.png";
 const std::string BACKGROUND_IMAGE_B = "res/city2.png";
-const std::string BACKGROUND_IMAGE_PREVIEW_L = "res/city_preview.png";
-const std::string BACKGROUND_IMAGE_PREVIEW_R = "res/city2_preview.png";
+const std::string BACKGROUND_IMAGE_PREVIEW_L = "res/city1_preview.png";
+const std::string BACKGROUND_IMAGE_PREVIEW_B = "res/city2_preview.png";
 const std::string BALL_IMAGE = "res/ball_v2.png";
 const std::string BACKGROUND_INTRO_IMAGE = "res/backgroundIntro.png";
 const std::string POLICE = "res/slapstick.ttf";

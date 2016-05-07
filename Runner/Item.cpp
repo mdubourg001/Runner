@@ -9,6 +9,11 @@ Item::Item()
     _preview = new Preview();
 }
 
+Item::~Item()
+{
+    delete _preview;
+}
+
 sf::Text Item::getName()
 {
     return _name;
@@ -35,8 +40,14 @@ void Item::drawText(sf::RenderWindow *w)
     w->draw(_name);
 }
 
+void Item::reset()
+{
+    _preview->reset();
+}
+
 void Item::drawPreview(sf::RenderWindow *w)
 {
     _preview->draw(w);
+    _preview->move();
 }
 

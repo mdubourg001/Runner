@@ -16,12 +16,14 @@ protected:
 
 public:
     Item();
+    ~Item();
     sf::Text getName();
     void setName(std::string texte);
     bool isSelected();
     void setSelected(bool s);
     void drawText(sf::RenderWindow *w);
     void drawPreview(sf::RenderWindow *w);
+    void reset();
 
 };
 
