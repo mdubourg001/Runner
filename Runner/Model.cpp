@@ -283,7 +283,7 @@ void Model::addCoin()
 
 void Model::addDiamond()
 {
-    _diamonds.push_back(new Diamond("res/diamondsprite.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 5));
+    _diamonds.push_back(new Diamond("res/diamond.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 5));
 }
 
 void Model::addBonus()
@@ -335,7 +335,7 @@ void Model::addBonus()
 
 void Model::addObstacle()
 {
-    _obstacles.push_back(new Obstacle(rand()%3+1));
+    _obstacles.push_back(new Obstacle(rand()%4+1));
 }
 
 void Model::drawInterface(sf::RenderWindow *w)

@@ -27,7 +27,7 @@ View::View(int w, int h)
     _window->setKeyRepeatEnabled(true); //désactive la répétition des touches
 
     _font.loadFromFile(POLICE);
-    _fontmenu.loadFromFile(POLICEMENU);
+    _fontmenu.loadFromFile(POLICE);
 
     _totalCoin.setTexture("res/coin.png");
     _totalDiamond.setTexture("res/diamond.png");

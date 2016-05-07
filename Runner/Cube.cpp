@@ -6,6 +6,8 @@ Cube::Cube()
 Cube::Cube(int color, int stage)
     : _color {color} //1->red 2->blue 3->green 4->yellow 5->purple
 {
+    setOrigin(25, 25);
+
     switch (_color)
     {
     case 1:
@@ -52,14 +54,16 @@ Cube::Cube(int color, int stage)
     switch(stage)
     {
     case 1:
-        setPosition(sf::Vector2f(SCREEN_WIDTH + 100, SCREEN_HEIGHT - SCREEN_HEIGHT/4));
+        setPosition(sf::Vector2f(SCREEN_WIDTH + 100, SCREEN_HEIGHT - SCREEN_HEIGHT/4 + 40));
         break;
     case 2:
-        setPosition(sf::Vector2f(SCREEN_WIDTH + 100, SCREEN_HEIGHT - SCREEN_HEIGHT/4 - 70));
+        setPosition(sf::Vector2f(SCREEN_WIDTH + 100, SCREEN_HEIGHT - SCREEN_HEIGHT/4));
         break;
     case 3:
-        setPosition(sf::Vector2f(SCREEN_WIDTH + 100, SCREEN_HEIGHT - SCREEN_HEIGHT/4 - 140));
+        setPosition(sf::Vector2f(SCREEN_WIDTH + 100, SCREEN_HEIGHT - SCREEN_HEIGHT/4 - 40));
         break;
+    case 4:
+        setPosition(sf::Vector2f(SCREEN_WIDTH + 100, SCREEN_HEIGHT - SCREEN_HEIGHT/4 - 80));
     default:
         break;
     }
@@ -124,5 +128,10 @@ void Cube::move(int movespeed)
 sf::Vector2f Cube::getPos() const
 {
     return getPosition();
+}
+
+sf::Vector2f Cube::getOri() const
+{
+    return getOrigin();
 }
 

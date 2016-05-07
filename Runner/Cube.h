@@ -20,6 +20,7 @@ public:
     void isDestroyed() const;
     bool setDestroyed(bool destroyed);
     sf::Vector2f getPos() const;
+    sf::Vector2f getOri() const;
 };
 
 #endif // CUBE_H
