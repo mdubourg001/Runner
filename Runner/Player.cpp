@@ -91,13 +91,11 @@ void Player::treatCollisions(std::vector<Coin *> coins, std::vector<Diamond *> d
                 && _posy + 25 >= bonus.at(i)->getPosition().y - 25 && _posy + 25 <= bonus.at(i)->getPosition().y + 25))
             bonus.at(i)->setPicked(true);
 
-
     for(int i=0 ; i<obstacles.size() ; i++) //collision entre la balle et les obstacles
-
-        if((_posx - 25 <= obstacles.at(i)->getPosition().x + 25 && _posx - 25 >= obstacles.at(i)->getPosition().x -25
-                && _posy - 25 <= obstacles.at(i)->getPosition().y + 25 && _posy - 25 >= obstacles.at(i)->getPosition().y -25)
-                || (_posx + 25 >= obstacles.at(i)->getPosition().x - 25 && _posx + 25 <= obstacles.at(i)->getPosition().x + 25
-                && _posy + 25 >= obstacles.at(i)->getPosition().y - 25 && _posy + 25 <= obstacles.at(i)->getPosition().y + 25))
+        if((_posx - 25 <= obstacles.at(i)->getPos().x + 25 && _posx - 25 >= obstacles.at(i)->getPos().x -25
+                && _posy - 25 <= obstacles.at(i)->getPos().y && _posy - 25 >= obstacles.at(i)->getPos().y - obstacles.at(i)->getSize().y)
+                || (_posx + 25 >= obstacles.at(i)->getPos().x - 25 && _posx + 25 <= obstacles.at(i)->getPos().x + 25
+                && _posy + 25 >= obstacles.at(i)->getPos().y - obstacles.at(i)->getSize().y && _posy + 25 <= obstacles.at(i)->getPos().y + 25))
         {
             obstacles.at(i)->setDestroyed(true);
             looseLife();
@@ -147,7 +145,7 @@ void Player::looseLife()
 {
     if(_shield>0)
         _shield-=80;
-    else
+    else if(_health > 0)
         _health-=80;
 }
 
