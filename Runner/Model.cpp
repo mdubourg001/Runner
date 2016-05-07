@@ -178,6 +178,23 @@ Player* Model::getPlayer()
     Player* ptr = &_player;
     return ptr;
 }
+Counter* Model::getCounterScore()
+{
+    Counter* ctr = &_score_counter;
+    return ctr;
+}
+
+Counter* Model::getCounterCoin()
+{
+    Counter* ctr = &_coin_counter;
+    return ctr;
+}
+
+Counter* Model::getCounterDiamond()
+{
+    Counter* ctr = &_diamond_counter;
+    return ctr;
+}
 
 std::vector<Coin*>* Model::Coins()
 {
@@ -310,11 +327,11 @@ void Model::drawInterface(sf::RenderWindow *w)
     _diamond_counter.draw(w); //dessin du compteur de diamants
 }
 
-/*void Model::saveScore()
+void Model::saveScore()
 {
     int best=0; // peut etre faire des attributs de classes pour pouvoir gérer plus facilement lorsqu'on veut afficher le best score ou bien le nombre de pieces dans le menu
     fstream fichierScore;
-    fichierScore.open("scores.txt", ios::in );
+    fichierScore.open(FICHIER_SCORE, ios::in );
     if( fichierScore.fail() )
     {
         cerr << "ouverture en lecture impossible" << endl;
@@ -323,10 +340,10 @@ void Model::drawInterface(sf::RenderWindow *w)
     fichierScore >> best;
     fichierScore.close();
 
-    if(_score_counter > best)
+    if(_score_counter.getValue() > best)
     {
-        fichierScore.open("scores.txt", ios::out);
-        fichierScore << to_string(_score_counter);
+        fichierScore.open(FICHIER_SCORE, ios::out);
+        fichierScore << to_string(_score_counter.getValue());
         fichierScore.close();
     }
 }
@@ -335,18 +352,18 @@ void Model::saveCoin()
 {
     int total=0;
     fstream fichierCoins;
-    fichierCoins.open("coins.txt", ios::in );
-    if( fichierCoin.fail() )
+    fichierCoins.open(FICHIER_COIN, ios::in );
+    if( fichierCoins.fail() )
     {
         cerr << "ouverture en lecture impossible" << endl;
         exit(EXIT_FAILURE);
     }
     fichierCoins >> total;
-    total += _coin_counter;
+    total += _coin_counter.getValue();
     fichierCoins.close();
 
-    fichierCoins.open("coins.txt", ios::out);
-    fichierCoins << total;
+    fichierCoins.open(FICHIER_COIN, ios::out);
+    fichierCoins << to_string(total);
     fichierCoins.close();
 }
 
@@ -354,17 +371,38 @@ void Model::saveDiamond()
 {
     int total=0;
     fstream fichierDiamonds;
-    fichierDiamonds.open("diamonds.txt", ios::in );
+    fichierDiamonds.open(FICHIER_DIAMOND, ios::in );
     if( fichierDiamonds.fail() )
     {
         cerr << "ouverture en lecture impossible" << endl;
         exit(EXIT_FAILURE);
     }
     fichierDiamonds >> total;
-    total += _diamond_counter;
+    total += _diamond_counter.getValue();
     fichierDiamonds.close();
 
-    fichierDiamonds.open("diamonds.txt", ios::out);
-    fichierDiamonds << total;
+    fichierDiamonds.open(FICHIER_DIAMOND, ios::out);
+    fichierDiamonds << to_string(total);
     fichierDiamonds.close();
-}*/
+}
+
+void Model::save()
+{
+    this->saveScore();
+    this->saveCoin();
+    this->saveDiamond();
+}
+
+void Model::reset()
+{
+    _coin_counter.setValue(0);
+    _diamond_counter.setValue(0);
+    _score_counter.setValue(0);
+    _player.setPosition(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5);
+    _coins.clear();
+    _obstacles.clear();
+    _diamonds.clear();
+    _bonus.clear();
+    _player.setHealth(400);
+    _player.setShield(0);
+}

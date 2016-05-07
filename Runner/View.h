@@ -5,6 +5,7 @@
 #include <chrono>
 #include "SlidingBackground.h"
 #include "Bonus.h"
+#include "Counter.h"
 #include "Item.h"
 
 enum gamestates
@@ -126,6 +127,7 @@ private:
     sf::Text _healthText;
     sf::Text _textBall;
     sf::Text _textBack;
+    sf::Text _topScores;
 
 
     sf::RectangleShape _rectBall;
@@ -139,6 +141,9 @@ private:
     difficulte dif;
 
     int _cpt;
+    Counter _best;
+    Counter _totalCoin;
+    Counter _totalDiamond;
 
 public:
     View(int w, int h);
@@ -158,6 +163,11 @@ public:
     void synchroniseShop();
     bool treatEvents();
     gamestates getGs();
+    difficulte getDiff();
+    void recupBest();
+    void recupCoins();
+    void recupDiamonds();
+    void recup();
 
 };
 #endif

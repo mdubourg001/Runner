@@ -39,6 +39,12 @@ void Player::setJumping(bool isjumping)
 bool Player::isJumping() const
 { return _jumping; }
 
+void Player::setPosition(int x, int y)
+{
+   _posx = x;
+   _posy = y;
+}
+
 //=======================================
 // Méthodes
 //=======================================

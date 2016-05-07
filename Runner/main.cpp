@@ -9,6 +9,7 @@ int main()
     Model model(SCREEN_WIDTH, SCREEN_HEIGHT);
     View view(SCREEN_WIDTH, SCREEN_HEIGHT);
     view.setModel(&model);
+    view.recup();
 
     while(view.treatEvents())
     {
@@ -37,6 +38,7 @@ int main()
             break;
         }
     }
+    model.save();
 
     return EXIT_SUCCESS;
 }

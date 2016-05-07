@@ -14,7 +14,12 @@ using namespace std;
 //=======================================
 View::View(int w, int h)
     : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5),
-      _cpt(160) ,gs(intro), lg(fr), dif(facile),  SettingsSelected(false), HighscoresSelected(false), GameSelected(false), ShopSelected(false), ExitSelected(false)
+      _cpt(160) ,gs(intro), lg(fr), dif(facile),  SettingsSelected(false), HighscoresSelected(false), GameSelected(false), ShopSelected(false), ExitSelected(false),
+      _totalCoin(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70, 50, 50),
+      _totalDiamond(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70, 50, 50)
+
+
+
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D
     _window->setFramerateLimit(FRAMERATE_LIMIT); //fixe la limite de fps
@@ -23,6 +28,10 @@ View::View(int w, int h)
 
     _font.loadFromFile(POLICE);
     _fontmenu.loadFromFile(POLICEMENU);
+
+    _totalCoin.setTexture("res/coin.png");
+    _totalDiamond.setTexture("res/diamond.png");
+
 
 
     if (!_background.loadTextures(BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
@@ -275,6 +284,10 @@ View::View(int w, int h)
     _textBack.setString("Background : ");
     _textBack.setPosition((SCREEN_WIDTH/2)+10,10);
 
+    _topScores.setFont(_font);
+    _topScores.setColor(sf::Color::Black);
+    _topScores.setPosition(_textHighscores.getPosition().x+200,_textHighscores.getPosition().y);
+
     for(int i=0;i<14;i++)
         _items.push_back(new Item());
 
@@ -307,6 +320,11 @@ View::~View() //destructeur de la classe View
 void View::setModel(Model * model) //setter qui permet de modifier le modele associé à la vue
 {
     _model = model;
+}
+
+difficulte View::getDiff()
+{
+    return dif;
 }
 
 void View::synchronise()
@@ -364,6 +382,60 @@ void View::synchroniseShop()
         else
             _items.at(i)->setName("Background " + std::to_string(i+1));
     }
+}
+
+void View::recupBest()
+{
+    ifstream fichierRecup;
+    string line = "";
+    fichierRecup.open(FICHIER_SCORE, ios::in );
+    if( fichierRecup.fail())
+    {
+        cerr << "ouverture en lecture impossible" << endl;
+        exit(EXIT_FAILURE);
+    }
+    getline(fichierRecup, line);
+    _best.setValue(atoi(line.c_str()));
+    fichierRecup.close();
+
+    _topScores.setString(to_string(_best.getValue()));
+}
+
+void View::recupCoins()
+{
+    ifstream fichierRecup;
+    string line = "";
+    fichierRecup.open(FICHIER_COIN, ios::in );
+    if( fichierRecup.fail())
+    {
+        cerr << "ouverture en lecture impossible" << endl;
+        exit(EXIT_FAILURE);
+    }
+    getline(fichierRecup, line);
+    _totalCoin.setValue(atoi(line.c_str()));
+    fichierRecup.close();
+}
+
+void View::recupDiamonds()
+{
+    ifstream fichierRecup;
+    string line = "";
+    fichierRecup.open(FICHIER_DIAMOND, ios::in );
+    if( fichierRecup.fail())
+    {
+        cerr << "ouverture en lecture impossible" << endl;
+        exit(EXIT_FAILURE);
+    }
+    getline(fichierRecup, line);
+    _totalDiamond.setValue(atoi(line.c_str()));
+    fichierRecup.close();
+}
+
+void View::recup()
+{
+    this->recupBest();
+    this->recupCoins();
+    this->recupDiamonds();
 }
 
 //=======================================
@@ -478,6 +550,9 @@ void View::drawMenu()
     _window->draw(_textSettings);
     _window->draw(_textHighscores);
 
+    _totalCoin.draw(_window);
+    _totalDiamond.draw(_window);
+
     _window->display();
 }
 
@@ -542,12 +617,18 @@ void View::drawShop()
        // _items.at(i)->drawPreview(_window);
         _items.at(i)->drawText(_window);
     }
+
+
+
     _items.at(0)->drawPreview(_window);
 
     //--------------------
 
 
     //--------------------
+
+    _totalCoin.draw(_window);
+    _totalDiamond.draw(_window);
 
     _window->display();
 }
@@ -559,7 +640,7 @@ void View::drawHighscores()
     _window->draw(_backgroundMenuSprite);
 
     _window->draw(_textHighscores);
-
+    _window->draw(_topScores);
 
 
     _window->display();
@@ -591,7 +672,9 @@ bool View::treatEvents()
             else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs!= menu && gs!=intro)
             {
                 gs = menu;
-                // remettre a zero
+                _model->save();
+                this->recup();
+                _model->reset();
             }
             else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs== menu)
             {
@@ -801,9 +884,9 @@ void View::toFrench()
     _textLang.setString("Langue : ");
     _textMoy.setString("Moyen");
 
-    _textGame.setString("Joueur");
+    _textGame.setString("Jouer");
     _textExit.setString("Quitter");
-    _textSettings.setString("Paramètres");
+    _textSettings.setString("Parametres");
     _textShop.setString("Boutique");
 
     _healthText.setString("SANTE : ");
@@ -811,4 +894,3 @@ void View::toFrench()
     _textPass.setString("<  APPUYER SUR ESPACE POUR COMMENCER  >");
 
 }
-
