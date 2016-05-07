@@ -118,21 +118,6 @@ void Player::drawShadow(sf::RenderWindow* window)
     window->draw(_shadow);
 }
 
-<<<<<<< HEAD
-
-
-int Player::getPositionX()
-{
-    return 10;
-}
-
-int Player::getPositionY()
-{
-    return -1;
-}
-
-=======
->>>>>>> b38f2157b394dc7498b6dc92c82ce2427e9fe24f
 int Player::getHealth() const
 {
     return _health;
