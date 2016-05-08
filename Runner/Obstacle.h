@@ -11,13 +11,13 @@ class Obstacle : public sf::Sprite
 protected:
     int _category; //attribut qui indique de combien de cubes est composé l'obstacle, {1, 2, 3, 4}
     sf::RectangleShape _hitbox;
-    static int _movespeed;
+    int _movespeed;
     bool _destroyed;
     std::vector<Cube*> _cubes;
 
 public:
     Obstacle();
-    Obstacle(int category);
+    Obstacle(int category, int ms);
 
     void move();
     void setDestroyed(bool destroyed);
@@ -25,6 +25,7 @@ public:
     sf::Vector2f getSize() const;
     bool isDestroyed() const;
     void draw(sf::RenderWindow* w);
+    void actualiseSpeed(int speed);
 };
 
 #endif // OBSTACLE_H

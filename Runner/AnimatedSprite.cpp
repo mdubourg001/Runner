@@ -59,3 +59,7 @@ void AnimatedSprite::animate(int value)
     }
 }
 
+void AnimatedSprite::actualiseSpeed(int speed)
+{
+    _movespeed = speed;
+}

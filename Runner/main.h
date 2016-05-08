@@ -10,6 +10,10 @@
 #define JUMP_INITIAL_SPEED 25
 #define FRAMERATE_LIMIT 60
 
+#define EASY_SPEED 5
+#define MEDIUM_SPEED 7
+#define HARD_SPEED 10
+
 const std::string BACKGROUND_IMAGE_L = "res/city_1.png";
 const std::string BACKGROUND_IMAGE_B = "res/city2.png";
 const std::string BACKGROUND_IMAGE_PREVIEW_L = "res/city1_preview.png";

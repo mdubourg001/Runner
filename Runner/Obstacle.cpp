@@ -1,14 +1,12 @@
 #include "Obstacle.h"
+#include "Model.h"
 #include <iostream>
-
-
-int Obstacle::_movespeed = 5;
 
 Obstacle::Obstacle()
 {}
 
-Obstacle::Obstacle(int category)
-    : _category{category}, _destroyed{false}
+Obstacle::Obstacle(int category, int ms)
+    : _category{category}, _destroyed{false}, _movespeed{ms}
 {
     srand(time(NULL));
 
@@ -83,3 +81,7 @@ sf::Vector2f Obstacle::getSize() const
     return _hitbox.getSize();
 }
 
+void Obstacle::actualiseSpeed(int speed)
+{
+    _movespeed = speed;
+}

@@ -4,9 +4,13 @@
 #include "time.h"
 using namespace std;
 
-
+//----------!!!!!!!!!!!!!!!!!!!!
 int i =0;
 int randoume =0;
+//-----------!!!!!!!!!!!!!!!!!!!
+
+int Model::_current_speed = EASY_SPEED;
+
 //=======================================
 // Constructeurs
 //=======================================
@@ -22,6 +26,7 @@ Model::Model(int w, int h)
 
 
     _start = std::chrono::system_clock::now();
+    _gamestart = std::chrono::system_clock::now();
 }
 //=======================================
 // Destructeurs
@@ -34,8 +39,24 @@ Model::~Model(){}
 void Model::nextStep()
 {
     _end = std::chrono::system_clock::now();
+    _timecheck = std::chrono::system_clock::now();
+
     int timelapse = std::chrono::duration_cast<std::chrono::milliseconds>
             (_end-_start).count();
+    int gametime = std::chrono::duration_cast<std::chrono::seconds>
+            (_timecheck-_gamestart).count();
+
+    if(gametime%20 == 0) //augmentation de la vitesse des objets en fonction du temps
+    {
+        _current_speed = MEDIUM_SPEED;
+        actualiseSpeed(_current_speed);
+    }
+    else if(gametime%40 == 0)
+    {
+        _current_speed = HARD_SPEED;
+        actualiseSpeed(_current_speed);
+    }
+
 
     _score_counter.increment();
 
@@ -278,12 +299,12 @@ void Model::movePlayer()
 
 void Model::addCoin()
 {
-    _coins.push_back(new Coin("res/coinsprite.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 8));
+    _coins.push_back(new Coin("res/coinsprite.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 8));
 }
 
 void Model::addDiamond()
 {
-    _diamonds.push_back(new Diamond("res/diamond.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 5));
+    _diamonds.push_back(new Diamond("res/diamond.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 5));
 }
 
 void Model::addBonus()
@@ -291,39 +312,39 @@ void Model::addBonus()
     switch(rand()%9)
     {
     case 1:
-        _bonus.push_back(new Bonus("res/aimant.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 7));
+        _bonus.push_back(new Bonus("res/aimant.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 7));
         bt = magnet;
         break;
     case 2:
-        _bonus.push_back(new Bonus("res/aleatoire.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 14));
+        _bonus.push_back(new Bonus("res/aleatoire.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 14));
         bt = randombonus;
         break;
     case 3:
-        _bonus.push_back(new Bonus("res/sablier.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 8));
+        _bonus.push_back(new Bonus("res/sablier.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 8));
         bt = hourglass;
         break;
     case 4:
         if(_player.getHealth() < 400)
         {
-            _bonus.push_back(new Bonus("res/sante.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+            _bonus.push_back(new Bonus("res/sante.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
             bt = health;
         }
         else
         {
-            _bonus.push_back(new Bonus("res/bouclier.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+            _bonus.push_back(new Bonus("res/bouclier.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
             bt = shield;
         }
         break;
     case 5:
-        _bonus.push_back(new Bonus("res/etoile.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 6));
+        _bonus.push_back(new Bonus("res/etoile.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 6));
         bt = star;
         break;
     case 6:
-        _bonus.push_back(new Bonus("res/plume.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+        _bonus.push_back(new Bonus("res/plume.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
         bt = feather;
         break;
     case 7:
-        _bonus.push_back(new Bonus("res/redcoin.png", 5, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+        _bonus.push_back(new Bonus("res/redcoin.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
         bt = redcoin;
         break;
     case 8:
@@ -335,7 +356,7 @@ void Model::addBonus()
 
 void Model::addObstacle()
 {
-    _obstacles.push_back(new Obstacle(rand()%4+1));
+    _obstacles.push_back(new Obstacle(rand()%4+1, _current_speed));
 }
 
 void Model::drawInterface(sf::RenderWindow *w)
@@ -423,4 +444,18 @@ void Model::reset()
     _bonus.clear();
     _player.setHealth(400);
     _player.setShield(0);
+    _current_speed = EASY_SPEED;
+}
+
+void Model::actualiseSpeed(int speed)
+{
+    for(auto c : _coins) {c->actualiseSpeed(speed) ;}
+    for(auto d : _diamonds) {d->actualiseSpeed(speed) ;}
+    for(auto b : _bonus) {b->actualiseSpeed(speed) ;}
+    for(auto o : _obstacles) {o->actualiseSpeed(speed) ;}
+}
+
+int Model::getCurrentSpeed()
+{
+    return _current_speed;
 }
