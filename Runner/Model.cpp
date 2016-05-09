@@ -96,7 +96,7 @@ void Model::nextStep()
             addDiamond();
             _canpop = false;
         }
-        else if (randoume%400 == 2 && _bonus.size()<1)
+        else if (randoume%40 == 2 && _bonus.size()<1)
         {
             addBonus();
             _canpop = false;
@@ -304,7 +304,7 @@ void Model::addCoin()
 
 void Model::addDiamond()
 {
-    _diamonds.push_back(new Diamond("res/diamond.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 5));
+    _diamonds.push_back(new Diamond("res/diamondsprite.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 5));
 }
 
 void Model::addBonus()

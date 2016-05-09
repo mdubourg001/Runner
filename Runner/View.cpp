@@ -350,6 +350,7 @@ void View::synchronise()
         _start = std::chrono::system_clock::now();
         for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->animate(50);});
         for_each(_model->Diamonds()->begin(), _model->Diamonds()->end(), [](Diamond* &d){d->animate(50);});
+        for_each(_model->Awards()->begin(), _model->Awards()->end(), [](Bonus* &b){b->animate(50);});
     }
 
     if(!_model->getPlayer()->isJumping())
