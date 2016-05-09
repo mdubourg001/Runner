@@ -96,7 +96,7 @@ void Model::nextStep()
             addDiamond();
             _canpop = false;
         }
-        else if (randoume%40 == 2 && _bonus.size()<1)
+        else if (randoume%80 == 2 && _bonus.size()<1)
         {
             addBonus();
             _canpop = false;
@@ -326,7 +326,7 @@ void Model::addBonus()
     case 4:
         if(_player.getHealth() < 400)
         {
-            _bonus.push_back(new Bonus("res/sante.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+            _bonus.push_back(new Bonus("res/heart.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 7));
             bt = health;
         }
         else

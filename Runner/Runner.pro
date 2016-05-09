@@ -20,7 +20,8 @@ SOURCES += main.cpp \
     Item.cpp \
     Preview.cpp \
     Diamond.cpp \
-    Cube.cpp
+    Cube.cpp \
+    Button.cpp
 
 HEADERS += \
     Player.h \
@@ -37,4 +38,5 @@ HEADERS += \
     Item.h \
     Preview.h \
     Diamond.h \
-    Cube.h
+    Cube.h \
+    Button.h

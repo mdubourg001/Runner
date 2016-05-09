@@ -527,27 +527,27 @@ void View::drawMenu()
 
     _window->draw(_backgroundMenuSprite);
 
-    if(SettingsSelected == true)
+    if(SettingsSelected)
         _window->draw(_redButtonSpriteSettings);
     else
         _window->draw(_blueButtonSpriteSettings);
 
-    if(HighscoresSelected == true)
+    if(HighscoresSelected)
         _window->draw(_redButtonSpriteHighscores);
     else
         _window->draw(_blueButtonSpriteHighscores);
 
-    if(GameSelected == true)
+    if(GameSelected)
         _window->draw(_redButtonSpriteGame);
     else
         _window->draw(_blueButtonSpriteGame);
 
-    if(ShopSelected == true)
+    if(ShopSelected)
         _window->draw(_redButtonSpriteShop);
     else
         _window->draw(_blueButtonSpriteShop);
 
-    if(ExitSelected == true)
+    if(ExitSelected)
         _window->draw(_redButtonSpriteExit);
     else
         _window->draw(_blueButtonSpriteExit);
