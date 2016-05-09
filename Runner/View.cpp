@@ -610,10 +610,14 @@ void View::drawShop()
 {
     _window->clear(sf::Color::White);
 
+    for(auto i : _items)
+    {
+        if(i->isSelected())
+            i->drawPreview(_window);
+    }
+
     for(int i=0;i<_items.size();i++)
     {
-        if(_items.at(i)->isSelected())
-            _items.at(i)->drawPreview(_window);
         _window->draw(*_items.at(i));
         _items.at(i)->drawText(_window);
     }
