@@ -21,6 +21,7 @@ public:
 
     void move();
     void animate(int value);
+    void actualiseSpeed(int speed);
 
 };
 

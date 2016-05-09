@@ -13,12 +13,6 @@ Coin::Coin(std::string texture, int ms, int posx, int posy, int width, int heigh
     _alphatext.setPosition(sf::Vector2f(this->getPosition().x + 40, this->getPosition().y +40));
 }
 
-Coin::Coin(int ms, int posx, int posy, int width, int height)
-    : AnimatedSprite(ms, posx, posy, width, height)
-{
-
-}
-
 void Coin::move()
 {
     setPosition(sf::Vector2f(getPosition().x - _movespeed, getPosition().y));

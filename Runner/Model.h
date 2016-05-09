@@ -46,9 +46,10 @@ protected:
 
     BonusType bt;
 
-
+    static int _current_speed;
 
     std::chrono::time_point<std::chrono::system_clock> _start, _end;
+    std::chrono::time_point<std::chrono::system_clock> _gamestart, _timecheck;
 
 public:
     Model(int w, int h);
@@ -79,5 +80,7 @@ public:
     void save();
     void reset();
     void setDifficulte(int d);
+    void actualiseSpeed(int speed);
+    static int getCurrentSpeed();
 };
 #endif

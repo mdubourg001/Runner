@@ -1,40 +1,25 @@
 #include "SlidingBackground.h"
 
-SlidingBackground::SlidingBackground()
-{
-
-}
-
-SlidingBackground::SlidingBackground(int w, int h, int sB, int sL)
-    : _width {w}, _height {h}, _speedBig {sB}, _speedLittle{sL}
-{
-    _rightBig.setPosition(sf::Vector2f(_width, 0));
-    _leftBig.setPosition(sf::Vector2f(0, 0));
-
-    _rightLittle.setPosition(sf::Vector2f(_width, 0));
-    _leftLittle.setPosition(sf::Vector2f(0, 0));
-}
-
 SlidingBackground::SlidingBackground(int posx, int posy, int w, int h, int sB, int sL)
-    : _width {w}, _height {h}, _speedBig {sB}, _speedLittle{sL}
+    : _width {w}, _height {h}, _speedBig {sB}, _speedLittle{sL}, _posx{posx}, _posy{posy}
 {
-    _rightBig.setPosition(sf::Vector2f(_width, posy));
+    _rightBig.setPosition(sf::Vector2f(_posx + _width -5 , posy));
     _leftBig.setPosition(sf::Vector2f(posx, posy));
 
-    _rightLittle.setPosition(sf::Vector2f(_width, posy));
+    _rightLittle.setPosition(sf::Vector2f(_posx + _width - 5 , posy));
     _leftLittle.setPosition(sf::Vector2f(posx, posy));
 }
 
 //========================================
 //========================================
 
-void SlidingBackground::move()
+void SlidingBackground::move() //gestion du défilement paralaxe
 {
-    if(_leftBig.getPosition().x <= -SCREEN_WIDTH)
-        _leftBig.setPosition(sf::Vector2f(_width - 5, 0));
+    if(_leftBig.getPosition().x <= _posx -_width)
+        _leftBig.setPosition(sf::Vector2f(_posx + _width - 5, _posy));
 
-    else if(_rightBig.getPosition().x <= -SCREEN_WIDTH)
-        _rightBig.setPosition(sf::Vector2f(_width - 5 , 0));
+    else if(_rightBig.getPosition().x <= _posx -_width)
+        _rightBig.setPosition(sf::Vector2f(_posx + _width - 5, _posy));
 
     else
     {
@@ -42,11 +27,11 @@ void SlidingBackground::move()
         _rightBig.move(-_speedBig, 0);
     }
 
-    if(_leftLittle.getPosition().x <= -SCREEN_WIDTH)
-        _leftLittle.setPosition(sf::Vector2f(_width - 5, 0));
+    if(_leftLittle.getPosition().x <= _posx -_width)
+        _leftLittle.setPosition(sf::Vector2f(_posx + _width -5, _posy));
 
-    else if(_rightLittle.getPosition().x <= -SCREEN_WIDTH)
-        _rightLittle.setPosition(sf::Vector2f(_width - 5 , 0));
+    else if(_rightLittle.getPosition().x <= _posx -_width)
+        _rightLittle.setPosition(sf::Vector2f(_posx + _width -5, _posy));
 
     else
     {
@@ -81,7 +66,6 @@ bool SlidingBackground::loadTextures(std::string leftBig, std::string rightBig, 
         _rightLittle.setTexture(_rightTextureLittle);
     }
     return true;
-
 }
 
 void SlidingBackground::draw(sf::RenderWindow *window)
@@ -90,4 +74,14 @@ void SlidingBackground::draw(sf::RenderWindow *window)
     window->draw(_rightBig);
     window->draw(_leftLittle);
     window->draw(_rightLittle);
+}
+
+
+void SlidingBackground::reset()
+{
+    _rightBig.setPosition(sf::Vector2f(_posx + _width -5 , _posy));
+    _leftBig.setPosition(sf::Vector2f(_posx, _posy));
+
+    _rightLittle.setPosition(sf::Vector2f(_posx + _width - 5 , _posy));
+    _leftLittle.setPosition(sf::Vector2f(_posx, _posy));
 }

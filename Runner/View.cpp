@@ -13,7 +13,7 @@ using namespace std;
 // Constructeur
 //=======================================
 View::View(int w, int h)
-    : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5),
+    : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(0, 0 , SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5),
       _cpt(160) ,gs(intro), lg(fr), dif(facile),  SettingsSelected(false), HighscoresSelected(false), GameSelected(false), ShopSelected(false), ExitSelected(false),
       _totalCoin(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70, 50, 50),
       _totalDiamond(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70, 50, 50)
@@ -288,6 +288,7 @@ View::View(int w, int h)
     _topScores.setColor(sf::Color::Black);
     _topScores.setPosition(_textHighscores.getPosition().x+400,_textHighscores.getPosition().y);
 
+
     for(int i=0;i<14;i++)
         _items.push_back(new Item());
 
@@ -298,7 +299,6 @@ View::View(int w, int h)
         _items.at(i)->setOutlineThickness(3);
         _items.at(i)->setOutlineColor(sf::Color::Black);
         _items.at(i)->setSize(sf::Vector2f(SCREEN_WIDTH/6,50));
-
     }
 
     _items.at(0)->setSelected(true);
@@ -350,6 +350,7 @@ void View::synchronise()
         _start = std::chrono::system_clock::now();
         for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->animate(50);});
         for_each(_model->Diamonds()->begin(), _model->Diamonds()->end(), [](Diamond* &d){d->animate(50);});
+        for_each(_model->Awards()->begin(), _model->Awards()->end(), [](Bonus* &b){b->animate(50);});
     }
 
     if(!_model->getPlayer()->isJumping())
@@ -526,27 +527,27 @@ void View::drawMenu()
 
     _window->draw(_backgroundMenuSprite);
 
-    if(SettingsSelected == true)
+    if(SettingsSelected)
         _window->draw(_redButtonSpriteSettings);
     else
         _window->draw(_blueButtonSpriteSettings);
 
-    if(HighscoresSelected == true)
+    if(HighscoresSelected)
         _window->draw(_redButtonSpriteHighscores);
     else
         _window->draw(_blueButtonSpriteHighscores);
 
-    if(GameSelected == true)
+    if(GameSelected)
         _window->draw(_redButtonSpriteGame);
     else
         _window->draw(_blueButtonSpriteGame);
 
-    if(ShopSelected == true)
+    if(ShopSelected)
         _window->draw(_redButtonSpriteShop);
     else
         _window->draw(_blueButtonSpriteShop);
 
-    if(ExitSelected == true)
+    if(ExitSelected)
         _window->draw(_redButtonSpriteExit);
     else
         _window->draw(_blueButtonSpriteExit);
@@ -610,29 +611,24 @@ void View::drawShop()
 {
     _window->clear(sf::Color::White);
 
-    //dessin du background
-
-   // _window->draw(_backgroundShopSprite);
-    _window->draw(_rectBall);
-    _window->draw(_rectBack);
-    _window->draw(_rectScreen);
-    _window->draw(_textBall);
-    _window->draw(_textBack);
+    for(auto i : _items)
+    {
+        if(i->isSelected())
+            i->drawPreview(_window);
+    }
 
     for(int i=0;i<_items.size();i++)
     {
         _window->draw(*_items.at(i));
-       // _items.at(i)->drawPreview(_window);
         _items.at(i)->drawText(_window);
     }
 
-
-
-    _items.at(0)->drawPreview(_window);
+    _window->draw(_rectBall);
+    _window->draw(_rectBack);
+    _window->draw(_textBall);
+    _window->draw(_textBack);
 
     //--------------------
-
-
     //--------------------
 
     _totalCoin.draw(_window);
@@ -756,6 +752,7 @@ bool View::treatEvents()
                         if(_items.at(i)->isSelected() && i != 13)
                         {
                             _items.at(i)->setSelected(false);
+                            _items.at(i)->reset();
                             _items.at(i+1)->setSelected(true);
                             break;
                         }
@@ -768,6 +765,7 @@ bool View::treatEvents()
                         if(_items.at(i)->isSelected() && i != 0)
                         {
                             _items.at(i)->setSelected(false);
+                            _items.at(i)->reset();
                             _items.at(i-1)->setSelected(true);
                             break;
                         }
