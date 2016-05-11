@@ -15,10 +15,10 @@ int Model::_current_speed = EASY_SPEED;
 // Constructeurs
 //=======================================
 Model::Model(int w, int h)
-  :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0), _canpop(true), _magnetpicked(false), _magnetcpt(-1), _difficulte(0),
-     _coin_counter(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70, 50, 50),
-    _score_counter(0, SCREEN_WIDTH - 500, SCREEN_HEIGHT-70, 50, 50),
-    _diamond_counter(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70, 50, 50)
+    :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0), _canpop(true), _magnetpicked(false), _magnetcpt(-1), _difficulte(0),
+      _coin_counter(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70, 50, 50),
+      _score_counter(0, SCREEN_WIDTH - 500, SCREEN_HEIGHT-70, 50, 50),
+      _diamond_counter(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70, 50, 50)
 {
     _coin_counter.setTexture("res/coin.png");
     _diamond_counter.setTexture("res/diamond.png");
@@ -152,38 +152,29 @@ void Model::nextStep()
     {
         if (b->getPosition().x < 0 || b->isPicked())
         {
-            if(b->isPicked())
+            switch(bt)
             {
-                switch(bt)
-                {
-                case magnet:
-                    _magnetpicked = true;
-                    _magnetcpt = 0;
-                    break;
-                case randombonus:
-                    _magnetcpt = 2000;
-                    break;
-                case shield:                    
-                    _player.winLife();
-                    break;
-                case health:
-                    _player.winLife();
-                    break;
-                case star:
-                    _magnetcpt = 2000;
-                    break;
-                case feather:
-                    _magnetcpt = 2000;
-                    break;
-                case hourglass:
-                    _magnetcpt = 2000;
-                    break;
-                case redcoin:
-                    _coin_counter.hundredincrement();
-                    break;
-                }
+            case magnet:
+                break;
+            case randombonus:
+                break;
+            case shield:
+                _player.winLife();
+                break;
+            case health:
+                _player.winLife();
+                break;
+            case star:
+                _player.setInvincibility(true);
+                break;
+            case feather:
+                break;
+            case hourglass:
+                break;
+            case redcoin:
+                _coin_counter.hundredincrement();
+                break;
             }
-
             std::vector<Bonus*>::iterator it =
                     std::find(_bonus.begin(), _bonus.end(), b);
             _bonus.erase(it);

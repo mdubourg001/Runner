@@ -24,6 +24,7 @@ const std::string BACKGROUND_TWO_IMAGE_PREVIEW_L = "res/city3_preview.png";
 const std::string BACKGROUND_TWO_IMAGE_PREVIEW_B = "res/city4_preview.png";
 
 const std::string BALL_IMAGE = "res/ball.png";
+const std::string BALL_STAR_IMAGE = "res/ball_v5.png";
 const std::string BALL_TWO_IMAGE = "res/ball_v2.png";
 const std::string BALL_THREE_IMAGE = "res/ball_v3.png";
 const std::string BALL_FOUR_IMAGE = "res/ball_v4.png";

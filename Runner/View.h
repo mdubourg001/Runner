@@ -55,6 +55,8 @@ private:
     int _x_player;
     int _y_player;
 
+    sf::Texture _playerStar;
+
     SlidingBackground _background;
 
     std::chrono::time_point<std::chrono::system_clock> _start, _end;

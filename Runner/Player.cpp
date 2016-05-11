@@ -6,7 +6,7 @@
 
 
 Player::Player(int posx, int posy, int width, int height, int mvtx, int mvty, int health, int shield)
-    :MovableElement(posx, posy, width, height, mvtx, mvty), _shadow(10), _health(health), _shield(shield)
+    :MovableElement(posx, posy, width, height, mvtx, mvty), _shadow(10), _health(health), _shield(shield), _invincibility(false)
 {
     _shadow.setScale(2, 1);
     _shadow.setOrigin(sf::Vector2f(10, 10));
@@ -38,6 +38,12 @@ void Player::setJumping(bool isjumping)
 
 bool Player::isJumping() const
 { return _jumping; }
+
+bool Player::isInvincibility() const
+{ return _invincibility; }
+
+void Player::setInvincibility(bool isInvincibility)
+{ _invincibility = isInvincibility; }
 
 void Player::setPosition(int x, int y)
 {
@@ -92,10 +98,10 @@ void Player::treatCollisions(std::vector<Coin *> coins, std::vector<Diamond *> d
             bonus.at(i)->setPicked(true);
 
     for(int i=0 ; i<obstacles.size() ; i++) //collision entre la balle et les obstacles
-        if((_posx - 25 <= obstacles.at(i)->getPos().x + 25 && _posx - 25 >= obstacles.at(i)->getPos().x -25
+        if(((_posx - 25 <= obstacles.at(i)->getPos().x + 25 && _posx - 25 >= obstacles.at(i)->getPos().x -25
                 && _posy - 25 <= obstacles.at(i)->getPos().y && _posy - 25 >= obstacles.at(i)->getPos().y - obstacles.at(i)->getSize().y)
                 || (_posx + 25 >= obstacles.at(i)->getPos().x - 25 && _posx + 25 <= obstacles.at(i)->getPos().x + 25
-                && _posy + 25 >= obstacles.at(i)->getPos().y - obstacles.at(i)->getSize().y && _posy + 25 <= obstacles.at(i)->getPos().y + 25))
+                && _posy + 25 >= obstacles.at(i)->getPos().y - obstacles.at(i)->getSize().y && _posy + 25 <= obstacles.at(i)->getPos().y + 25)) && _invincibility == false)
         {
             obstacles.at(i)->setDestroyed(true);
             looseLife();

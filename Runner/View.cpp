@@ -9,6 +9,9 @@
 using namespace std;
 //using namespace sf;
 
+int cpt1=0;
+int cpt2=0;
+
 //=======================================
 // Constructeur
 //=======================================
@@ -55,6 +58,13 @@ View::View(int w, int h)
         _playerSprite.setPosition(sf::Vector2f(_x_player, _y_player));
         _playerSprite.setOrigin(sf::Vector2f(_player.getSize().x/2, _player.getSize().y/2));
         _playerSprite.setRotation(10);
+    }
+
+    if (!_playerStar.loadFromFile(BALL_STAR_IMAGE))
+    {
+        std::cerr << "Error when loading image file: "
+                  << BALL_IMAGE << std::endl;
+        exit(EXIT_FAILURE);
     }
 
     _start = std::chrono::system_clock::now();
@@ -306,6 +316,8 @@ View::View(int w, int h)
 
     _items.at(0)->setSelected(true);
 
+
+
 }
 
 //=======================================
@@ -375,6 +387,28 @@ void View::synchronise()
         _model->reset();
     }
     /* --------------------*/
+
+    if(_model->getPlayer()->isInvincibility() == true)
+    {
+
+        if(cpt1 >= 10 && cpt2 >= 10)
+        {
+            cpt1=0;
+            cpt2=0;
+        }
+        if(cpt1 < 10)
+        {
+            _playerSprite.setTexture(_player);
+            cpt1++;
+        }
+        else if(cpt2 < 10)
+        {
+            _playerSprite.setTexture(_playerStar);
+            cpt2++;
+        }
+
+    }
+
 }
 
 void View::synchroniseShop()
