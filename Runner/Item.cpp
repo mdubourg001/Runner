@@ -51,3 +51,19 @@ void Item::drawPreview(sf::RenderWindow *w)
     _preview->move();
 }
 
+Preview *Item::getPreview()
+{
+    return _preview;
+}
+
+void Item::initialiseBall(const std::string B, const std::string Name)
+{
+    _preview->setBallTexture(B);
+    this->setName(Name);
+}
+
+void Item::initialiseBackground(const std::string BackBig, const std::string BackLittle, const std::string Name)
+{
+    _preview->setBackgroundTexture(BackBig, BackLittle);
+    this->setName(Name);
+}

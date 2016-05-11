@@ -14,7 +14,8 @@ using namespace std;
 //=======================================
 View::View(int w, int h)
     : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(0, 0 , SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5),
-      _cpt(160) ,gs(intro), lg(fr), dif(facile),  SettingsSelected(false), HighscoresSelected(false), GameSelected(false), ShopSelected(false), ExitSelected(false),
+      _cpt(160) ,gs(intro), lg(fr), dif(facile), cs(ball),
+      SettingsSelected(false), HighscoresSelected(false), GameSelected(false), ShopSelected(false), ExitSelected(false),
       _totalCoin(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70, 50, 50),
       _totalDiamond(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70, 50, 50)
 
@@ -42,7 +43,7 @@ View::View(int w, int h)
         exit(EXIT_FAILURE);
     }
 
-    if (!_player.loadFromFile(BALL_IMAGE))
+    if (!_player.loadFromFile(BALL_TWO_IMAGE))
     {
         std::cerr << "Error when loading image file: "
                   << BALL_IMAGE << std::endl;
@@ -299,6 +300,8 @@ View::View(int w, int h)
         _items.at(i)->setOutlineThickness(3);
         _items.at(i)->setOutlineColor(sf::Color::Black);
         _items.at(i)->setSize(sf::Vector2f(SCREEN_WIDTH/6,50));
+        _items.at(i)->setName("");
+        this->synchroniseShopBack();
     }
 
     _items.at(0)->setSelected(true);
@@ -384,12 +387,38 @@ void View::synchroniseShop()
         _items.at(i)->setFillColor(sf::Color(200,200,200,255));
     }
 
-    for(int i=0;i<_items.size();i++)
+
+
+    if(cs == ball)
     {
-        if (cs == ball)
-            _items.at(i)->setName("Ball " + std::to_string(i+1));
-        else
-            _items.at(i)->setName("Background " + std::to_string(i+1));
+        _items.at(0)->initialiseBall(BALL_IMAGE, "Orange smiley");
+        _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Bleue clair");
+        _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Rouge et Noir");
+        _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Bleu fonce");
+        _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Rouge et Blanc");
+        _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Verte");
+    }
+    else if (cs == back)
+    {
+        for(int i=0; i<_items.size(); i++)
+            _items.at(i)->getPreview()->setBallTexture(BALL_IMAGE);
+    }
+}
+
+void View::synchroniseShopBack()
+{
+    for(int i=0; i<_items.size();i++)
+        _items.at(i)->setName("");
+
+    if(cs == ball)
+    {
+        for(int i=0; i<_items.size(); i++)
+            _items.at(i)->getPreview()->setBackgroundTexture(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L);
+    }
+    else if (cs == back)
+    {
+        _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "City");
+        _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "City OldSchool");
     }
 }
 
@@ -623,6 +652,9 @@ void View::drawShop()
         _items.at(i)->drawText(_window);
     }
 
+
+
+
     _window->draw(_rectBall);
     _window->draw(_rectBack);
     _window->draw(_textBall);
@@ -726,6 +758,7 @@ bool View::treatEvents()
                     for(int i=1;i<_items.size();i++)
                         _items.at(i)->setSelected(false);
                     _items.at(0)->setSelected(true);
+                    this->synchroniseShopBack();
                 }
                 else if(event.key.code == sf::Keyboard::Left && gs==shop)
                 {
@@ -744,7 +777,9 @@ bool View::treatEvents()
                     for(int i=1;i<_items.size();i++)
                         _items.at(i)->setSelected(false);
                     _items.at(0)->setSelected(true);
+                    this->synchroniseShopBack();
                 }
+
                 else if (event.key.code == sf::Keyboard::Down && gs==shop)
                 {
                     for(int i=0;i<_items.size();i++)
@@ -756,8 +791,9 @@ bool View::treatEvents()
                             _items.at(i+1)->setSelected(true);
                             break;
                         }
-                    }
+                    }                    
                 }
+
                 else if (event.key.code == sf::Keyboard::Up && gs==shop)
                 {
                     for(int i=0;i<_items.size();i++)

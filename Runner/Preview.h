@@ -17,6 +17,10 @@ public:
     void draw(sf::RenderWindow *w);
     void move();
     void reset();
+    void setBallTexture(std::string B);
+    void setBackgroundTexture(const std::string BackBig, const std::string BackLittle);
+
+
 };
 
 #endif // PREVIEW_H

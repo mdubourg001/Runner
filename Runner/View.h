@@ -161,6 +161,7 @@ public:
     void toFrench();
     void synchronise();
     void synchroniseShop();
+    void synchroniseShopBack();
     bool treatEvents();
     gamestates getGs();
     difficulte getDiff();

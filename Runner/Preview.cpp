@@ -29,3 +29,13 @@ void Preview::reset()
 {
     _background->reset();
 }
+
+void Preview::setBallTexture(std::string B)
+{
+    _playerTexture.loadFromFile(B);
+}
+
+void Preview::setBackgroundTexture(const std::string BackBig, const std::string BackLittle)
+{
+    _background->loadTextures(BackBig, BackBig, BackLittle, BackLittle);
+}
