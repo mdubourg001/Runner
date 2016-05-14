@@ -14,12 +14,9 @@ using namespace std;
 //=======================================
 View::View(int w, int h)
     : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(0, 0 , SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5),
-      _cpt(160) ,gs(intro), lg(fr), dif(facile),  SettingsSelected(false), HighscoresSelected(false), GameSelected(false), ShopSelected(false), ExitSelected(false),
+      _cpt(160) ,gs(intro), lg(fr), dif(facile),
       _totalCoin(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70, 50, 50),
       _totalDiamond(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70, 50, 50)
-
-
-
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D
     _window->setFramerateLimit(FRAMERATE_LIMIT); //fixe la limite de fps
@@ -84,47 +81,64 @@ View::View(int w, int h)
         _backgroundMenuSprite.setPosition(sf::Vector2f(0.f,0.f)); //définie la position du sprite de background
     }
 
-    if (!_redButton.loadFromFile(BOUTON_ROUGE))
-    {
-        std::cerr << "ERROR when loading image file: "
-                  << BOUTON_ROUGE << std::endl;
-        exit(EXIT_FAILURE);
-    }
-    else
-    {
-        _redButtonSpriteSettings.setTexture(_redButton);
-        _redButtonSpriteHighscores.setTexture(_redButton);
-        _redButtonSpriteGame.setTexture(_redButton);
-        _redButtonSpriteShop.setTexture(_redButton);
-        _redButtonSpriteExit.setTexture(_redButton);
-        _redButtonSpriteFrancais.setTexture(_redButton);
-        _redButtonSpriteAnglais.setTexture(_redButton);
-        _redButtonSpriteFacile.setTexture(_redButton);
-        _redButtonSpriteMoyen.setTexture(_redButton);
-        _redButtonSpriteDifficile.setTexture(_redButton);
+    //============BOUTONS DU MENU=============================================//
 
-    }
+    _settings_button.first.initialise(PURPLECUBE_L, PURPLECUBE_L, "PARAMETRES",
+                                POLICE, sf::Color::White, 75,(SCREEN_HEIGHT/2)-100);
+    _settings_button.second.initialise(PURPLECUBE_B, PURPLECUBE_B, "PARAMETRES",
+                                POLICE, sf::Color::White, 75,(SCREEN_HEIGHT/2)-100);
 
-    if (!_blueButton.loadFromFile(BOUTON_BLEU))
-    {
-        std::cerr << "ERROR when loading image file: "
-                  << BOUTON_BLEU << std::endl;
-        exit(EXIT_FAILURE);
-    }
-    else
-    {
-        _blueButtonSpriteSettings.setTexture(_blueButton);
-        _blueButtonSpriteHighscores.setTexture(_blueButton);
-        _blueButtonSpriteGame.setTexture(_blueButton);
-        _blueButtonSpriteShop.setTexture(_blueButton);
-        _blueButtonSpriteExit.setTexture(_blueButton);
-        _blueButtonSpriteFrancais.setTexture(_blueButton);
-        _blueButtonSpriteAnglais.setTexture(_blueButton);
-        _blueButtonSpriteFacile.setTexture(_blueButton);
-        _blueButtonSpriteMoyen.setTexture(_blueButton);
-        _blueButtonSpriteDifficile.setTexture(_blueButton);
+    _highscores_button.first.initialise(YELLOWCUBE_L, YELLOWCUBE_L, "TOP SCORES",
+                                  POLICE, sf::Color::White, 325,(SCREEN_HEIGHT/2)-100);
+    _highscores_button.second.initialise(YELLOWCUBE_B, YELLOWCUBE_B, "TOP SCORES",
+                                  POLICE, sf::Color::White, 325,(SCREEN_HEIGHT/2)-100);
 
-    }
+    _game_button.first.initialise(GREENCUBE_L, GREENCUBE_L, "JOUER",
+                            POLICE, sf::Color::White, 575,(SCREEN_HEIGHT/2)-100);
+    _game_button.second.initialise(GREENCUBE_B, GREENCUBE_B, "JOUER",
+                            POLICE, sf::Color::White, 575,(SCREEN_HEIGHT/2)-100);
+
+    _shop_button.first.initialise(BLUECUBE_L, BLUECUBE_L, "BOUTIQUE",
+                            POLICE, sf::Color::White, 825,(SCREEN_HEIGHT/2)-100);
+    _shop_button.second.initialise(BLUECUBE_B, BLUECUBE_B, "BOUTIQUE",
+                            POLICE, sf::Color::White, 825,(SCREEN_HEIGHT/2)-100);
+
+    _exit_button.first.initialise(REDCUBE_L, REDCUBE_L, "QUITTER",
+                            POLICE, sf::Color::White, 1075,(SCREEN_HEIGHT/2)-100);
+    _exit_button.second.initialise(REDCUBE_B, REDCUBE_B, "QUITTER",
+                            POLICE, sf::Color::White, 1075,(SCREEN_HEIGHT/2)-100);
+
+    //========================================================================//
+    //============BOUTONS DES SETTINGS========================================//
+
+    _french_button.first.initialise(BLUECUBE_L, BLUECUBE_L, "FRANCAIS",
+                              POLICE, sf::Color::White, 575,(SCREEN_HEIGHT/4)-100);
+    _french_button.second.initialise(BLUECUBE_B, BLUECUBE_B, "FRANCAIS",
+                              POLICE, sf::Color::White, 575,(SCREEN_HEIGHT/4)-100);
+
+    _english_button.first.initialise(REDCUBE_L, REDCUBE_L, "ANGLAIS",
+                               POLICE, sf::Color::White, 825, (SCREEN_HEIGHT/4)-100);
+    _english_button.second.initialise(REDCUBE_B, REDCUBE_B, "ANGLAIS",
+                               POLICE, sf::Color::White, 825, (SCREEN_HEIGHT/4)-100);
+
+    _easy_button.first.initialise(GREENCUBE_L, GREENCUBE_L, "FACILE",
+                            POLICE, sf::Color::White, 575,(3*(SCREEN_HEIGHT/4))-100);
+    _easy_button.second.initialise(GREENCUBE_B, GREENCUBE_B, "FACILE",
+                            POLICE, sf::Color::White, 575,(3*(SCREEN_HEIGHT/4))-100);
+
+    _medium_button.first.initialise(YELLOWCUBE_L, YELLOWCUBE_L, "MOYEN",
+                              POLICE, sf::Color::White, 825,(3*(SCREEN_HEIGHT/4))-100);
+    _medium_button.second.initialise(YELLOWCUBE_B, YELLOWCUBE_B, "MOYEN",
+                              POLICE, sf::Color::White, 825,(3*(SCREEN_HEIGHT/4))-100);
+
+    _hard_button.first.initialise(PURPLECUBE_L, PURPLECUBE_L, "DIFFICILE",
+                            POLICE, sf::Color::White, 1075,(3*(SCREEN_HEIGHT/4))-100);
+    _hard_button.second.initialise(PURPLECUBE_B, PURPLECUBE_B, "DIFFICILE",
+                            POLICE, sf::Color::White, 1075,(3*(SCREEN_HEIGHT/4))-100);
+
+    //========================================================================//
+
+
 
     if (!_backgroundSettings.loadFromFile(BACKGROUND_MENU_IMAGE)) //charge le fichier city.png et le place dans la texture background
     {
@@ -137,33 +151,6 @@ View::View(int w, int h)
         _backgroundSettingsSprite.setTexture(_backgroundSettings); //définie la texture background comme texture du sprite de background
         _backgroundSettingsSprite.setPosition(sf::Vector2f(0.f,0.f)); //définie la position du sprite de background
     }
-
-
-    _blueButtonSpriteSettings.setPosition(75,(SCREEN_HEIGHT/2)-100);
-    _blueButtonSpriteHighscores.setPosition(325,(SCREEN_HEIGHT/2)-100);
-    _blueButtonSpriteGame.setPosition(575,(SCREEN_HEIGHT/2)-100);
-    _blueButtonSpriteShop.setPosition(825,(SCREEN_HEIGHT/2)-100);
-    _blueButtonSpriteExit.setPosition(1075,(SCREEN_HEIGHT/2)-100);
-
-    _blueButtonSpriteFrancais.setPosition(575,(SCREEN_HEIGHT/4)-100);
-    _blueButtonSpriteAnglais.setPosition(825, (SCREEN_HEIGHT/4)-100);
-    _blueButtonSpriteFacile.setPosition(575,(3*(SCREEN_HEIGHT/4))-100);
-    _blueButtonSpriteMoyen.setPosition(825,(3*(SCREEN_HEIGHT/4))-100);
-    _blueButtonSpriteDifficile.setPosition(1075,(3*(SCREEN_HEIGHT/4))-100);
-
-
-    _redButtonSpriteSettings.setPosition(75,(SCREEN_HEIGHT/2)-100);
-    _redButtonSpriteHighscores.setPosition(325,(SCREEN_HEIGHT/2)-100);
-    _redButtonSpriteGame.setPosition(575,(SCREEN_HEIGHT/2)-100);
-    _redButtonSpriteShop.setPosition(825,(SCREEN_HEIGHT/2)-100);
-    _redButtonSpriteExit.setPosition(1075,(SCREEN_HEIGHT/2)-100);
-
-    _redButtonSpriteFrancais.setPosition(575,(SCREEN_HEIGHT/4)-100);
-    _redButtonSpriteAnglais.setPosition(825, (SCREEN_HEIGHT/4)-100);
-    _redButtonSpriteFacile.setPosition(575,(3*(SCREEN_HEIGHT/4))-100);
-    _redButtonSpriteMoyen.setPosition(825,(3*(SCREEN_HEIGHT/4))-100);
-    _redButtonSpriteDifficile.setPosition(1075,(3*(SCREEN_HEIGHT/4))-100);
-
 
     _healthRect.setSize(sf::Vector2f(400,50));
     _healthRect.setPosition(225,710);
@@ -179,75 +166,6 @@ View::View(int w, int h)
     _shieldRect.setSize(sf::Vector2f(-50,50));
     _shieldRect.setPosition(625,710);
     _shieldRect.setFillColor(sf::Color(170,170,170,255));
-
-
-
-
-    _textLang.setFont(_fontmenu);
-    _textLang.setColor(sf::Color::Black);
-    _textLang.setString("Langue : ");
-    _textLang.setPosition(275,(SCREEN_HEIGHT/4));
-
-    _textDiff.setFont(_fontmenu);
-    _textDiff.setColor(sf::Color::Black);
-    _textDiff.setString("Difficulte : ");
-    _textDiff.setPosition(275,(3*(SCREEN_HEIGHT/4)));
-
-    _textFr.setFont(_fontmenu);
-    _textFr.setColor(sf::Color::Black);
-    _textFr.setString("Francais");
-    _textFr.setPosition(675,(SCREEN_HEIGHT/4));
-
-    _textAng.setFont(_fontmenu);
-    _textAng.setColor(sf::Color::Black);
-    _textAng.setString("Anglais");
-    _textAng.setPosition(925, (SCREEN_HEIGHT/4));
-
-    _textFac.setFont(_fontmenu);
-    _textFac.setColor(sf::Color::Black);
-    _textFac.setString("Facile");
-    _textFac.setPosition(675,(3*(SCREEN_HEIGHT/4)));
-
-    _textMoy.setFont(_fontmenu);
-    _textMoy.setColor(sf::Color::Black);
-    _textMoy.setString("Moyen");
-    _textMoy.setPosition(925,(3*(SCREEN_HEIGHT/4)));
-
-    _textDur.setFont(_fontmenu);
-    _textDur.setColor(sf::Color::Black);
-    _textDur.setString("Difficile");
-    _textDur.setPosition(1175,(3*(SCREEN_HEIGHT/4)));
-
-    _textGame.setFont(_fontmenu);
-    _textGame.setColor(sf::Color::Black);
-    _textGame.setString("Jouer");
-    _textGame.setPosition(675,SCREEN_HEIGHT/2);
-
-    _textExit.setFont(_fontmenu);
-    _textExit.setColor(sf::Color::Black);
-    _textExit.setString("Quitter");
-    _textExit.setPosition(1175,SCREEN_HEIGHT/2);
-
-    _textSettings.setFont(_fontmenu);
-    _textSettings.setColor(sf::Color::Black);
-    _textSettings.setString("Parametres");
-    _textSettings.setPosition(175,SCREEN_HEIGHT/2);
-
-    _textShop.setFont(_fontmenu);
-    _textShop.setColor(sf::Color::Black);
-    _textShop.setString("Boutique");
-    _textShop.setPosition(925,SCREEN_HEIGHT/2);
-
-    _textHighscores.setFont(_fontmenu);
-    _textHighscores.setColor(sf::Color::Black);
-    _textHighscores.setString("Top Scores");
-    _textHighscores.setPosition(425, SCREEN_HEIGHT/2);
-
-
-    _textPass.setFont(_font);
-    _textPass.setColor(sf::Color::Black);
-    _textPass.setString("<  APPUYER SUR ESPACE POUR COMMENCER  >");
-    _textPass.setPosition(450,650);
 
     _healthText.setFont(_font);
     _healthText.setColor(sf::Color::Black);
@@ -273,6 +191,10 @@ View::View(int w, int h)
     _rectScreen.setOutlineThickness(3);
     _rectScreen.setOutlineColor(sf::Color::Black);
 
+    _textPass.setFont(_font);
+    _textPass.setColor(sf::Color::Black);
+    _textPass.setString("<  APPUYEZ SUR ESPACE POUR CONTINUER  >");
+    _textPass.setPosition(sf::Vector2f(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5));
 
     _textBall.setFont(_font);
     _textBall.setColor(sf::Color::Blue);
@@ -286,7 +208,8 @@ View::View(int w, int h)
 
     _topScores.setFont(_font);
     _topScores.setColor(sf::Color::Black);
-    _topScores.setPosition(_textHighscores.getPosition().x+400,_textHighscores.getPosition().y);
+    _topScores.setString("HIGHCORES :  ");
+    _topScores.setPosition(_highscores_button.first.getPos().x+400,_highscores_button.first.getPos().y);
 
 
     for(int i=0;i<14;i++)
@@ -378,10 +301,10 @@ void View::synchroniseShop()
 {
     for(int i=0;i<_items.size();i++)
     {
-    if(_items.at(i)->isSelected())
-        _items.at(i)->setFillColor(sf::Color(150,175,175,255));
-    else
-        _items.at(i)->setFillColor(sf::Color(200,200,200,255));
+        if(_items.at(i)->isSelected())
+            _items.at(i)->setFillColor(sf::Color(150,175,175,255));
+        else
+            _items.at(i)->setFillColor(sf::Color(200,200,200,255));
     }
 
     for(int i=0;i<_items.size();i++)
@@ -527,37 +450,30 @@ void View::drawMenu()
 
     _window->draw(_backgroundMenuSprite);
 
-    if(SettingsSelected)
-        _window->draw(_redButtonSpriteSettings);
+    if(_settings_button.second.isSelected())
+        _settings_button.second.draw(_window);
     else
-        _window->draw(_blueButtonSpriteSettings);
+        _settings_button.first.draw(_window);
 
-    if(HighscoresSelected)
-        _window->draw(_redButtonSpriteHighscores);
+    if(_highscores_button.second.isSelected())
+        _highscores_button.second.draw(_window);
     else
-        _window->draw(_blueButtonSpriteHighscores);
+        _highscores_button.first.draw(_window);
 
-    if(GameSelected)
-        _window->draw(_redButtonSpriteGame);
+    if(_game_button.second.isSelected())
+        _game_button.second.draw(_window);
     else
-        _window->draw(_blueButtonSpriteGame);
+        _game_button.first.draw(_window);
 
-    if(ShopSelected)
-        _window->draw(_redButtonSpriteShop);
+    if(_shop_button.second.isSelected())
+        _shop_button.second.draw(_window);
     else
-        _window->draw(_blueButtonSpriteShop);
+        _shop_button.first.draw(_window);
 
-    if(ExitSelected)
-        _window->draw(_redButtonSpriteExit);
+    if(_exit_button.second.isSelected())
+        _exit_button.second.draw(_window);
     else
-        _window->draw(_blueButtonSpriteExit);
-
-
-    _window->draw(_textGame);
-    _window->draw(_textExit);
-    _window->draw(_textShop);
-    _window->draw(_textSettings);
-    _window->draw(_textHighscores);
+        _exit_button.first.draw(_window);
 
     _totalCoin.draw(_window);
     _totalDiamond.draw(_window);
@@ -572,37 +488,39 @@ void View::drawSettings()
     _window->draw(_backgroundSettingsSprite);
 
     if(lg == fr)
-        _window->draw(_redButtonSpriteFrancais);
+        _french_button.second.draw(_window);
+
     else
-        _window->draw(_blueButtonSpriteFrancais);
+        _french_button.first.draw(_window);
+
 
     if(lg == ang)
-        _window->draw(_redButtonSpriteAnglais);
+        _english_button.second.draw(_window);
+
     else
-        _window->draw(_blueButtonSpriteAnglais);
+        _english_button.first.draw(_window);
+
 
     if(dif == facile)
-        _window->draw(_redButtonSpriteFacile);
+        _easy_button.second.draw(_window);
+
     else
-        _window->draw(_blueButtonSpriteFacile);
+        _easy_button.first.draw(_window);
+
 
     if(dif == moyen)
-        _window->draw(_redButtonSpriteMoyen);
+        _medium_button.second.draw(_window);
+
     else
-        _window->draw(_blueButtonSpriteMoyen);
+        _medium_button.first.draw(_window);
+
 
     if(dif == difficile)
-        _window->draw(_redButtonSpriteDifficile);
-    else
-        _window->draw(_blueButtonSpriteDifficile);
+        _hard_button.second.draw(_window);
 
-    _window->draw(_textLang);
-    _window->draw(_textDiff);
-    _window->draw(_textFr);
-    _window->draw(_textAng);
-    _window->draw(_textFac);
-    _window->draw(_textMoy);
-    _window->draw(_textDur);
+    else
+        _hard_button.first.draw(_window);
+
 
     _window->display();
 }
@@ -643,9 +561,7 @@ void View::drawHighscores()
 
     _window->draw(_backgroundMenuSprite);
 
-    _window->draw(_textHighscores);
     _window->draw(_topScores);
-
 
     _window->display();
 }
@@ -836,29 +752,29 @@ bool View::treatEvents()
                 int yM = event.mouseMove.y;
 
                 if(xM>=80 && xM<=270 && yM>=300 && yM<=485)
-                    SettingsSelected = true;
+                    _settings_button.second.setSelected(true);
                 else
-                    SettingsSelected = false;
+                    _settings_button.second.setSelected(false);
 
                 if(xM>=340 && xM<=520 && yM>=300 && yM<=485)
-                    HighscoresSelected = true;
+                    _highscores_button.second.setSelected(true);
                 else
-                    HighscoresSelected = false;
+                    _highscores_button.second.setSelected(false);
 
                 if(xM>=575 && xM<=770 && yM>=300 && yM<=485)
-                    GameSelected = true;
+                    _game_button.second.setSelected(true);
                 else
-                    GameSelected = false;
+                    _game_button.second.setSelected(false);
 
                 if(xM>=835 && xM<=1025 && yM>=300 && yM<=485)
-                    ShopSelected = true;
+                    _shop_button.second.setSelected(true);
                 else
-                    ShopSelected = false;
+                    _shop_button.second.setSelected(false);
 
                 if(xM>=1085 && xM<=1275 && yM>=300 && yM<=485)
-                    ExitSelected = true;
+                    _exit_button.second.setSelected(true);
                 else
-                    ExitSelected = false;
+                    _exit_button.second.setSelected(false);
             }
 
         }
@@ -873,18 +789,30 @@ gamestates View::getGs()
 
 void View::toEnglish()
 {
-    _textAng.setString("English");
-    _textDiff.setString("Difficulty : ");
-    _textDur.setString("Hard");
-    _textFac.setString("Easy");
-    _textFr.setString("French");
-    _textLang.setString("Language : ");
-    _textMoy.setString("Medium");
+    _french_button.first.setString("French");
+    _english_button.first.setString("English");
+    _hard_button.first.setString("Hard");
+    _easy_button.first.setString("Easy");
+    _medium_button.first.setString("Medium");
 
-    _textGame.setString("Play");
-    _textExit.setString("Exit");
-    _textSettings.setString("Settings");
-    _textShop.setString("Shop");
+    _settings_button.first.setString("Settings");
+    _highscores_button.first.setString("Highscores");
+    _game_button.first.setString("Play");
+    _shop_button.first.setString("Shop");
+    _exit_button.first.setString("Exit");
+
+
+    _french_button.second.setString("French");
+    _english_button.second.setString("English");
+    _hard_button.second.setString("Hard");
+    _easy_button.second.setString("Easy");
+    _medium_button.second.setString("Medium");
+
+    _settings_button.second.setString("Settings");
+    _highscores_button.second.setString("Highscores");
+    _game_button.second.setString("Play");
+    _shop_button.second.setString("Shop");
+    _exit_button.second.setString("Exit");
 
     _healthText.setString("HEALTH : ");
 
@@ -893,18 +821,30 @@ void View::toEnglish()
 
 void View::toFrench()
 {
-    _textAng.setString("Anglais");
-    _textDiff.setString("Difficulte : ");
-    _textDur.setString("Difficile");
-    _textFac.setString("Facile");
-    _textFr.setString("Francais");
-    _textLang.setString("Langue : ");
-    _textMoy.setString("Moyen");
+    _french_button.first.setString("Francais");
+    _english_button.first.setString("Anglais");
+    _hard_button.first.setString("Difficile");
+    _easy_button.first.setString("Facile");
+    _medium_button.first.setString("Moyen");
 
-    _textGame.setString("Jouer");
-    _textExit.setString("Quitter");
-    _textSettings.setString("Parametres");
-    _textShop.setString("Boutique");
+    _settings_button.first.setString("Paramètres");
+    _highscores_button.first.setString("Topscores");
+    _game_button.first.setString("Jouer");
+    _shop_button.first.setString("Boutique");
+    _exit_button.first.setString("Quitter");
+
+
+    _french_button.second.setString("Francais");
+    _english_button.second.setString("Anglais");
+    _hard_button.second.setString("Difficile");
+    _easy_button.second.setString("Facile");
+    _medium_button.second.setString("Moyen");
+
+    _settings_button.second.setString("Paramètres");
+    _highscores_button.second.setString("Topscores");
+    _game_button.second.setString("Jouer");
+    _shop_button.second.setString("Boutique");
+    _exit_button.second.setString("Quitter");
 
     _healthText.setString("SANTE : ");
 

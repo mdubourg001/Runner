@@ -7,6 +7,7 @@
 #include "Bonus.h"
 #include "Counter.h"
 #include "Item.h"
+#include "Button.h"
 
 enum gamestates
 {
@@ -75,60 +76,25 @@ private:
     sf::Texture _backgroundShop;
     sf::Sprite _backgroundShopSprite;
 
-    sf::Texture _redButton;
-    sf::Texture _blueButton;
-
-    sf::Sprite _redButtonSpriteSettings;
-    sf::Sprite _blueButtonSpriteSettings;
-    sf::Sprite _redButtonSpriteHighscores;
-    sf::Sprite _blueButtonSpriteHighscores;
-    sf::Sprite _redButtonSpriteGame;
-    sf::Sprite _blueButtonSpriteGame;
-    sf::Sprite _redButtonSpriteShop;
-    sf::Sprite _blueButtonSpriteShop;
-    sf::Sprite _redButtonSpriteExit;
-    sf::Sprite _blueButtonSpriteExit;
-    sf::Sprite _redButtonSpriteFrancais;
-    sf::Sprite _blueButtonSpriteFrancais;
-    sf::Sprite _redButtonSpriteAnglais;
-    sf::Sprite _blueButtonSpriteAnglais;
-    sf::Sprite _redButtonSpriteFacile;
-    sf::Sprite _blueButtonSpriteFacile;
-    sf::Sprite _redButtonSpriteMoyen;
-    sf::Sprite _blueButtonSpriteMoyen;
-    sf::Sprite _redButtonSpriteDifficile;
-    sf::Sprite _blueButtonSpriteDifficile;
-
-
-    bool SettingsSelected;
-    bool HighscoresSelected;
-    bool GameSelected;
-    bool ShopSelected;
-    bool ExitSelected;
-
-
-
     sf::Font _font;
     sf::Font _fontmenu;
 
-    sf::Text _textPass;
-    sf::Text _textGame;
-    sf::Text _textExit;
-    sf::Text _textSettings;
-    sf::Text _textShop;
-    sf::Text _textHighscores;
-    sf::Text _textLang;
-    sf::Text _textDiff;
-    sf::Text _textFr;
-    sf::Text _textAng;
-    sf::Text _textFac;
-    sf::Text _textMoy;
-    sf::Text _textDur;
+    std::pair<Button, Button> _settings_button;
+    std::pair<Button, Button> _highscores_button;
+    std::pair<Button, Button> _game_button;
+    std::pair<Button, Button> _shop_button;
+    std::pair<Button, Button> _exit_button;
+    std::pair<Button, Button> _french_button;
+    std::pair<Button, Button> _english_button;
+    std::pair<Button, Button> _easy_button;
+    std::pair<Button, Button> _medium_button;
+    std::pair<Button, Button> _hard_button;
+
     sf::Text _healthText;
+    sf::Text _topScores;
     sf::Text _textBall;
     sf::Text _textBack;
-    sf::Text _topScores;
-
+    sf::Text _textPass;
 
     sf::RectangleShape _rectBall;
     sf::RectangleShape _rectBack;
