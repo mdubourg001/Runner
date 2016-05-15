@@ -54,7 +54,8 @@ void Button::initialise(std::string texture, std::string texture_hover,
     }
 
     this->scale(0.83, 0.83);
-    _text.setPosition(this->getPosition().x, this->getPosition().y + 160);
+    _text.setOrigin(_text.getLocalBounds().width/2, _text.getLocalBounds().height/2);
+    _text.setPosition(this->getPosition().x + 70, this->getPosition().y + 170);
 }
 
 sf::Vector2f Button::getPos() const

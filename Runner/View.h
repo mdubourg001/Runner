@@ -46,7 +46,7 @@ class View
 private:
     int _w, _h;
 
-    gamestates gs;
+    bool _loaded;
 
     sf::RenderWindow * _window;
     Model* _model;
@@ -104,6 +104,7 @@ private:
 
     std::vector<Item*> _items;
 
+    gamestates gs;
     choixShop cs;
     langue lg;
     difficulte dif;
@@ -119,6 +120,7 @@ public:
 
 
     void setModel(Model * model);
+    void load();
     void draw();
     void drawIntro();
     void drawMenu();
@@ -133,6 +135,7 @@ public:
     bool treatEvents();
     gamestates getGs();
     difficulte getDiff();
+    bool getLoaded() const;
     void recupBest();
     void recupCoins();
     void recupDiamonds();

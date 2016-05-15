@@ -33,10 +33,11 @@ const std::string BALL_SIX_IMAGE = "res/ball_v6.png";
 
 
 const std::string BACKGROUND_INTRO_IMAGE = "res/backgroundIntro.png";
-const std::string BACKGROUND_MENU_IMAGE = "res/city.png";
+const std::string BACKGROUND_MENU_IMAGE = "res/backgroundMenu.png";
+const std::string BACKGROUND_SETTINGS = "res/city_2.png";
 
 const std::string POLICE = "res/slapstick.ttf";
-const std::string POLICEMENU = "res/slice.ttf";
+const std::string POLICEMENU = "res/slapstick_shaded.ttf";
 
 const std::string BOUTON_ROUGE = "res/bouton_rouge.png";
 const std::string BOUTON_BLEU = "res/bouton_bleu.png";

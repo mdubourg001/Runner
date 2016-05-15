@@ -19,7 +19,8 @@ View::View(int w, int h)
     : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(0, 0 , SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5),
       _cpt(160) ,gs(intro), lg(fr), dif(facile), cs(ball),
       _totalCoin(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70, 50, 50),
-      _totalDiamond(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70, 50, 50)
+      _totalDiamond(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70, 50, 50),
+      _loaded(false)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D
     _window->setFramerateLimit(FRAMERATE_LIMIT); //fixe la limite de fps
@@ -29,6 +30,29 @@ View::View(int w, int h)
     _font.loadFromFile(POLICE);
     _fontmenu.loadFromFile(POLICE);
 
+    _start = std::chrono::system_clock::now();
+
+    if (!_backgroundIntro.loadFromFile(BACKGROUND_INTRO_IMAGE)) //charge le fichier city.png et le place dans la texture background
+    {
+        std::cerr << "ERROR when loading image file: "
+                  << BACKGROUND_INTRO_IMAGE << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        _backgroundIntroSprite.setTexture(_backgroundIntro); //définie la texture background comme texture du sprite de background
+        _backgroundIntroSprite.setPosition(sf::Vector2f(0.f,0.f)); //définie la position du sprite de background
+    }
+
+    _textPass.setFont(_font);
+    _textPass.setColor(sf::Color::Black);
+    _textPass.setString("<  PATIENTEZ, CHARGEMENT DU JEU...  >");
+    _textPass.setOrigin(_textPass.getLocalBounds().width/2, _textPass.getLocalBounds().height/2);
+    _textPass.setPosition(sf::Vector2f(SCREEN_WIDTH/2, SCREEN_HEIGHT-SCREEN_HEIGHT/5));
+}
+
+void View::load()
+{
     _totalCoin.setTexture("res/coin.png");
     _totalDiamond.setTexture("res/diamond.png");
 
@@ -63,22 +87,6 @@ View::View(int w, int h)
         exit(EXIT_FAILURE);
     }
 
-    _start = std::chrono::system_clock::now();
-
-    if (!_backgroundIntro.loadFromFile(BACKGROUND_INTRO_IMAGE)) //charge le fichier city.png et le place dans la texture background
-    {
-        std::cerr << "ERROR when loading image file: "
-                  << BACKGROUND_INTRO_IMAGE << std::endl;
-        exit(EXIT_FAILURE);
-    }
-    else
-    {
-        _backgroundIntroSprite.setTexture(_backgroundIntro); //définie la texture background comme texture du sprite de background
-        _backgroundIntroSprite.setPosition(sf::Vector2f(0.f,0.f)); //définie la position du sprite de background
-    }
-
-
-
     if (!_backgroundMenu.loadFromFile(BACKGROUND_MENU_IMAGE)) //charge le fichier city.png et le place dans la texture background
     {
         std::cerr << "ERROR when loading image file: "
@@ -94,63 +102,63 @@ View::View(int w, int h)
     //============BOUTONS DU MENU=============================================//
 
     _settings_button.first.initialise(PURPLECUBE_L, PURPLECUBE_L, "PARAMETRES",
-                                POLICE, sf::Color::White, 75,(SCREEN_HEIGHT/2)-100);
+                                POLICEMENU, sf::Color::Black, 100,(SCREEN_HEIGHT/2)-100);
     _settings_button.second.initialise(PURPLECUBE_B, PURPLECUBE_B, "PARAMETRES",
-                                POLICE, sf::Color::White, 75,(SCREEN_HEIGHT/2)-100);
+                                POLICEMENU, sf::Color::Black, 75,(SCREEN_HEIGHT/2)-115);
 
     _highscores_button.first.initialise(YELLOWCUBE_L, YELLOWCUBE_L, "TOP SCORES",
-                                  POLICE, sf::Color::White, 325,(SCREEN_HEIGHT/2)-100);
+                                  POLICEMENU, sf::Color::Black, 350,(SCREEN_HEIGHT/2)-100);
     _highscores_button.second.initialise(YELLOWCUBE_B, YELLOWCUBE_B, "TOP SCORES",
-                                  POLICE, sf::Color::White, 325,(SCREEN_HEIGHT/2)-100);
+                                  POLICEMENU, sf::Color::Black, 335,(SCREEN_HEIGHT/2)-115);
 
     _game_button.first.initialise(GREENCUBE_L, GREENCUBE_L, "JOUER",
-                            POLICE, sf::Color::White, 575,(SCREEN_HEIGHT/2)-100);
+                            POLICEMENU, sf::Color::Black, 600,(SCREEN_HEIGHT/2)-100);
     _game_button.second.initialise(GREENCUBE_B, GREENCUBE_B, "JOUER",
-                            POLICE, sf::Color::White, 575,(SCREEN_HEIGHT/2)-100);
+                            POLICEMENU, sf::Color::Black, 575,(SCREEN_HEIGHT/2)-115);
 
     _shop_button.first.initialise(BLUECUBE_L, BLUECUBE_L, "BOUTIQUE",
-                            POLICE, sf::Color::White, 825,(SCREEN_HEIGHT/2)-100);
+                            POLICEMENU, sf::Color::Black, 850,(SCREEN_HEIGHT/2)-100);
     _shop_button.second.initialise(BLUECUBE_B, BLUECUBE_B, "BOUTIQUE",
-                            POLICE, sf::Color::White, 825,(SCREEN_HEIGHT/2)-100);
+                            POLICEMENU, sf::Color::Black, 835,(SCREEN_HEIGHT/2)-115);
 
     _exit_button.first.initialise(REDCUBE_L, REDCUBE_L, "QUITTER",
-                            POLICE, sf::Color::White, 1075,(SCREEN_HEIGHT/2)-100);
+                            POLICEMENU, sf::Color::Black, 1100,(SCREEN_HEIGHT/2)-100);
     _exit_button.second.initialise(REDCUBE_B, REDCUBE_B, "QUITTER",
-                            POLICE, sf::Color::White, 1075,(SCREEN_HEIGHT/2)-100);
+                            POLICEMENU, sf::Color::Black, 1075,(SCREEN_HEIGHT/2)-115);
 
     //========================================================================//
     //============BOUTONS DES SETTINGS========================================//
 
     _french_button.first.initialise(BLUECUBE_L, BLUECUBE_L, "FRANCAIS",
-                              POLICE, sf::Color::White, 575,(SCREEN_HEIGHT/4)-100);
+                              POLICEMENU, sf::Color::Black, 575,(SCREEN_HEIGHT/4)-100);
     _french_button.second.initialise(BLUECUBE_B, BLUECUBE_B, "FRANCAIS",
-                              POLICE, sf::Color::White, 575,(SCREEN_HEIGHT/4)-100);
+                              POLICEMENU, sf::Color::Black, 575,(SCREEN_HEIGHT/4)-100);
 
     _english_button.first.initialise(REDCUBE_L, REDCUBE_L, "ANGLAIS",
-                               POLICE, sf::Color::White, 825, (SCREEN_HEIGHT/4)-100);
+                               POLICEMENU, sf::Color::Black, 825, (SCREEN_HEIGHT/4)-100);
     _english_button.second.initialise(REDCUBE_B, REDCUBE_B, "ANGLAIS",
-                               POLICE, sf::Color::White, 825, (SCREEN_HEIGHT/4)-100);
+                               POLICEMENU, sf::Color::Black, 825, (SCREEN_HEIGHT/4)-100);
 
     _easy_button.first.initialise(GREENCUBE_L, GREENCUBE_L, "FACILE",
-                            POLICE, sf::Color::White, 575,(3*(SCREEN_HEIGHT/4))-100);
+                            POLICEMENU, sf::Color::Black, 575,(3*(SCREEN_HEIGHT/4))-100);
     _easy_button.second.initialise(GREENCUBE_B, GREENCUBE_B, "FACILE",
-                            POLICE, sf::Color::White, 575,(3*(SCREEN_HEIGHT/4))-100);
+                            POLICEMENU, sf::Color::Black, 575,(3*(SCREEN_HEIGHT/4))-100);
 
     _medium_button.first.initialise(YELLOWCUBE_L, YELLOWCUBE_L, "MOYEN",
-                              POLICE, sf::Color::White, 825,(3*(SCREEN_HEIGHT/4))-100);
+                              POLICEMENU, sf::Color::Black, 825,(3*(SCREEN_HEIGHT/4))-100);
     _medium_button.second.initialise(YELLOWCUBE_B, YELLOWCUBE_B, "MOYEN",
-                              POLICE, sf::Color::White, 825,(3*(SCREEN_HEIGHT/4))-100);
+                              POLICEMENU, sf::Color::Black, 825,(3*(SCREEN_HEIGHT/4))-100);
 
     _hard_button.first.initialise(PURPLECUBE_L, PURPLECUBE_L, "DIFFICILE",
-                            POLICE, sf::Color::White, 1075,(3*(SCREEN_HEIGHT/4))-100);
+                            POLICEMENU, sf::Color::Black, 1075,(3*(SCREEN_HEIGHT/4))-100);
     _hard_button.second.initialise(PURPLECUBE_B, PURPLECUBE_B, "DIFFICILE",
-                            POLICE, sf::Color::White, 1075,(3*(SCREEN_HEIGHT/4))-100);
+                            POLICEMENU, sf::Color::Black, 1075,(3*(SCREEN_HEIGHT/4))-100);
 
     //========================================================================//
 
 
 
-    if (!_backgroundSettings.loadFromFile(BACKGROUND_MENU_IMAGE)) //charge le fichier city.png et le place dans la texture background
+    if (!_backgroundSettings.loadFromFile(BACKGROUND_SETTINGS)) //charge le fichier city.png et le place dans la texture background
     {
         std::cerr << "ERROR when loading image file: "
                   << BACKGROUND_MENU_IMAGE << std::endl;
@@ -161,6 +169,22 @@ View::View(int w, int h)
         _backgroundSettingsSprite.setTexture(_backgroundSettings); //définie la texture background comme texture du sprite de background
         _backgroundSettingsSprite.setPosition(sf::Vector2f(0.f,0.f)); //définie la position du sprite de background
     }
+
+
+    _textBall.setFont(_font);
+    _textBall.setColor(sf::Color::Blue);
+    _textBall.setString("Ball : ");
+    _textBall.setPosition(10,10);
+
+    _textBack.setFont(_font);
+    _textBack.setColor(sf::Color::Blue);
+    _textBack.setString("Background : ");
+    _textBack.setPosition((SCREEN_WIDTH/2)+10,10);
+
+    _topScores.setFont(_font);
+    _topScores.setColor(sf::Color::Black);
+    _topScores.setString("HIGHCORES :  ");
+    _topScores.setPosition(_highscores_button.first.getPos().x+400,_highscores_button.first.getPos().y);
 
     _healthRect.setSize(sf::Vector2f(400,50));
     _healthRect.setPosition(225,710);
@@ -201,26 +225,6 @@ View::View(int w, int h)
     _rectScreen.setOutlineThickness(3);
     _rectScreen.setOutlineColor(sf::Color::Black);
 
-    _textPass.setFont(_font);
-    _textPass.setColor(sf::Color::Black);
-    _textPass.setString("<  APPUYEZ SUR ESPACE POUR CONTINUER  >");
-    _textPass.setPosition(sf::Vector2f(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5));
-
-    _textBall.setFont(_font);
-    _textBall.setColor(sf::Color::Blue);
-    _textBall.setString("Ball : ");
-    _textBall.setPosition(10,10);
-
-    _textBack.setFont(_font);
-    _textBack.setColor(sf::Color::Blue);
-    _textBack.setString("Background : ");
-    _textBack.setPosition((SCREEN_WIDTH/2)+10,10);
-
-    _topScores.setFont(_font);
-    _topScores.setColor(sf::Color::Black);
-    _topScores.setString("HIGHCORES :  ");
-    _topScores.setPosition(_highscores_button.first.getPos().x+400,_highscores_button.first.getPos().y);
-
 
     for(int i=0;i<14;i++)
         _items.push_back(new Item());
@@ -238,8 +242,8 @@ View::View(int w, int h)
 
     _items.at(0)->setSelected(true);
 
-
-
+    _loaded = true;
+    _textPass.setString("<  APPUYEZ SUR ESPACE POUR COMMENCER  >");
 }
 
 //=======================================
@@ -251,9 +255,6 @@ View::~View() //destructeur de la classe View
         delete _window;
 }
 
-//=======================================
-// Accesseurs en écriture
-//=======================================
 void View::setModel(Model * model) //setter qui permet de modifier le modele associé à la vue
 {
     _model = model;
@@ -262,6 +263,11 @@ void View::setModel(Model * model) //setter qui permet de modifier le modele ass
 difficulte View::getDiff()
 {
     return dif;
+}
+
+bool View::getLoaded() const
+{
+    return _loaded;
 }
 
 void View::synchronise()
@@ -685,7 +691,7 @@ bool View::treatEvents()
                 {
                     _model->setPlayerDirection(r);
                 }
-                if((event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::Space) && !_model->getPlayer()->isJumping() && gs==intro)
+                if((event.key.code == sf::Keyboard::Space) && gs==intro && this->getLoaded())
                 {
                     gs = menu;
                 }
@@ -896,7 +902,7 @@ void View::toFrench()
     _easy_button.first.setString("Facile");
     _medium_button.first.setString("Moyen");
 
-    _settings_button.first.setString("Paramètres");
+    _settings_button.first.setString("Parametres");
     _highscores_button.first.setString("Topscores");
     _game_button.first.setString("Jouer");
     _shop_button.first.setString("Boutique");
@@ -909,7 +915,7 @@ void View::toFrench()
     _easy_button.second.setString("Facile");
     _medium_button.second.setString("Moyen");
 
-    _settings_button.second.setString("Paramètres");
+    _settings_button.second.setString("Parametres");
     _highscores_button.second.setString("Topscores");
     _game_button.second.setString("Jouer");
     _shop_button.second.setString("Boutique");

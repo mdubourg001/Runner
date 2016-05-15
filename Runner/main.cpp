@@ -22,6 +22,8 @@ int main()
             break;
         case intro:
             view.drawIntro();
+            if(!view.getLoaded())
+                view.load();
             break;
         case menu:
             view.drawMenu();
