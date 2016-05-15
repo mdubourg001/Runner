@@ -56,6 +56,8 @@ private:
     int _x_player;
     int _y_player;
 
+    sf::Texture _playerStar;
+
     SlidingBackground _background;
 
     std::chrono::time_point<std::chrono::system_clock> _start, _end;
@@ -127,6 +129,7 @@ public:
     void toFrench();
     void synchronise();
     void synchroniseShop();
+    void synchroniseShopBack();
     bool treatEvents();
     gamestates getGs();
     difficulte getDiff();

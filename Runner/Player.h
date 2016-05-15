@@ -10,6 +10,7 @@ class Player : public MovableElement
 {
 private:
     bool _jumping;
+    bool _invincibility;
     sf::CircleShape _shadow;
     int _health;
     int _shield;
@@ -23,6 +24,9 @@ public:
 
     bool isJumping() const;
     void setJumping(bool isjumping);
+    bool isInvincibility() const;
+    void setInvincibility(bool isInvincibility);
+
     void setPosition(int x, int y);
     void jump();
     void rotate(sf::Sprite &p);

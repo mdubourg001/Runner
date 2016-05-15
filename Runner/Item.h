@@ -23,6 +23,9 @@ public:
     void setSelected(bool s);
     void drawText(sf::RenderWindow *w);
     void drawPreview(sf::RenderWindow *w);
+    Preview *getPreview();
+    void initialiseBall(const std::string B, const std::string Name);
+    void initialiseBackground(const std::string BackBig, const std::string BackLittle, const std::string Name);
     void reset();
 
 };
