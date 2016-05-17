@@ -12,7 +12,8 @@ protected:
 
 public:
     Diamond(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites);
-    void move();
+    ~Diamond() override;
+
     void setPicked(bool picked);
     bool isPicked() const;
 };

@@ -1,10 +1,7 @@
 #include "AnimatedSprite.h"
 #include <iostream>
 
-AnimatedSprite::AnimatedSprite()
-{
-
-}
+//=======================CONSTRUCTEUR==========================
 
 AnimatedSprite::AnimatedSprite(std::string texture, int ms,
                                int posx, int posy, int width, int height, int nbrsprites)
@@ -26,12 +23,23 @@ AnimatedSprite::AnimatedSprite(std::string texture, int ms,
     setOrigin(sf::Vector2f(_texture.getSize().x/2, _texture.getSize().y/2));;
 }
 
+AnimatedSprite::~AnimatedSprite()
+{ }
+
+//===============================================================
+//============AUTRES METHODES====================================
+
+
 void AnimatedSprite::move()
+    //déplace le sprite de _movespeed vers la gauche
 {
     setPosition(sf::Vector2f(getPosition().x - _movespeed, getPosition().y));
 }
 
+
 void AnimatedSprite::animate(int value)
+    //gère l'animation du sprite en fonction du nombre de sprites dont il est composé
+    //déplace le rectangle de lecture et actualise la texture
 {
     if(_sourceRect.left  >= (_nbrsprites-1)*value)
         _sourceRect.left = _sourceRect.top =  0;
@@ -43,7 +51,11 @@ void AnimatedSprite::animate(int value)
     }
 }
 
+
 void AnimatedSprite::actualiseSpeed(int speed)
+    //actualise la _movespeed du sprite lorsque le jeu s'accélère
 {
     _movespeed = speed;
 }
+
+//================================================================

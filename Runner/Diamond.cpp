@@ -1,15 +1,16 @@
 #include "Diamond.h"
 
+//==================CONSTRUCTEUR========================
+
 Diamond::Diamond(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites)
     : AnimatedSprite(texture, ms, posx, posy, width, height, nbrsprites), _picked(false)
-{
+{ }
 
-}
+Diamond::~Diamond()
+{ }
 
-void Diamond::move()
-{
-    setPosition(sf::Vector2f(getPosition().x - _movespeed, getPosition().y));
-}
+//======================================================
+//=================ACCESSEURS===========================
 
 void Diamond::setPicked(bool picked)
 {
@@ -20,4 +21,9 @@ bool Diamond::isPicked() const
 {
     return _picked;
 }
+
+//======================================================
+
+
+
 

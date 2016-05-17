@@ -1,6 +1,8 @@
 #include "Counter.h"
 #include <iostream>
 
+//============================CONTRUCTEURS===============================
+
 Counter::Counter()
     : _value {0}
 {
@@ -30,13 +32,8 @@ Counter::Counter(int value, int posx, int posy, int width, int height)
     _text.setPosition(sf::Vector2f(_sprite.getPosition().x + 60, _sprite.getPosition().y));
 }
 
-Counter::Counter(int value, int posx, int posy)
-    : _value{value}
-{
-    _sprite.setPosition(sf::Vector2f(posx,posy));
-}
-
-
+//==========================================================================
+//===============================ACCESSEURS=================================
 
 int Counter::getValue() const
 {
@@ -46,21 +43,6 @@ int Counter::getValue() const
 void Counter::setValue(int value)
 {
     _value = value;
-}
-
-void Counter::increment()
-{
-    _value++;
-}
-
-void Counter::hundredincrement()
-{
-    _value+=100;
-}
-
-void Counter::decrement()
-{
-    _value--;
 }
 
 void Counter::setTexture(std::string filename)
@@ -74,9 +56,33 @@ void Counter::setTexture(std::string filename)
     _sprite.setTexture(_texture);
 }
 
+//==========================================================================
+//=========================AUTRES METHODES==================================
+
+void Counter::increment()
+    //incrémente le compteur de 1
+{
+    _value++;
+}
+
+void Counter::hundredincrement()
+    //incrémente le compteur de 100
+{
+    _value+=100;
+}
+
+void Counter::decrement()
+    //décremente le compteur de 1
+{
+    _value--;
+}
+
 void Counter::draw(sf::RenderWindow *w)
+    //met a jour le texte du compteur et le dessine
 {
     _text.setString(std::to_string(_value));;
     w->draw(_sprite);
     w->draw(_text);
 }
+
+//==========================================================================

@@ -15,12 +15,13 @@ public:
     Cube(int color, int stage);
 
     void setColor(int color);
-    void draw(sf::RenderWindow* w);
-    void move(int movespeed);
     void isDestroyed() const;
     bool setDestroyed(bool destroyed);
     sf::Vector2f getPos() const;
     sf::Vector2f getOri() const;
+
+    void draw(sf::RenderWindow* w);
+    void move(int movespeed);
 };
 
 #endif // CUBE_H

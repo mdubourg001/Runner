@@ -14,17 +14,6 @@ Player::Player(int posx, int posy, int width, int height, int mvtx, int mvty, in
     _shadow.setFillColor(sf::Color(120, 120, 120, 60));
 }
 
-Player::Player(int posx, int posy, int width, int height, int mvtx, int mvty)
-    :MovableElement(posx, posy, width, height, mvtx, mvty)
-{
-
-}
-
-Player::Player(int health, int shield)
-    : _health{health}, _shield{shield}
-{
-
-}
 
 Player::~Player()
 {}

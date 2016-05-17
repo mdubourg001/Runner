@@ -23,6 +23,7 @@ protected:
     int _posy;
     int _speedBig;
     int _speedLittle;
+
 public:
     SlidingBackground();
     SlidingBackground(int w, int h, int sB, int sL);
@@ -32,7 +33,6 @@ public:
     bool loadTextures(std::string leftBig, std::string rightBig, std::string leftLittle, std::string rightLittle);
     void draw(sf::RenderWindow* window);
     void reset();
-
 };
 
 #endif // SLIDINGBACKGROUND_H

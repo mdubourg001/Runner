@@ -1,7 +1,7 @@
 #ifndef ANIMATEDSPRITE_H
 #define ANIMATEDSPRITE_H
-#include "main.h"
 
+#include "main.h"
 #include <chrono>
 
 
@@ -17,9 +17,9 @@ protected:
 public:
     AnimatedSprite();
     AnimatedSprite(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites);
-    AnimatedSprite(int ms, int posx, int posy, int width, int height); //constructeur servant aux tests unitaires
+    ~AnimatedSprite() = 0;
 
-    void move();
+    virtual void move();
     void animate(int value);
     void actualiseSpeed(int speed);
 

@@ -14,48 +14,47 @@
 #define MEDIUM_SPEED 7
 #define HARD_SPEED 10
 
-const std::string BACKGROUND_IMAGE_L = "res/city_1.png";
-const std::string BACKGROUND_IMAGE_B = "res/city_2.png";
-const std::string BACKGROUND_IMAGE_PREVIEW_L = "res/city1_preview.png";
-const std::string BACKGROUND_IMAGE_PREVIEW_B = "res/city2_preview.png";
-const std::string BACKGROUND_TWO_IMAGE_L = "res/city_3.png";
-const std::string BACKGROUND_TWO_IMAGE_B = "res/city_4.png";
-const std::string BACKGROUND_TWO_IMAGE_PREVIEW_L = "res/city3_preview.png";
-const std::string BACKGROUND_TWO_IMAGE_PREVIEW_B = "res/city4_preview.png";
+#define BACKGROUND_IMAGE_L  "res/city_1.png"
+#define BACKGROUND_IMAGE_B  "res/city_2.png"
+#define BACKGROUND_IMAGE_PREVIEW_L  "res/city1_preview.png"
+#define BACKGROUND_IMAGE_PREVIEW_B  "res/city2_preview.png"
+#define BACKGROUND_TWO_IMAGE_L  "res/city_3.png"
+#define BACKGROUND_TWO_IMAGE_B  "res/city_4.png"
+#define BACKGROUND_TWO_IMAGE_PREVIEW_L  "res/city3_preview.png"
+#define BACKGROUND_TWO_IMAGE_PREVIEW_B  "res/city4_preview.png"
 
-const std::string BALL_IMAGE = "res/ball.png";
-const std::string BALL_STAR_IMAGE = "res/ball_v5.png";
-const std::string BALL_TWO_IMAGE = "res/ball_v2.png";
-const std::string BALL_THREE_IMAGE = "res/ball_v3.png";
-const std::string BALL_FOUR_IMAGE = "res/ball_v4.png";
-const std::string BALL_FIVE_IMAGE = "res/ball_v5.png";
-const std::string BALL_SIX_IMAGE = "res/ball_v6.png";
+#define BALL_IMAGE  "res/ball.png"
+#define BALL_STAR_IMAGE  "res/ball_v5.png"
+#define BALL_TWO_IMAGE  "res/ball_v2.png"
+#define BALL_THREE_IMAGE  "res/ball_v3.png"
+#define BALL_FOUR_IMAGE  "res/ball_v4.png"
+#define BALL_FIVE_IMAGE  "res/ball_v5.png"
+#define BALL_SIX_IMAGE  "res/ball_v6.png"
 
+#define BACKGROUND_INTRO_IMAGE  "res/backgroundIntro.png"
+#define BACKGROUND_MENU_IMAGE  "res/backgroundMenu.png"
+#define BACKGROUND_SETTINGS  "res/backgroundSettings.png"
 
-const std::string BACKGROUND_INTRO_IMAGE = "res/backgroundIntro.png";
-const std::string BACKGROUND_MENU_IMAGE = "res/backgroundMenu.png";
-const std::string BACKGROUND_SETTINGS = "res/backgroundSettings.png";
+#define POLICE "res/slapstick.ttf"
+#define POLICEMENU "res/slapstick_shaded.ttf"
 
-const std::string POLICE = "res/slapstick.ttf";
-const std::string POLICEMENU = "res/slapstick_shaded.ttf";
+#define BOUTON_ROUGE  "res/bouton_rouge.png"
+#define BOUTON_BLEU  "res/bouton_bleu.png"
 
-const std::string BOUTON_ROUGE = "res/bouton_rouge.png";
-const std::string BOUTON_BLEU = "res/bouton_bleu.png";
+#define BLUECUBE_B  "res/buttons/blue_big.png"
+#define BLUECUBE_L  "res/buttons/blue_little.png"
+#define REDCUBE_B  "res/buttons/red_big.png"
+#define REDCUBE_L  "res/buttons/red_little.png"
+#define GREENCUBE_B  "res/buttons/green_big.png"
+#define GREENCUBE_L  "res/buttons/green_little.png"
+#define PURPLECUBE_B  "res/buttons/purple_big.png"
+#define PURPLECUBE_L  "res/buttons/purple_little.png"
+#define YELLOWCUBE_B  "res/buttons/yellow_big.png"
+#define YELLOWCUBE_L  "res/buttons/yellow_little.png"
 
-const std::string BLUECUBE_B = "res/buttons/blue_big.png";
-const std::string BLUECUBE_L = "res/buttons/blue_little.png";
-const std::string REDCUBE_B = "res/buttons/red_big.png";
-const std::string REDCUBE_L = "res/buttons/red_little.png";
-const std::string GREENCUBE_B = "res/buttons/green_big.png";
-const std::string GREENCUBE_L = "res/buttons/green_little.png";
-const std::string PURPLECUBE_B = "res/buttons/purple_big.png";
-const std::string PURPLECUBE_L = "res/buttons/purple_little.png";
-const std::string YELLOWCUBE_B = "res/buttons/yellow_big.png";
-const std::string YELLOWCUBE_L = "res/buttons/yellow_little.png";
-
-const std::string FICHIER_SCORE = "res/scores.txt";
-const std::string FICHIER_COIN = "res/coins.txt";
-const std::string FICHIER_DIAMOND = "res/diamonds.txt";
+#define FICHIER_SCORE  "res/scores.txt"
+#define FICHIER_COIN  "res/coins.txt"
+#define FICHIER_DIAMOND  "res/diamonds.txt"
 
 
 enum direction
@@ -66,7 +65,5 @@ enum direction
     r,
     none
 };
-
-
 
 #endif // MAIN_H

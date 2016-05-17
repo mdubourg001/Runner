@@ -1,5 +1,7 @@
 #include "Item.h"
 
+//===================CONSTRUCTEUR=====================
+
 Item::Item()
 {
     _font.loadFromFile(POLICE);
@@ -13,6 +15,9 @@ Item::~Item()
 {
     delete _preview;
 }
+
+//====================================================
+//==================ACCESSEURS========================
 
 sf::Text Item::getName()
 {
@@ -34,36 +39,47 @@ bool Item::isSelected()
     return _selected;
 }
 
-void Item::drawText(sf::RenderWindow *w)
-{
-    _name.setPosition(sf::Vector2f(getPosition().x + 20, getPosition().y + 10));
-    w->draw(_name);
-}
-
-void Item::reset()
-{
-    _preview->reset();
-}
-
-void Item::drawPreview(sf::RenderWindow *w)
-{
-    _preview->draw(w);
-    _preview->move();
-}
 
 Preview *Item::getPreview()
 {
     return _preview;
 }
 
+//=====================================================
+//================AUTRES METHODES======================
+
+void Item::drawText(sf::RenderWindow *w)
+    //dessine le nom de l'item dans le shop
+{
+    _name.setPosition(sf::Vector2f(getPosition().x + 20, getPosition().y + 10));
+    w->draw(_name);
+}
+
+void Item::reset()
+    //remet la preview de cet item à 0
+{
+    _preview->reset();
+}
+
+void Item::drawPreview(sf::RenderWindow *w)
+    //dessine la preview de l'item (ie un aperçu de l'item)
+{
+    _preview->draw(w);
+    _preview->move();
+}
+
 void Item::initialiseBall(const std::string B, const std::string Name)
+    //change la texture et le nom de la balle en fonction de l'item
 {
     _preview->setBallTexture(B);
     this->setName(Name);
 }
 
 void Item::initialiseBackground(const std::string BackBig, const std::string BackLittle, const std::string Name)
+    //initialise la preview
 {
     _preview->setBackgroundTexture(BackBig, BackLittle);
     this->setName(Name);
 }
+
+//========================================================

@@ -12,7 +12,7 @@ int randoume =0;
 int Model::_current_speed = EASY_SPEED;
 
 //=======================================
-// Constructeurs
+// Constructeurs & Destructeur
 //=======================================
 Model::Model(int w, int h)
     :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0), _canpop(true), _magnetpicked(false), _magnetcpt(-1), _difficulte(0),
@@ -28,23 +28,137 @@ Model::Model(int w, int h)
     _start = std::chrono::system_clock::now();
     _gamestart = std::chrono::system_clock::now();
 }
-//=======================================
-// Destructeurs
-//=======================================
-Model::~Model(){}
 
-//=======================================
-// Calcul la prochaine étape
-//=======================================
+Model::~Model()
+{ }
+
+//==================ACCESSEURS========================
+
+void Model::getPlayerPosition(int &x, int &y)
+{
+    x = _player.getPosx();
+    y = _player.getPosy();
+}
+
+Player* Model::getPlayer()
+{
+    Player* ptr = &_player;
+    return ptr;
+}
+
+Counter* Model::getCounterScore()
+{
+    Counter* ctr = &_score_counter;
+    return ctr;
+}
+
+Counter* Model::getCounterCoin()
+{
+    Counter* ctr = &_coin_counter;
+    return ctr;
+}
+
+Counter* Model::getCounterDiamond()
+{
+    Counter* ctr = &_diamond_counter;
+    return ctr;
+}
+
+std::vector<Coin*>* Model::Coins()
+{
+    std::vector<Coin*>* ptr = &_coins;
+    return ptr;
+}
+
+std::vector<Diamond*>* Model::Diamonds()
+{
+    std::vector<Diamond*>* ptr = &_diamonds;
+    return ptr;
+}
+
+std::vector<Bonus*>* Model::Awards()
+{
+    std::vector<Bonus*>* ptr = &_bonus;
+    return ptr;
+}
+
+std::vector<Obstacle*>* Model::Obstacles()
+{
+    std::vector<Obstacle*>* ptr = &_obstacles;
+    return ptr;
+}
+
+void Model::setDifficulte(int d)
+{
+    _difficulte = d;
+}
+
+void Model::setPlayerDirection(direction d)
+{
+    if(d == none)
+    {
+        _player.changeDirection(none);
+        _player.setMvtx(0);
+    }
+
+    else if(d == l)
+    {
+        _player.changeDirection(l);
+        if(!_player.isJumping())
+            _player.setMvtx(-10);
+        else
+            _player.setMvtx(-2);
+    }
+
+    else if(d == r)
+    {
+        _player.changeDirection(r);
+        if(!_player.isJumping())
+            _player.setMvtx(10);
+        else
+            _player.setMvtx(2);
+    }
+
+    else if(d == up)
+    {
+        _player.setJumping(true);
+        _player.setMvty(-JUMP_INITIAL_SPEED);
+    }
+}
+
+int Model::getCurrentSpeed()
+{
+    return _current_speed;
+}
+
+//====================================================
+//==================AUTRES METHODES===================
+
 void Model::nextStep()
+    /* calcule la prochaine étape de jeu:
+     * le temps de jeu -> calcul de la vitesse des objets
+     * déplacement du joueur et saut du joueur
+     * traitement des collisions
+     * incrémentation du score
+     * apparition des obstacles
+     * anime tout les objets et supprime ceux qui ne sont plus affichés à l'écran
+    */
 {
     _end = std::chrono::system_clock::now();
     _timecheck = std::chrono::system_clock::now();
-
     int timelapse = std::chrono::duration_cast<std::chrono::milliseconds>
             (_end-_start).count();
     int gametime = std::chrono::duration_cast<std::chrono::seconds>
             (_timecheck-_gamestart).count();
+
+
+
+    _score_counter.increment();
+
+    movePlayer();
+    _player.treatCollisions(_coins,_diamonds, _bonus, _obstacles);
+
+
 
     if(gametime%20 == 0) //augmentation de la vitesse des objets en fonction du temps
     {
@@ -57,12 +171,6 @@ void Model::nextStep()
         actualiseSpeed(_current_speed);
     }
 
-
-    _score_counter.increment();
-
-    movePlayer();
-    _player.treatCollisions(_coins,_diamonds, _bonus, _obstacles);
-
     if(_player.isJumping())
     {
         _player.jump();
@@ -70,7 +178,6 @@ void Model::nextStep()
 
 
     if((_score_counter.getValue() % 1000) == 0)
-
     {
         if (2000 - _difficulte >= 500)
             _difficulte += 200;
@@ -185,102 +292,6 @@ void Model::nextStep()
     for_each(_diamonds.begin(), _diamonds.end(), [](Diamond* &d){d->move();});
     for_each(_bonus.begin(), _bonus.end(), [](Bonus* &b){b->move();});
     for_each(_obstacles.begin(), _obstacles.end(), [](Obstacle* &o){o->move();});
-
-
-}
-
-//=======================================
-// Autres méthodes
-//=======================================
-void Model::getPlayerPosition(int &x, int &y)
-{
-    x = _player.getPosx();
-    y = _player.getPosy();
-}
-
-Player* Model::getPlayer()
-{
-    Player* ptr = &_player;
-    return ptr;
-}
-Counter* Model::getCounterScore()
-{
-    Counter* ctr = &_score_counter;
-    return ctr;
-}
-
-Counter* Model::getCounterCoin()
-{
-    Counter* ctr = &_coin_counter;
-    return ctr;
-}
-
-Counter* Model::getCounterDiamond()
-{
-    Counter* ctr = &_diamond_counter;
-    return ctr;
-}
-
-std::vector<Coin*>* Model::Coins()
-{
-    std::vector<Coin*>* ptr = &_coins;
-    return ptr;
-}
-
-std::vector<Diamond*>* Model::Diamonds()
-{
-    std::vector<Diamond*>* ptr = &_diamonds;
-    return ptr;
-}
-
-std::vector<Bonus*>* Model::Awards()
-{
-    std::vector<Bonus*>* ptr = &_bonus;
-    return ptr;
-}
-
-std::vector<Obstacle*>* Model::Obstacles()
-{
-    std::vector<Obstacle*>* ptr = &_obstacles;
-    return ptr;
-}
-
-void Model::setDifficulte(int d)
-{
-    _difficulte = d;
-}
-
-void Model::setPlayerDirection(direction d)
-{
-    if(d == none)
-    {
-        _player.changeDirection(none);
-        _player.setMvtx(0);
-    }
-
-    else if(d == l)
-    {
-        _player.changeDirection(l);
-        if(!_player.isJumping())
-            _player.setMvtx(-10);
-        else
-            _player.setMvtx(-2);
-    }
-
-    else if(d == r)
-    {
-        _player.changeDirection(r);
-        if(!_player.isJumping())
-            _player.setMvtx(10);
-        else
-            _player.setMvtx(2);
-    }
-
-    else if(d == up)
-    {
-        _player.setJumping(true);
-        _player.setMvty(-JUMP_INITIAL_SPEED);
-    }
 }
 
 void Model::movePlayer()
@@ -446,7 +457,5 @@ void Model::actualiseSpeed(int speed)
     for(auto o : _obstacles) {o->actualiseSpeed(speed) ;}
 }
 
-int Model::getCurrentSpeed()
-{
-    return _current_speed;
-}
+//====================================================
+

@@ -20,6 +20,8 @@ public:
     Button();
     void initialise(std::string texture, std::string texture_hover, std::string text,
                     std::string font, sf::Color color,  int posx, int posy);
+
+    sf::Vector2f getPos() const;
     bool isSelected() const;
     void setSelected(bool selected);
     bool getIsbig() const;
@@ -30,8 +32,9 @@ public:
     void setString(std::string string);
     sf::Color getColor() const;
     void setColor(sf::Color color);
+
     void draw(sf::RenderWindow *w);
-    sf::Vector2f getPos() const;
+
 };
 
 #endif // BUTTON_H

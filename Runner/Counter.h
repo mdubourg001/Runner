@@ -15,10 +15,11 @@ protected:
 public:
     Counter();
     Counter(int value, int posx, int posy, int width, int height);
-    Counter(int value, int posx, int posy); // constructeur pour les test unitaires
+
     int getValue() const;
     void setValue(int value);
     void setTexture(std::string filename);
+
     void initSprite(int w, int h, int posx, int posy);
     void increment();
     void decrement();

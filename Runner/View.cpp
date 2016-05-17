@@ -20,7 +20,8 @@ View::View(int w, int h)
       _cpt(160) ,gs(intro), lg(fr), dif(facile), cs(ball),
       _totalCoin(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70, 50, 50),
       _totalDiamond(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70, 50, 50),
-      _loaded(false)
+      _loaded(false),
+      _popup_displayed(false)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D
     _window->setFramerateLimit(FRAMERATE_LIMIT); //fixe la limite de fps
@@ -49,14 +50,14 @@ View::View(int w, int h)
     _textPass.setString("<  PATIENTEZ, CHARGEMENT DU JEU...  >");
     _textPass.setOrigin(_textPass.getLocalBounds().width/2, _textPass.getLocalBounds().height/2);
     _textPass.setPosition(sf::Vector2f(SCREEN_WIDTH/2, SCREEN_HEIGHT-SCREEN_HEIGHT/5));
+
+    _popup = new Popup();
 }
 
 void View::load()
 {
     _totalCoin.setTexture("res/coin.png");
     _totalDiamond.setTexture("res/diamond.png");
-
-
 
     if (!_background.loadTextures(BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
     {
@@ -306,15 +307,18 @@ void View::synchronise()
     _healthRect.setSize(sf::Vector2f(_model->getPlayer()->getHealth(),_healthRect.getSize().y));
     _shieldRect.setSize(sf::Vector2f(-_model->getPlayer()->getShield(),_shieldRect.getSize().y));
 
-    /* Ne doit pas etre là */
     if(_model->getPlayer()->getHealth() == 0)
     {
+//        _popup->setString("VOULEZ VOUS REVIVRE ?");
+//        _popup->setLeftString("OUI");
+//        _popup->setRightString("NON");
+//        _popup_displayed = true;
+
         gs = menu;
         _model->save();
         this->recup();
         _model->reset();
     }
-    /* --------------------*/
 
     if(_model->getPlayer()->isInvincibility() == true)
     {

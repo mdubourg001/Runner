@@ -1,16 +1,16 @@
 #include "Bonus.h"
 
+//========================CONSTRUCTEUR================================
+
 Bonus::Bonus(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites)
     : AnimatedSprite(texture, ms, posx, posy, width, height, nbrsprites), _picked(false)
-{
+{ }
 
-}
+Bonus::~Bonus()
+{ }
 
-
-void Bonus::move()
-{
-    setPosition(sf::Vector2f(getPosition().x - _movespeed, getPosition().y));
-}
+//====================================================================
+//======================ACCESSEURS====================================
 
 void Bonus::setPicked(bool picked)
 {
@@ -21,3 +21,7 @@ bool Bonus::isPicked() const
 {
     return _picked;
 }
+
+//====================================================================
+
+

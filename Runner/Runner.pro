@@ -21,7 +21,8 @@ SOURCES += main.cpp \
     Preview.cpp \
     Diamond.cpp \
     Cube.cpp \
-    Button.cpp
+    Button.cpp \
+    Popup.cpp
 
 HEADERS += \
     Player.h \
@@ -39,4 +40,5 @@ HEADERS += \
     Preview.h \
     Diamond.h \
     Cube.h \
-    Button.h
+    Button.h \
+    Popup.h

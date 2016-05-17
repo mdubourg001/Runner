@@ -19,11 +19,12 @@ public:
     Obstacle();
     Obstacle(int category, int ms);
 
-    void move();
     void setDestroyed(bool destroyed);
     sf::Vector2f getPos() const;
     sf::Vector2f getSize() const;
     bool isDestroyed() const;
+
+    void move();
     void draw(sf::RenderWindow* w);
     void actualiseSpeed(int speed);
 };

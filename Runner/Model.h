@@ -30,6 +30,7 @@ class Model
 protected:
     int _w, _h;
     Player _player;
+
     std::vector<Coin*> _coins;
     std::vector<Diamond*> _diamonds;
     std::vector<Bonus*> _bonus;
@@ -43,13 +44,12 @@ protected:
     int _magnetcpt;
     int _difficulte;
 
-
     BonusType bt;
-
-    static int _current_speed;
 
     std::chrono::time_point<std::chrono::system_clock> _start, _end;
     std::chrono::time_point<std::chrono::system_clock> _gamestart, _timecheck;
+
+    static int _current_speed;
 
 public:
     Model(int w, int h);
@@ -60,14 +60,17 @@ public:
     Counter* getCounterScore();
     Counter* getCounterCoin();
     Counter* getCounterDiamond();
+    void getPlayerPosition(int &x, int &y);
+    void setPlayerDirection(direction d);
+    void setDifficulte(int d);
+
+    static int getCurrentSpeed();
 
     std::vector<Coin *> *Coins();
     std::vector<Diamond *> *Diamonds();
     std::vector<Bonus *> *Awards();
     std::vector<Obstacle*>* Obstacles();
 
-    void getPlayerPosition(int &x, int &y);
-    void setPlayerDirection(direction d);
     void movePlayer();
     void addCoin();
     void addDiamond();
@@ -79,8 +82,6 @@ public:
     void saveDiamond();
     void save();
     void reset();
-    void setDifficulte(int d);
     void actualiseSpeed(int speed);
-    static int getCurrentSpeed();
 };
 #endif

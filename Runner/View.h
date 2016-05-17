@@ -8,6 +8,8 @@
 #include "Counter.h"
 #include "Item.h"
 #include "Button.h"
+#include "Model.h"
+#include "Popup.h"
 
 enum gamestates
 {
@@ -114,10 +116,16 @@ private:
     Counter _totalCoin;
     Counter _totalDiamond;
 
+    Popup* _popup;
+    bool _popup_displayed;
+
 public:
     View(int w, int h);
     ~View();
 
+    gamestates getGs();
+    difficulte getDiff();
+    bool getLoaded() const;
 
     void setModel(Model * model);
     void load();
@@ -133,9 +141,6 @@ public:
     void synchroniseShop();
     void synchroniseShopBack();
     bool treatEvents();
-    gamestates getGs();
-    difficulte getDiff();
-    bool getLoaded() const;
     void recupBest();
     void recupCoins();
     void recupDiamonds();

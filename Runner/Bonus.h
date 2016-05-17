@@ -1,5 +1,6 @@
 #ifndef BONUS_H
 #define BONUS_H
+
 #include "main.h"
 #include "AnimatedSprite.h"
 
@@ -12,10 +13,10 @@ protected:
 
 public:
     Bonus(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites);
-    void move();
+    ~Bonus() override;
+
     void setPicked(bool picked);
     bool isPicked() const;
-
 };
 
 #endif // BONUS_H

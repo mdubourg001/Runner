@@ -1,12 +1,10 @@
 #include "Button.h"
 #include "main.h"
 
-
+//===========CONSTRCUTEUR & INITIALISATION==============================
 
 Button::Button()
-{
-
-}
+{ }
 
 void Button::initialise(std::string texture, std::string texture_hover,
                         std::string text, std::string font, sf::Color color,
@@ -55,8 +53,12 @@ void Button::initialise(std::string texture, std::string texture_hover,
 
     this->scale(0.83, 0.83);
     _text.setOrigin(_text.getLocalBounds().width/2, _text.getLocalBounds().height/2);
-    _text.setPosition(this->getPosition().x + 70, this->getPosition().y + 170);
+    _text.setPosition(this->getPosition().x + _texture.getSize().x/2
+                      , this->getPosition().y + _texture.getSize().y);
 }
+
+//==========================================================================
+//==============================ACCESSEURS==================================
 
 sf::Vector2f Button::getPos() const
 { return this->getPosition(); }
@@ -94,9 +96,15 @@ std::string Button::getString() const
 void Button::setString(std::string string)
 { _text.setString(string); }
 
+//==============================================================
+//===============AUTRES METHODES================================
+
 void Button::draw(sf::RenderWindow *w)
+    //dessine le bouton (sprite), puis son texte
 {
     w->draw(*this);
     w->draw(_text);
 }
+
+//==============================================================
 
