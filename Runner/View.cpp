@@ -7,10 +7,7 @@
 #include <iostream>
 
 using namespace std;
-//using namespace sf;
 
-int cpt1=0;
-int cpt2=0;
 
 //=======================================
 // Constructeur
@@ -155,6 +152,14 @@ void View::load()
                                   POLICEMENU, sf::Color::Black, 1075,(3*(SCREEN_HEIGHT/4))-100);
     _hard_button.second.initialise(PURPLECUBE_B, PURPLECUBE_B, "DIFFICILE",
                                    POLICEMENU, sf::Color::Black, 1075,(3*(SCREEN_HEIGHT/4))-100);
+
+    //========================================================================//
+    //============BOUTONS DU SHOP=============================================//
+
+    _buy_button.initialise(BLUECUBE, REDCUBE, "ACHETER",
+            POLICEMENU, sf::Color::Black, 500, (SCREEN_HEIGHT/4)+475);
+    _select_button.initialise(YELLOWCUBE, REDCUBE, "JOUER AVEC",
+            POLICEMENU, sf::Color::Black, 700, (SCREEN_HEIGHT/4)+475);
 
     //========================================================================//
 
@@ -341,6 +346,8 @@ void View::synchronise()
         }
 
     }
+    else
+        _playerSprite.setTexture(_player);
 
 }
 
@@ -598,6 +605,31 @@ void View::drawShop()
         i->drawText(_window);
     }
 
+    if(_buy_button.isSelected())
+    {
+        _buy_button.setBigTexture();
+        _buy_button.setColor(sf::Color::Red);
+    }
+    else
+    {
+        _buy_button.setLittleTexture();
+        _buy_button.setColor(sf::Color::Black);
+    }
+
+    if(_select_button.isSelected())
+    {
+        _select_button.setBigTexture();
+        _select_button.setColor(sf::Color::Red);
+    }
+    else
+    {
+        _select_button.setLittleTexture();
+        _select_button.setColor(sf::Color::Black);
+    }
+
+    _buy_button.draw(_window);
+    _select_button.draw(_window);
+
     _window->draw(_rectBall);
     _window->draw(_rectBack);
     _window->draw(_textBall);
@@ -782,7 +814,18 @@ bool View::treatEvents()
                     _window->close();
                     result = false;
                 }
+            }
+            else if (event.type == sf::Event::MouseButtonPressed && gs == shop)
+            {
+                x = event.mouseButton.x;
+                y = event.mouseButton.y;
 
+                if(x>= 460 && x<=585 && y>=670 && y<=740)
+                    // acheter
+                    break;
+                else if (x>=630 && x<=820 && y>=670 && y<=740)
+                    // selectionner
+                    break;
             }
             else if (event.type == sf::Event::MouseButtonPressed && gs == settings)
             {
@@ -844,6 +887,20 @@ bool View::treatEvents()
                     _exit_button.second.setSelected(true);
                 else
                     _exit_button.second.setSelected(false);
+            }
+            else if (event.type == sf::Event::MouseMoved && gs == shop)
+            {
+                int xM = event.mouseMove.x;
+                int yM = event.mouseMove.y;
+
+                if(xM>= 460 && xM<=585 && yM>=670 && yM<=740)
+                    _buy_button.setSelected(true);
+                else
+                    _buy_button.setSelected(false);
+                if (xM>=630 && xM<=820 && yM>=670 && yM<=740)
+                    _select_button.setSelected(true);
+                else
+                    _select_button.setSelected(false);
             }
 
         }

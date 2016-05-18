@@ -10,35 +10,35 @@ Cube::Cube(int color, int stage)
     switch (_color)
     {
     case 1:
-        if(!_texture.loadFromFile("res/redcube.png"))
+        if(!_texture.loadFromFile(REDCUBE))
         {
             std::cerr << "Erreur lors du chargement de redcube.png";
             exit(EXIT_FAILURE);
         }
         break;
     case 2:
-        if(!_texture.loadFromFile("res/bluecube.png"))
+        if(!_texture.loadFromFile(BLUECUBE))
         {
             std::cerr << "Erreur lors du chargement de bluecube.png";
             exit(EXIT_FAILURE);
         }
         break;
     case 3:
-        if(!_texture.loadFromFile("res/greencube.png"))
+        if(!_texture.loadFromFile(GREENCUBE))
         {
             std::cerr << "Erreur lors du chargement de greencube.png";
             exit(EXIT_FAILURE);
         }
         break;
     case 4:
-        if(!_texture.loadFromFile("res/yellowcube.png"))
+        if(!_texture.loadFromFile(YELLOWCUBE))
         {
             std::cerr << "Erreur lors du chargement de yellowcube.png";
             exit(EXIT_FAILURE);
         }
         break;
     case 5:
-        if(!_texture.loadFromFile("res/purplecube.png"))
+        if(!_texture.loadFromFile(PURPLECUBE))
         {
             std::cerr << "Erreur lors du chargement de purplecube.png";
             exit(EXIT_FAILURE);
@@ -78,35 +78,35 @@ void Cube::setColor(int color)
     switch (_color)
     {
     case 1:
-        if(!_texture.loadFromFile("res/redcube.png"))
+        if(!_texture.loadFromFile(REDCUBE))
         {
             std::cerr << "Erreur lors du chargement de redcube.png";
             exit(EXIT_FAILURE);
         }
         break;
     case 2:
-        if(!_texture.loadFromFile("res/bluecube.png"))
+        if(!_texture.loadFromFile(BLUECUBE))
         {
             std::cerr << "Erreur lors du chargement de bluecube.png";
             exit(EXIT_FAILURE);
         }
         break;
     case 3:
-        if(!_texture.loadFromFile("res/greencube.png"))
+        if(!_texture.loadFromFile(GREENCUBE))
         {
             std::cerr << "Erreur lors du chargement de greencube.png";
             exit(EXIT_FAILURE);
         }
         break;
     case 4:
-        if(!_texture.loadFromFile("res/yellowcube.png"))
+        if(!_texture.loadFromFile(YELLOWCUBE))
         {
             std::cerr << "Erreur lors du chargement de yellowcube.png";
             exit(EXIT_FAILURE);
         }
         break;
     case 5:
-        if(!_texture.loadFromFile("res/purplecube.png"))
+        if(!_texture.loadFromFile(PURPLECUBE))
         {
             std::cerr << "Erreur lors du chargement de purplecube.png";
             exit(EXIT_FAILURE);
