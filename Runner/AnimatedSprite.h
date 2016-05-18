@@ -4,6 +4,7 @@
 #include "main.h"
 #include <chrono>
 
+class Player;
 
 class AnimatedSprite : public sf::Sprite
 {
@@ -11,8 +12,8 @@ protected:
     sf::Texture _texture;
     std::string _texturename;
     sf::IntRect _sourceRect;
-    int _nbrsprites;
     int _movespeed;
+    int _nbrsprites;
 
 public:
     AnimatedSprite();

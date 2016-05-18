@@ -48,8 +48,6 @@ class View
 private:
     int _w, _h;
 
-    bool _loaded;
-
     sf::RenderWindow * _window;
     Model* _model;
 
@@ -107,11 +105,12 @@ private:
     std::vector<Item*> _items;
 
     gamestates gs;
-    choixShop cs;
     langue lg;
     difficulte dif;
+    choixShop cs;
 
-    int _cpt;
+    bool _loaded;
+
     Counter _best;
     Counter _totalCoin;
     Counter _totalDiamond;

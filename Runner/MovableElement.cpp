@@ -36,6 +36,9 @@ int MovableElement::getMvtx() const
 int MovableElement::getMvty() const
 { return _mvty; }
 
+sf::Vector2f MovableElement::getPos() const
+{ return sf::Vector2f(getPosx(), getPosy()); }
+
 int MovableElement::getPosx() const
 { return _posx; }
 

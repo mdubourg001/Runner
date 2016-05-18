@@ -8,9 +8,11 @@
 #include "Diamond.h"
 #include "Bonus.h"
 #include "Obstacle.h"
+#include "utils.h"
 
 #include <chrono>
 #include <ctime>
+#include <math.h>
 
 enum BonusType
 {
@@ -31,6 +33,11 @@ protected:
     int _w, _h;
     Player _player;
 
+    bool _canpop;
+    bool _magnetpicked;
+    int _magnetcpt;
+    int _difficulte;
+
     std::vector<Coin*> _coins;
     std::vector<Diamond*> _diamonds;
     std::vector<Bonus*> _bonus;
@@ -39,10 +46,7 @@ protected:
     Counter _coin_counter;
     Counter _score_counter;
     Counter _diamond_counter;
-    bool _canpop;
-    bool _magnetpicked;
-    int _magnetcpt;
-    int _difficulte;
+
 
     BonusType bt;
 

@@ -22,6 +22,7 @@ public:
     void setMvtx(int mvtx);
     void setMvty(int mvty);
 
+    sf::Vector2f getPos() const;
     int getPosx() const;
     int getPosy() const;
     int getMvtx() const;

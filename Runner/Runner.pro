@@ -3,7 +3,7 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-QMAKE_CXXFLAGS += -std=c++11 -Wall -Wextra
+QMAKE_CXXFLAGS += -std=c++11 -Wall -Wextra -pedantic
 LIBS += -lsfml-graphics -lsfml-window -lsfml-system
 
 SOURCES += main.cpp \
@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     Diamond.cpp \
     Cube.cpp \
     Button.cpp \
-    Popup.cpp
+    Popup.cpp \
+    utils.cpp
 
 HEADERS += \
     Player.h \
@@ -41,4 +42,5 @@ HEADERS += \
     Diamond.h \
     Cube.h \
     Button.h \
-    Popup.h
+    Popup.h \
+    utils.h

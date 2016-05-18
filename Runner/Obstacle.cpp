@@ -45,7 +45,7 @@ Obstacle::Obstacle(int category, int ms)
 
 void Obstacle::move()
 {
-    for(int i=0 ; i<_cubes.size() ; i++)
+    for(unsigned int i=0 ; i<_cubes.size() ; i++)
     {
         _cubes.at(i)->move(_movespeed);
     }
@@ -65,7 +65,7 @@ bool Obstacle::isDestroyed() const
 
 void Obstacle::draw(sf::RenderWindow *w)
 {
-    for(int i=0 ; i<_cubes.size() ; i++)
+    for(unsigned int i=0 ; i<_cubes.size() ; i++)
     {
         _cubes.at(i)->draw(w);
     }

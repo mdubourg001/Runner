@@ -17,10 +17,11 @@ int cpt2=0;
 //=======================================
 View::View(int w, int h)
     : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(0, 0 , SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5),
-      _cpt(160) ,gs(intro), lg(fr), dif(facile), cs(ball),
-      _totalCoin(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70, 50, 50),
-      _totalDiamond(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70, 50, 50),
+      gs(intro), lg(fr), dif(facile), cs(ball),
       _loaded(false),
+      _totalCoin(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70),
+      _totalDiamond(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70),
+
       _popup_displayed(false)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D
@@ -103,57 +104,57 @@ void View::load()
     //============BOUTONS DU MENU=============================================//
 
     _settings_button.first.initialise(PURPLECUBE_L, PURPLECUBE_L, "PARAMETRES",
-                                POLICEMENU, sf::Color::Black, 100,(SCREEN_HEIGHT/2)-100);
+                                      POLICEMENU, sf::Color::Black, 100,(SCREEN_HEIGHT/2)-100);
     _settings_button.second.initialise(PURPLECUBE_B, PURPLECUBE_B, "PARAMETRES",
-                                POLICEMENU, sf::Color::Black, 75,(SCREEN_HEIGHT/2)-115);
+                                       POLICEMENU, sf::Color::Black, 75,(SCREEN_HEIGHT/2)-115);
 
     _highscores_button.first.initialise(YELLOWCUBE_L, YELLOWCUBE_L, "TOP SCORES",
-                                  POLICEMENU, sf::Color::Black, 350,(SCREEN_HEIGHT/2)-100);
+                                        POLICEMENU, sf::Color::Black, 350,(SCREEN_HEIGHT/2)-100);
     _highscores_button.second.initialise(YELLOWCUBE_B, YELLOWCUBE_B, "TOP SCORES",
-                                  POLICEMENU, sf::Color::Black, 335,(SCREEN_HEIGHT/2)-115);
+                                         POLICEMENU, sf::Color::Black, 335,(SCREEN_HEIGHT/2)-115);
 
     _game_button.first.initialise(GREENCUBE_L, GREENCUBE_L, "JOUER",
-                            POLICEMENU, sf::Color::Black, 600,(SCREEN_HEIGHT/2)-100);
+                                  POLICEMENU, sf::Color::Black, 600,(SCREEN_HEIGHT/2)-100);
     _game_button.second.initialise(GREENCUBE_B, GREENCUBE_B, "JOUER",
-                            POLICEMENU, sf::Color::Black, 575,(SCREEN_HEIGHT/2)-115);
+                                   POLICEMENU, sf::Color::Black, 575,(SCREEN_HEIGHT/2)-115);
 
     _shop_button.first.initialise(BLUECUBE_L, BLUECUBE_L, "BOUTIQUE",
-                            POLICEMENU, sf::Color::Black, 850,(SCREEN_HEIGHT/2)-100);
+                                  POLICEMENU, sf::Color::Black, 850,(SCREEN_HEIGHT/2)-100);
     _shop_button.second.initialise(BLUECUBE_B, BLUECUBE_B, "BOUTIQUE",
-                            POLICEMENU, sf::Color::Black, 835,(SCREEN_HEIGHT/2)-115);
+                                   POLICEMENU, sf::Color::Black, 835,(SCREEN_HEIGHT/2)-115);
 
     _exit_button.first.initialise(REDCUBE_L, REDCUBE_L, "QUITTER",
-                            POLICEMENU, sf::Color::Black, 1100,(SCREEN_HEIGHT/2)-100);
+                                  POLICEMENU, sf::Color::Black, 1100,(SCREEN_HEIGHT/2)-100);
     _exit_button.second.initialise(REDCUBE_B, REDCUBE_B, "QUITTER",
-                            POLICEMENU, sf::Color::Black, 1075,(SCREEN_HEIGHT/2)-115);
+                                   POLICEMENU, sf::Color::Black, 1075,(SCREEN_HEIGHT/2)-115);
 
     //========================================================================//
     //============BOUTONS DES SETTINGS========================================//
 
     _french_button.first.initialise(BLUECUBE_L, BLUECUBE_L, "FRANCAIS",
-                              POLICEMENU, sf::Color::Black, 575,(SCREEN_HEIGHT/4)-100);
+                                    POLICEMENU, sf::Color::Black, 575,(SCREEN_HEIGHT/4)-100);
     _french_button.second.initialise(BLUECUBE_B, BLUECUBE_B, "FRANCAIS",
-                              POLICEMENU, sf::Color::Black, 575,(SCREEN_HEIGHT/4)-100);
+                                     POLICEMENU, sf::Color::Black, 575,(SCREEN_HEIGHT/4)-100);
 
     _english_button.first.initialise(REDCUBE_L, REDCUBE_L, "ANGLAIS",
-                               POLICEMENU, sf::Color::Black, 825, (SCREEN_HEIGHT/4)-100);
+                                     POLICEMENU, sf::Color::Black, 825, (SCREEN_HEIGHT/4)-100);
     _english_button.second.initialise(REDCUBE_B, REDCUBE_B, "ANGLAIS",
-                               POLICEMENU, sf::Color::Black, 825, (SCREEN_HEIGHT/4)-100);
+                                      POLICEMENU, sf::Color::Black, 825, (SCREEN_HEIGHT/4)-100);
 
     _easy_button.first.initialise(GREENCUBE_L, GREENCUBE_L, "FACILE",
-                            POLICEMENU, sf::Color::Black, 575,(3*(SCREEN_HEIGHT/4))-100);
+                                  POLICEMENU, sf::Color::Black, 575,(3*(SCREEN_HEIGHT/4))-100);
     _easy_button.second.initialise(GREENCUBE_B, GREENCUBE_B, "FACILE",
-                            POLICEMENU, sf::Color::Black, 575,(3*(SCREEN_HEIGHT/4))-100);
+                                   POLICEMENU, sf::Color::Black, 575,(3*(SCREEN_HEIGHT/4))-100);
 
     _medium_button.first.initialise(YELLOWCUBE_L, YELLOWCUBE_L, "MOYEN",
-                              POLICEMENU, sf::Color::Black, 825,(3*(SCREEN_HEIGHT/4))-100);
+                                    POLICEMENU, sf::Color::Black, 825,(3*(SCREEN_HEIGHT/4))-100);
     _medium_button.second.initialise(YELLOWCUBE_B, YELLOWCUBE_B, "MOYEN",
-                              POLICEMENU, sf::Color::Black, 825,(3*(SCREEN_HEIGHT/4))-100);
+                                     POLICEMENU, sf::Color::Black, 825,(3*(SCREEN_HEIGHT/4))-100);
 
     _hard_button.first.initialise(PURPLECUBE_L, PURPLECUBE_L, "DIFFICILE",
-                            POLICEMENU, sf::Color::Black, 1075,(3*(SCREEN_HEIGHT/4))-100);
+                                  POLICEMENU, sf::Color::Black, 1075,(3*(SCREEN_HEIGHT/4))-100);
     _hard_button.second.initialise(PURPLECUBE_B, PURPLECUBE_B, "DIFFICILE",
-                            POLICEMENU, sf::Color::Black, 1075,(3*(SCREEN_HEIGHT/4))-100);
+                                   POLICEMENU, sf::Color::Black, 1075,(3*(SCREEN_HEIGHT/4))-100);
 
     //========================================================================//
 
@@ -227,21 +228,21 @@ void View::load()
     _rectScreen.setOutlineColor(sf::Color::Black);
 
 
-//    for(int i=0;i<14;i++)
-//        _items.push_back(new Item());
+    //    for(int i=0;i<14;i++)
+    //        _items.push_back(new Item());
 
 
-//    for(int i=0;i<_items.size();i++)
-//    {
-//        _items.at(i)->setPosition(3,53 + 51*i);
-//        _items.at(i)->setOutlineThickness(3);
-//        _items.at(i)->setOutlineColor(sf::Color::Black);
-//        _items.at(i)->setSize(sf::Vector2f(SCREEN_WIDTH/6,50));
-//        _items.at(i)->setName("");
-//        this->synchroniseShopBack();
-//    }
+    //    for(int i=0;i<_items.size();i++)
+    //    {
+    //        _items.at(i)->setPosition(3,53 + 51*i);
+    //        _items.at(i)->setOutlineThickness(3);
+    //        _items.at(i)->setOutlineColor(sf::Color::Black);
+    //        _items.at(i)->setSize(sf::Vector2f(SCREEN_WIDTH/6,50));
+    //        _items.at(i)->setName("");
+    //        this->synchroniseShopBack();
+    //    }
 
-//    _items.at(0)->setSelected(true);
+    //    _items.at(0)->setSelected(true);
 
     _loaded = true;
     _textPass.setString("<  APPUYEZ SUR ESPACE POUR COMMENCER  >");
@@ -309,10 +310,10 @@ void View::synchronise()
 
     if(_model->getPlayer()->getHealth() == 0)
     {
-//        _popup->setString("VOULEZ VOUS REVIVRE ?");
-//        _popup->setLeftString("OUI");
-//        _popup->setRightString("NON");
-//        _popup_displayed = true;
+        //        _popup->setString("VOULEZ VOUS REVIVRE ?");
+        //        _popup->setLeftString("OUI");
+        //        _popup->setRightString("NON");
+        //        _popup_displayed = true;
 
         gs = menu;
         _model->save();
@@ -345,14 +346,13 @@ void View::synchronise()
 
 void View::synchroniseShop()
 {
-    for(int i=0;i<_items.size();i++)
+    for(auto i : _items)
     {
-        if(_items.at(i)->isSelected())
-            _items.at(i)->setFillColor(sf::Color(150,175,175,255));
+        if(i->isSelected())
+            i->setFillColor(sf::Color(150,175,175,255));
         else
-            _items.at(i)->setFillColor(sf::Color(200,200,200,255));
+            i->setFillColor(sf::Color(200,200,200,255));
     }
-
 
 
     if(cs == ball)
@@ -364,24 +364,14 @@ void View::synchroniseShop()
         _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Rouge et Blanc");
         _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Verte");
     }
-    else if (cs == back)
-    {
-        for(int i=0; i<_items.size(); i++)
-            _items.at(i)->getPreview()->setBallTexture(BALL_IMAGE);
-    }
 }
 
 void View::synchroniseShopBack()
 {
-    for(int i=0; i<_items.size();i++)
-        _items.at(i)->setName("");
+    for(auto i : _items)
+        i->setName("");
 
-    if(cs == ball)
-    {
-        for(int i=0; i<_items.size(); i++)
-            _items.at(i)->getPreview()->setBackgroundTexture(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L);
-    }
-    else if (cs == back)
+    if (cs == back)
     {
         _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "City");
         _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "City OldSchool");
@@ -457,25 +447,22 @@ void View::draw()
 
     //dessin des pièces
 
-    for(int i=0; i<_model->Coins()->size() ; i++)
-    {
-        _window->draw(*_model->Coins()->at(i));
-        //_window->draw(*_model->Coins()->at(i)->Alpha());
-    }
+    for(auto c : *_model->Coins())
+        _window->draw(*c);
 
     //--------------------
 
     //dessin des diamants
 
-    for(int i=0; i<_model->Diamonds()->size() ; i++)
-        _window->draw(*_model->Diamonds()->at(i));
+    for(auto d : *_model->Diamonds())
+        _window->draw(*d);
 
     //--------------------
 
     //dessin des bonus
 
-    for(int i=0; i<_model->Awards()->size() ; i++)
-        _window->draw(*_model->Awards()->at(i));
+    for(auto a : *_model->Awards())
+        _window->draw(*a);
 
     //--------------------
 
@@ -489,8 +476,8 @@ void View::draw()
 
     //dessin des obstacles
 
-    for(int i=0; i<_model->Obstacles()->size() ; i++)
-        _model->Obstacles()->at(i)->draw(_window);
+    for(auto o : *_model->Obstacles())
+        _window->draw(*o);
 
     //--------------------
 
@@ -602,19 +589,14 @@ void View::drawShop()
     _window->clear(sf::Color::White);
 
     for(auto i : _items)
-    {
         if(i->isSelected())
             i->drawPreview(_window);
-    }
 
-    for(int i=0;i<_items.size();i++)
+    for(auto i : _items)
     {
-        _window->draw(*_items.at(i));
-        _items.at(i)->drawText(_window);
+        _window->draw(*i);
+        i->drawText(_window);
     }
-
-
-
 
     _window->draw(_rectBall);
     _window->draw(_rectBack);
@@ -714,8 +696,8 @@ bool View::treatEvents()
                         _rectBack.setFillColor(sf::Color(150,150,150,255));
                         cs = ball;
                     }
-                    for(int i=1;i<_items.size();i++)
-                        _items.at(i)->setSelected(false);
+                    for(auto i : _items)
+                        i->setSelected(false);
                     _items.at(0)->setSelected(true);
                     this->synchroniseShopBack();
                 }
@@ -733,35 +715,43 @@ bool View::treatEvents()
                         _rectBack.setFillColor(sf::Color(150,150,150,255));
                         cs = ball;
                     }
-                    for(int i=1;i<_items.size();i++)
-                        _items.at(i)->setSelected(false);
+                    for(auto i : _items)
+                        i->setSelected(false);
                     _items.at(0)->setSelected(true);
                     this->synchroniseShopBack();
                 }
 
                 else if (event.key.code == sf::Keyboard::Down && gs==shop)
                 {
-                    for(int i=0;i<_items.size();i++)
+                    for(unsigned int i=0;i<_items.size();i++)
                     {
                         if(_items.at(i)->isSelected() && i != 13)
                         {
                             _items.at(i)->setSelected(false);
                             _items.at(i)->reset();
                             _items.at(i+1)->setSelected(true);
+                            if(cs == ball)
+                                _items.at(i+1)->getPreview()->setBackgroundTexture(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L);
+                            else
+                                _items.at(i+1)->getPreview()->setBallTexture(BALL_IMAGE);
                             break;
                         }
-                    }                    
+                    }
                 }
 
                 else if (event.key.code == sf::Keyboard::Up && gs==shop)
                 {
-                    for(int i=0;i<_items.size();i++)
+                    for(unsigned int i=0;i<_items.size();i++)
                     {
                         if(_items.at(i)->isSelected() && i != 0)
                         {
                             _items.at(i)->setSelected(false);
                             _items.at(i)->reset();
                             _items.at(i-1)->setSelected(true);
+                            if(cs == ball)
+                                _items.at(i-1)->getPreview()->setBackgroundTexture(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L);
+                            else
+                                _items.at(i-1)->getPreview()->setBallTexture(BALL_IMAGE);
                             break;
                         }
                     }

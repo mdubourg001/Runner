@@ -17,12 +17,13 @@ protected:
     sf::Texture _leftTextureLittle;
     sf::Texture _rightTextureLittle;
 
-    int _height;
     int _width;
-    int _posx;
-    int _posy;
+    int _height;
     int _speedBig;
     int _speedLittle;
+    int _posx;
+    int _posy;
+
 
 public:
     SlidingBackground();

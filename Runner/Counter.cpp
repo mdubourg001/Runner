@@ -17,7 +17,7 @@ Counter::Counter()
     _text.setPosition(sf::Vector2f(_sprite.getPosition().x + 20, _sprite.getPosition().y));
 }
 
-Counter::Counter(int value, int posx, int posy, int width, int height)
+Counter::Counter(int value, int posx, int posy)
     : _value {value}
 {
     if(!_font.loadFromFile("res/slapstick.ttf"))

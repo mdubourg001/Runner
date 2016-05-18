@@ -5,7 +5,8 @@
 //=======================CONSTRUCTEUR=============================
 
 Coin::Coin(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites)
-    : AnimatedSprite(texture, ms, posx, posy, width, height, nbrsprites), _picked(false)
+    : AnimatedSprite(texture, ms, posx, posy, width, height, nbrsprites)
+    ,_picked(false), _ball_detect(false)
 {
     _font.loadFromFile(POLICEMENU);
 }
@@ -26,16 +27,26 @@ bool Coin::isPicked() const
     return _picked;
 }
 
+bool Coin::get_ball_detected() const
+{
+    return _ball_detect;
+}
+
+void Coin::set_ball_detected(bool detected)
+{
+    _ball_detect = detected;
+}
+
 //================================================================
 //=======================AUTRES METHODES==========================
 
-void Coin::move_magnet(float player_x, float player_y)
+void Coin::move_magnet(Player* player)
 {
-    _movespeed = 10;
+    _movespeed = 13;
     float pi = 3.14;
-    sf::Vector2f player_pos(player_x, player_y);
-    sf::Vector2f direction(player_pos.x - this->getPosition().x,
-                           player_pos.y - this->getPosition().y);
+    sf::Vector2f player_pos(player->getPosx(), player->getPosy());
+    sf::Vector2f direction(player_pos.x + player->getWidth() - this->getPosition().x,
+                           player_pos.y + player->getHeight() - this->getPosition().y);
     float angle = (float)atan(abs(direction.x)/abs(direction.y)) * 180.0 / pi + 90;
 
     if(player_pos.x >= this->getPosition().x)

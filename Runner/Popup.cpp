@@ -58,8 +58,3 @@ void Popup::draw(sf::RenderWindow *w)
     _left.draw(w);
     _right.draw(w);
 }
-
-bool Popup::getanswer()
-{
-
-}

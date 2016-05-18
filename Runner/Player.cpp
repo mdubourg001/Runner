@@ -6,7 +6,7 @@
 
 
 Player::Player(int posx, int posy, int width, int height, int mvtx, int mvty, int health, int shield)
-    :MovableElement(posx, posy, width, height, mvtx, mvty), _shadow(10), _health(health), _shield(shield), _invincibility(false)
+    :MovableElement(posx, posy, width, height, mvtx, mvty), _invincibility(false), _shadow(10), _health(health), _shield(shield)
 {
     _shadow.setScale(2, 1);
     _shadow.setOrigin(sf::Vector2f(10, 10));
@@ -65,28 +65,28 @@ void Player::jump()
 
 void Player::treatCollisions(std::vector<Coin *> coins, std::vector<Diamond *> diamonds, std::vector<Bonus *> bonus, std::vector<Obstacle *> obstacles)
 {
-    for(int i=0 ; i<coins.size() ; i++) //collision entre la balle et les pièces
+    for(unsigned int i=0 ; i<coins.size() ; i++) //collision entre la balle et les pièces
         if((_posx - 25 <= coins.at(i)->getPosition().x + 25 && _posx - 25 >= coins.at(i)->getPosition().x -25
                 && _posy - 25 <= coins.at(i)->getPosition().y + 25 && _posy - 25 >= coins.at(i)->getPosition().y -25)
                 || (_posx + 25 >= coins.at(i)->getPosition().x - 25 && _posx + 25 <= coins.at(i)->getPosition().x + 25
                 && _posy + 25 >= coins.at(i)->getPosition().y - 25 && _posy + 25 <= coins.at(i)->getPosition().y + 25))
             coins.at(i)->setPicked(true);
 
-    for(int i=0 ; i<diamonds.size() ; i++) //collision entre la balle et les diamants
+    for(unsigned int i=0 ; i<diamonds.size() ; i++) //collision entre la balle et les diamants
         if((_posx - 25 <= diamonds.at(i)->getPosition().x + 25 && _posx - 25 >= diamonds.at(i)->getPosition().x -25
                 && _posy - 25 <= diamonds.at(i)->getPosition().y + 25 && _posy - 25 >= diamonds.at(i)->getPosition().y -25)
                 || (_posx + 25 >= diamonds.at(i)->getPosition().x - 25 && _posx + 25 <= diamonds.at(i)->getPosition().x + 25
                 && _posy + 25 >= diamonds.at(i)->getPosition().y - 25 && _posy + 25 <= diamonds.at(i)->getPosition().y + 25))
             diamonds.at(i)->setPicked(true);
 
-    for(int i=0 ; i<bonus.size() ; i++) //collision entre la balle et les bonus
+    for(unsigned int i=0 ; i<bonus.size() ; i++) //collision entre la balle et les bonus
         if((_posx - 25 <= bonus.at(i)->getPosition().x + 25 && _posx - 25 >= bonus.at(i)->getPosition().x -25
                 && _posy - 25 <= bonus.at(i)->getPosition().y + 25 && _posy - 25 >= bonus.at(i)->getPosition().y -25)
                 || (_posx + 25 >= bonus.at(i)->getPosition().x - 25 && _posx + 25 <= bonus.at(i)->getPosition().x + 25
                 && _posy + 25 >= bonus.at(i)->getPosition().y - 25 && _posy + 25 <= bonus.at(i)->getPosition().y + 25))
             bonus.at(i)->setPicked(true);
 
-    for(int i=0 ; i<obstacles.size() ; i++) //collision entre la balle et les obstacles
+    for(unsigned int i=0 ; i<obstacles.size() ; i++) //collision entre la balle et les obstacles
         if(((_posx - 25 <= obstacles.at(i)->getPos().x + 25 && _posx - 25 >= obstacles.at(i)->getPos().x -25
                 && _posy - 25 <= obstacles.at(i)->getPos().y && _posy - 25 >= obstacles.at(i)->getPos().y - obstacles.at(i)->getSize().y)
                 || (_posx + 25 >= obstacles.at(i)->getPos().x - 25 && _posx + 25 <= obstacles.at(i)->getPos().x + 25

@@ -4,10 +4,6 @@
 #include "time.h"
 using namespace std;
 
-//----------!!!!!!!!!!!!!!!!!!!!
-int i =0;
-int randoume =0;
-//-----------!!!!!!!!!!!!!!!!!!!
 
 int Model::_current_speed = EASY_SPEED;
 
@@ -15,10 +11,11 @@ int Model::_current_speed = EASY_SPEED;
 // Constructeurs & Destructeur
 //=======================================
 Model::Model(int w, int h)
-    :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0), _canpop(true), _magnetpicked(false), _magnetcpt(-1), _difficulte(0),
-      _coin_counter(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70, 50, 50),
-      _score_counter(0, SCREEN_WIDTH - 500, SCREEN_HEIGHT-70, 50, 50),
-      _diamond_counter(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70, 50, 50)
+    :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0),
+      _canpop(true), _magnetpicked(false), _magnetcpt(-1), _difficulte(0),
+      _coin_counter(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70),
+      _score_counter(0, SCREEN_WIDTH - 500, SCREEN_HEIGHT-70),
+      _diamond_counter(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70)
 {
     _coin_counter.setTexture("res/coin.png");
     _diamond_counter.setTexture("res/diamond.png");
@@ -135,7 +132,7 @@ int Model::getCurrentSpeed()
 //==================AUTRES METHODES===================
 
 void Model::nextStep()
-    /* calcule la prochaine étape de jeu:
+/* calcule la prochaine étape de jeu:
      * le temps de jeu -> calcul de la vitesse des objets
      * déplacement du joueur et saut du joueur
      * traitement des collisions
@@ -191,25 +188,25 @@ void Model::nextStep()
 
     if(_canpop)
     {
-        randoume = rand();
 
-        if(randoume%40 == 0)
+
+        if(rand()%40 == 0)
         {
             addCoin();
             _canpop = false;
         }
-        else if (randoume%4000 == 1)
+        else if (rand()%4000 == 1)
         {
             addDiamond();
             _canpop = false;
         }
-        else if (randoume%80 == 2 && _bonus.size()<1)
+        else if (rand()%80 == 2 && _bonus.size()<1)
         {
             addBonus();
             _canpop = false;
         }
 
-        else if(randoume%80 == 3)
+        else if(rand()%80 == 3)
         {
             addObstacle();
             _canpop = false;
@@ -220,16 +217,17 @@ void Model::nextStep()
     {
         if(c->getPosition().x < 0 || c->isPicked())
         {
+            c->set_ball_detected(false);
             if(c->isPicked())
-            {
                 _coin_counter.increment();
-                //c->drawAlpha();
-            }
 
             std::vector<Coin*>::iterator it =
                     std::find(_coins.begin(), _coins.end(), c);
+            delete *it;
             _coins.erase(it);
         }
+//        else if(distance(c->getPosition(), _player.getPos()) < DETECTION_RADIUS)
+//            c->set_ball_detected(true);
     }
 
     for(auto d : _diamonds)
@@ -241,6 +239,7 @@ void Model::nextStep()
 
             std::vector<Diamond*>::iterator it =
                     std::find(_diamonds.begin(), _diamonds.end(), d);
+            delete *it;
             _diamonds.erase(it);
         }
     }
@@ -251,6 +250,7 @@ void Model::nextStep()
         {
             std::vector<Obstacle*>::iterator it =
                     std::find(_obstacles.begin(), _obstacles.end(), o);
+            delete *it;
             _obstacles.erase(it);
         }
     }
@@ -259,39 +259,51 @@ void Model::nextStep()
     {
         if (b->getPosition().x < 0 || b->isPicked())
         {
-            switch(bt)
+            if (b->isPicked())
             {
-            case magnet:
-                _magnetpicked = true;
-                break;
-            case randombonus:
-                break;
-            case shield:
-                _player.winLife();
-                break;
-            case health:
-                _player.winLife();
-                break;
-            case star:
-                _player.setInvincibility(true);
-                break;
-            case feather:
-                break;
-            case hourglass:
-                break;
-            case redcoin:
-                _coin_counter.hundredincrement();
-                break;
+                _player.setInvincibility(false);
+                switch(bt)
+                {
+                case magnet:
+                    _magnetpicked = true;
+                    break;
+                case randombonus:
+                    break;
+                case shield:
+                    _player.winLife();
+                    break;
+                case health:
+                    _player.winLife();
+                    break;
+                case star:
+                    _player.setInvincibility(true);
+                    break;
+                case feather:
+                    break;
+                case hourglass:
+                    break;
+                case redcoin:
+                    _coin_counter.hundredincrement();
+                    break;
+                default:
+                    break;
+                }
             }
             std::vector<Bonus*>::iterator it =
                     std::find(_bonus.begin(), _bonus.end(), b);
+            delete *it;
             _bonus.erase(it);
         }
     }
 
     if(_magnetpicked)
         for(auto c: _coins)
-        { c->move_magnet(_player.getPosx(), _player.getPosy()); }
+        {
+            if(c->get_ball_detected())
+                c->move_magnet(&_player);
+            else
+                c->move();
+        }
     else
         for_each(_coins.begin(), _coins.end(), [](Coin* &c){c->move();});
     for_each(_diamonds.begin(), _diamonds.end(), [](Diamond* &d){d->move();});
@@ -461,6 +473,7 @@ void Model::actualiseSpeed(int speed)
     for(auto b : _bonus) {b->actualiseSpeed(speed) ;}
     for(auto o : _obstacles) {o->actualiseSpeed(speed) ;}
 }
+
 
 //====================================================
 

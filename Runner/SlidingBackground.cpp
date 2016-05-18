@@ -1,7 +1,9 @@
 #include "SlidingBackground.h"
 
 SlidingBackground::SlidingBackground(int posx, int posy, int w, int h, int sB, int sL)
-    : _width {w}, _height {h}, _speedBig {sB}, _speedLittle{sL}, _posx{posx}, _posy{posy}
+    : _width {w}, _height {h}
+    , _speedBig {sB}, _speedLittle{sL}
+    , _posx{posx}, _posy{posy}
 {
     _rightBig.setPosition(sf::Vector2f(_posx + _width -5 , posy));
     _leftBig.setPosition(sf::Vector2f(posx, posy));
