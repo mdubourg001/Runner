@@ -35,8 +35,6 @@ Popup::Popup(string text, string left_text, string right_text)
 }
 
 
-
-
 void Popup::setString(string str)
 { _text.setString(str) ;}
 

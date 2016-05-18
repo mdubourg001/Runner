@@ -473,7 +473,6 @@ void View::draw()
 
     //--------------------
 
-
     //dessin de la balle
 
     _model->getPlayer()->drawShadow(_window);
@@ -484,7 +483,7 @@ void View::draw()
     //dessin des obstacles
 
     for(auto o : *_model->Obstacles())
-        _window->draw(*o);
+       o->draw(_window);
 
     //--------------------
 
