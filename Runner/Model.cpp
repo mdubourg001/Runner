@@ -262,6 +262,7 @@ void Model::nextStep()
             switch(bt)
             {
             case magnet:
+                _magnetpicked = true;
                 break;
             case randombonus:
                 break;
@@ -288,7 +289,11 @@ void Model::nextStep()
         }
     }
 
-    for_each(_coins.begin(), _coins.end(), [](Coin* &c){c->move();});
+    if(_magnetpicked)
+        for(auto c: _coins)
+        { c->move_magnet(_player.getPosx(), _player.getPosy()); }
+    else
+        for_each(_coins.begin(), _coins.end(), [](Coin* &c){c->move();});
     for_each(_diamonds.begin(), _diamonds.end(), [](Diamond* &d){d->move();});
     for_each(_bonus.begin(), _bonus.end(), [](Bonus* &b){b->move();});
     for_each(_obstacles.begin(), _obstacles.end(), [](Obstacle* &o){o->move();});

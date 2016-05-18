@@ -19,6 +19,7 @@ public:
 
     void setPicked(bool picked);
     bool isPicked() const;
+    void move_magnet(float player_x, float player_y);
 };
 
 #endif // COIN_H

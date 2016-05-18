@@ -227,21 +227,21 @@ void View::load()
     _rectScreen.setOutlineColor(sf::Color::Black);
 
 
-    for(int i=0;i<14;i++)
-        _items.push_back(new Item());
+//    for(int i=0;i<14;i++)
+//        _items.push_back(new Item());
 
 
-    for(int i=0;i<_items.size();i++)
-    {
-        _items.at(i)->setPosition(3,53 + 51*i);
-        _items.at(i)->setOutlineThickness(3);
-        _items.at(i)->setOutlineColor(sf::Color::Black);
-        _items.at(i)->setSize(sf::Vector2f(SCREEN_WIDTH/6,50));
-        _items.at(i)->setName("");
-        this->synchroniseShopBack();
-    }
+//    for(int i=0;i<_items.size();i++)
+//    {
+//        _items.at(i)->setPosition(3,53 + 51*i);
+//        _items.at(i)->setOutlineThickness(3);
+//        _items.at(i)->setOutlineColor(sf::Color::Black);
+//        _items.at(i)->setSize(sf::Vector2f(SCREEN_WIDTH/6,50));
+//        _items.at(i)->setName("");
+//        this->synchroniseShopBack();
+//    }
 
-    _items.at(0)->setSelected(true);
+//    _items.at(0)->setSelected(true);
 
     _loaded = true;
     _textPass.setString("<  APPUYEZ SUR ESPACE POUR COMMENCER  >");
