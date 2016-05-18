@@ -22,6 +22,7 @@ Model::Model(int w, int h)
 
     _start = std::chrono::system_clock::now();
     _gamestart = std::chrono::system_clock::now();
+    _scorestart = std::chrono::system_clock::now();
 }
 
 Model::~Model()
@@ -141,19 +142,30 @@ void Model::nextStep()
 {
     _end = std::chrono::system_clock::now();
     _timecheck = std::chrono::system_clock::now();
+    _bonuscheck = std::chrono::system_clock::now();
+    _scorecheck = std::chrono::system_clock::now();
     int timelapse = std::chrono::duration_cast<std::chrono::milliseconds>
             (_end-_start).count();
     int gametime = std::chrono::duration_cast<std::chrono::seconds>
             (_timecheck-_gamestart).count();
+    int startime = std::chrono::duration_cast<std::chrono::seconds>
+            (_bonuscheck-_bonusstart).count();
+    int scoretime = std::chrono::duration_cast<std::chrono::milliseconds>
+            (_scorecheck-_scorestart).count();
 
 
-
-    _score_counter.increment();
+    if(scoretime >= 100)
+    {
+        _score_counter.increment();
+        scoretime = 0;
+        _scorestart = std::chrono::system_clock::now();
+    }
 
     movePlayer();
     _player.treatCollisions(_coins,_diamonds, _bonus, _obstacles);
 
-
+    if(startime >=10)
+        _player.setInvincibility(false);
 
     if(gametime%20 == 0) //augmentation de la vitesse des objets en fonction du temps
     {
@@ -256,6 +268,7 @@ void Model::nextStep()
         {
             if (b->isPicked())
             {
+                _player.setInvincibility(false);
                 switch(bt)
                 {
                 case magnet:
@@ -270,6 +283,7 @@ void Model::nextStep()
                     break;
                 case star:
                     _player.setInvincibility(true);
+                    _bonusstart = std::chrono::system_clock::now();
                     break;
                 case feather:
                     break;
@@ -299,12 +313,12 @@ void Model::movePlayer()
 
 void Model::addCoin()
 {
-    _coins.push_back(new Coin("res/coinsprite.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 8));
+    _coins.push_back(new Coin(COIN, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 8));
 }
 
 void Model::addDiamond()
 {
-    _diamonds.push_back(new Diamond("res/diamondsprite.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 5));
+    _diamonds.push_back(new Diamond(DIAMOND, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 5));
 }
 
 void Model::addBonus()
@@ -312,46 +326,45 @@ void Model::addBonus()
     switch(rand()%9)
     {
     case 1:
-        _bonus.push_back(new Bonus("res/aimant.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 7));
+        _bonus.push_back(new Bonus(MAGNET, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 7));
         bt = magnet;
         break;
     case 2:
-        _bonus.push_back(new Bonus("res/aleatoire.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 14));
+        _bonus.push_back(new Bonus(RANDOMBONUS, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 14));
         bt = randombonus;
         break;
     case 3:
-        _bonus.push_back(new Bonus("res/sablier.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 8));
+        _bonus.push_back(new Bonus(HOURGLASS, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 8));
         bt = hourglass;
         break;
     case 4:
         if(_player.getHealth() < 400)
         {
-            _bonus.push_back(new Bonus("res/heart.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 7));
+            _bonus.push_back(new Bonus(HEART, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 7));
             bt = health;
         }
         else
         {
-            _bonus.push_back(new Bonus("res/bouclier.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+            _bonus.push_back(new Bonus(SHIELD, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
             bt = shield;
         }
         break;
     case 5:
-        _bonus.push_back(new Bonus("res/etoile.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 6));
+        _bonus.push_back(new Bonus(STAR, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 6));
         bt = star;
         break;
     case 6:
-        _bonus.push_back(new Bonus("res/plume.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+        _bonus.push_back(new Bonus(FEATHER, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
         bt = feather;
         break;
     case 7:
-        _bonus.push_back(new Bonus("res/redcoin.png", _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
+        _bonus.push_back(new Bonus(REDCOIN, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
         bt = redcoin;
         break;
     case 8:
         //teleportation ou lance ball
         break;
     }
-
 }
 
 void Model::addObstacle()

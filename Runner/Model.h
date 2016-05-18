@@ -48,6 +48,9 @@ protected:
 
     std::chrono::time_point<std::chrono::system_clock> _start, _end;
     std::chrono::time_point<std::chrono::system_clock> _gamestart, _timecheck;
+    std::chrono::time_point<std::chrono::system_clock> _bonusstart, _bonuscheck;
+    std::chrono::time_point<std::chrono::system_clock> _scorestart, _scorecheck;
+
 
     static int _current_speed;
 

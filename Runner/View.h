@@ -93,6 +93,8 @@ private:
     std::pair<Button, Button> _easy_button;
     std::pair<Button, Button> _medium_button;
     std::pair<Button, Button> _hard_button;
+    Button _buy_button;
+    Button _select_button;
 
     sf::Text _healthText;
     sf::Text _topScores;
@@ -118,6 +120,9 @@ private:
 
     Popup* _popup;
     bool _popup_displayed;
+
+    int cpt1=0;
+    int cpt2=0;
 
 public:
     View(int w, int h);
