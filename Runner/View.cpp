@@ -353,8 +353,6 @@ void View::synchroniseShop()
             _items.at(i)->setFillColor(sf::Color(200,200,200,255));
     }
 
-
-
     if(cs == ball)
     {
         _items.at(0)->initialiseBall(BALL_IMAGE, "Orange smiley");
@@ -364,11 +362,6 @@ void View::synchroniseShop()
         _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Rouge et Blanc");
         _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Verte");
     }
-    else if (cs == back)
-    {
-        for(int i=0; i<_items.size(); i++)
-            _items.at(i)->getPreview()->setBallTexture(BALL_IMAGE);
-    }
 }
 
 void View::synchroniseShopBack()
@@ -376,12 +369,7 @@ void View::synchroniseShopBack()
     for(int i=0; i<_items.size();i++)
         _items.at(i)->setName("");
 
-    if(cs == ball)
-    {
-        for(int i=0; i<_items.size(); i++)
-            _items.at(i)->getPreview()->setBackgroundTexture(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L);
-    }
-    else if (cs == back)
+    if (cs == back)
     {
         _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "City");
         _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "City OldSchool");
@@ -748,6 +736,10 @@ bool View::treatEvents()
                             _items.at(i)->setSelected(false);
                             _items.at(i)->reset();
                             _items.at(i+1)->setSelected(true);
+                            if(cs == ball)
+                                _items.at(i+1)->getPreview()->setBackgroundTexture(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L);
+                            else
+                                _items.at(i+1)->getPreview()->setBallTexture(BALL_IMAGE);
                             break;
                         }
                     }                    
@@ -762,6 +754,10 @@ bool View::treatEvents()
                             _items.at(i)->setSelected(false);
                             _items.at(i)->reset();
                             _items.at(i-1)->setSelected(true);
+                            if(cs == ball)
+                                _items.at(i-1)->getPreview()->setBackgroundTexture(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L);
+                            else
+                                _items.at(i-1)->getPreview()->setBallTexture(BALL_IMAGE);
                             break;
                         }
                     }

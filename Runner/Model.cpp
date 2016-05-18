@@ -4,11 +4,6 @@
 #include "time.h"
 using namespace std;
 
-//----------!!!!!!!!!!!!!!!!!!!!
-int i =0;
-int randoume =0;
-//-----------!!!!!!!!!!!!!!!!!!!
-
 int Model::_current_speed = EASY_SPEED;
 
 //=======================================
@@ -191,25 +186,25 @@ void Model::nextStep()
 
     if(_canpop)
     {
-        randoume = rand();
 
-        if(randoume%40 == 0)
+
+        if(rand()%40 == 0)
         {
             addCoin();
             _canpop = false;
         }
-        else if (randoume%4000 == 1)
+        else if (rand()%4000 == 1)
         {
             addDiamond();
             _canpop = false;
         }
-        else if (randoume%80 == 2 && _bonus.size()<1)
+        else if (rand()%80 == 2 && _bonus.size()<1)
         {
             addBonus();
             _canpop = false;
         }
 
-        else if(randoume%80 == 3)
+        else if(rand()%80 == 3)
         {
             addObstacle();
             _canpop = false;
@@ -259,28 +254,31 @@ void Model::nextStep()
     {
         if (b->getPosition().x < 0 || b->isPicked())
         {
-            switch(bt)
+            if (b->isPicked())
             {
-            case magnet:
-                break;
-            case randombonus:
-                break;
-            case shield:
-                _player.winLife();
-                break;
-            case health:
-                _player.winLife();
-                break;
-            case star:
-                _player.setInvincibility(true);
-                break;
-            case feather:
-                break;
-            case hourglass:
-                break;
-            case redcoin:
-                _coin_counter.hundredincrement();
-                break;
+                switch(bt)
+                {
+                case magnet:
+                    break;
+                case randombonus:
+                    break;
+                case shield:
+                    _player.winLife();
+                    break;
+                case health:
+                    _player.winLife();
+                    break;
+                case star:
+                    _player.setInvincibility(true);
+                    break;
+                case feather:
+                    break;
+                case hourglass:
+                    break;
+                case redcoin:
+                    _coin_counter.hundredincrement();
+                    break;
+                }
             }
             std::vector<Bonus*>::iterator it =
                     std::find(_bonus.begin(), _bonus.end(), b);
