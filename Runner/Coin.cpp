@@ -43,18 +43,13 @@ void Coin::set_ball_detected(bool detected)
 void Coin::move_magnet(Player* player)
 {
     _movespeed = 13;
-    float pi = 3.14;
     sf::Vector2f player_pos(player->getPosx(), player->getPosy());
-    sf::Vector2f direction(player_pos.x + player->getWidth() - this->getPosition().x,
-                           player_pos.y + player->getHeight() - this->getPosition().y);
-    float angle = (float)atan(abs(direction.x)/abs(direction.y)) * 180.0 / pi + 90;
-
-    if(player_pos.x >= this->getPosition().x)
-        angle *= -180;
+    sf::Vector2f direction(player_pos.x  - this->getPosition().x,
+                           player_pos.y  - this->getPosition().y);
     int x_movespeed = (direction.x * _movespeed)
-            / (abs(direction.x + abs(direction.y)));
+            / (abs(direction.x) + abs(direction.y));
     int y_movespeed = (direction.y * _movespeed)
-            / (abs(direction.x + abs(direction.y)));
+            / (abs(direction.x) + abs(direction.y));
     this->setPosition(sf::Vector2f(this->getPosition().x + x_movespeed
                                    ,this->getPosition().y + y_movespeed));
 }

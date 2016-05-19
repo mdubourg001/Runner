@@ -157,8 +157,8 @@ void View::load()
     //============BOUTONS DU SHOP=============================================//
 
     _buy_button.initialise(BLUECUBE, REDCUBE, "ACHETER",
-            POLICEMENU, sf::Color::Black, 500, (SCREEN_HEIGHT/4)+475);
-    _select_button.initialise(YELLOWCUBE, REDCUBE, "JOUER AVEC",
+            POLICEMENU, sf::Color::Black, 400, (SCREEN_HEIGHT/4)+475);
+    _select_button.initialise(YELLOWCUBE, REDCUBE, "SELECTIONNER",
             POLICEMENU, sf::Color::Black, 700, (SCREEN_HEIGHT/4)+475);
 
     //========================================================================//
@@ -233,21 +233,20 @@ void View::load()
     _rectScreen.setOutlineColor(sf::Color::Black);
 
 
-    //    for(int i=0;i<14;i++)
-    //        _items.push_back(new Item());
+        for(unsigned int i=0;i<14;i++)
+            _items.push_back(new Item());
 
+        for(unsigned int i=0;i<_items.size();i++)
+        {
+            _items.at(i)->setPosition(3,53 + 51*i);
+            _items.at(i)->setOutlineThickness(3);
+            _items.at(i)->setOutlineColor(sf::Color::Black);
+            _items.at(i)->setSize(sf::Vector2f(SCREEN_WIDTH/6,50));
+            _items.at(i)->setName("");
+            this->synchroniseShopBack();
+        }
 
-    //    for(int i=0;i<_items.size();i++)
-    //    {
-    //        _items.at(i)->setPosition(3,53 + 51*i);
-    //        _items.at(i)->setOutlineThickness(3);
-    //        _items.at(i)->setOutlineColor(sf::Color::Black);
-    //        _items.at(i)->setSize(sf::Vector2f(SCREEN_WIDTH/6,50));
-    //        _items.at(i)->setName("");
-    //        this->synchroniseShopBack();
-    //    }
-
-    //    _items.at(0)->setSelected(true);
+        _items.at(0)->setSelected(true);
 
     _loaded = true;
     _textPass.setString("<  APPUYEZ SUR ESPACE POUR COMMENCER  >");

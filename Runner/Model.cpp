@@ -238,8 +238,8 @@ void Model::nextStep()
             delete *it;
             _coins.erase(it);
         }
-//        else if(distance(c->getPosition(), _player.getPos()) < DETECTION_RADIUS)
-//            c->set_ball_detected(true);
+        else if(distance(c->getPosition(), _player.getPos()) < DETECTION_RADIUS)
+            c->set_ball_detected(true);
     }
 
     for(auto d : _diamonds)
