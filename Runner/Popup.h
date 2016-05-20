@@ -14,11 +14,13 @@ protected:
     Button _right; //bouton 'annuler'
     sf::Text _text; //texte du popup
     sf::Font _font;
-    bool _answered; //l'utilisateur à t'il répondu au popup
+    bool _answered;
+    bool _answer; //oui ou non
 
 public:
     Popup();
     Popup(string text, string left_text = "OK", string right_text = "ANNULER");
+    void initialise(string text, string left = "OK", string right = "ANNULER");
 
     void setString(string str);
     void setLeftString(string str);
@@ -26,7 +28,8 @@ public:
     bool answered() const;
 
     void draw(sf::RenderWindow *w);
-    bool getanswer();
+    void treat_events(sf::RenderWindow *w, sf::Event &event);
+    bool getanswer() const;
 };
 
 #endif // POPUP_H

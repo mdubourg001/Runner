@@ -94,7 +94,17 @@ std::string Button::getString() const
 { return _text.getString(); }
 
 void Button::setString(std::string string)
-{ _text.setString(string); }
+{
+    _text.setString(string);
+    _text.setOrigin(_text.getLocalBounds().width/2, _text.getLocalBounds().height/2);
+    _text.setPosition(this->getPosition().x + _texture.getSize().x/2
+                      , this->getPosition().y + _texture.getSize().y);
+}
+
+sf::FloatRect Button::getLocalBounds() const
+{
+    return this->getLocalBounds();
+}
 
 //==============================================================
 //===============AUTRES METHODES================================

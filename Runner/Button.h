@@ -32,6 +32,7 @@ public:
     void setString(std::string string);
     sf::Color getColor() const;
     void setColor(sf::Color color);
+    sf::FloatRect getLocalBounds() const;
 
     void draw(sf::RenderWindow *w);
 

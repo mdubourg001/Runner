@@ -12,7 +12,8 @@ int Model::_current_speed = EASY_SPEED;
 //=======================================
 Model::Model(int w, int h)
     :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0),
-      _canpop(true), _magnetpicked(false), _magnetcpt(-1), _difficulte(0),
+      _canpop(true), _magnetpicked(false),_paused(false),
+      _magnetcpt(-1), _difficulte(0),
       _coin_counter(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70),
       _score_counter(0, SCREEN_WIDTH - 500, SCREEN_HEIGHT-70),
       _diamond_counter(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70)
@@ -31,12 +32,6 @@ Model::~Model()
 { }
 
 //==================ACCESSEURS========================
-
-void Model::getPlayerPosition(int &x, int &y)
-{
-    x = _player.getPosx();
-    y = _player.getPosy();
-}
 
 Player* Model::getPlayer()
 {
@@ -129,6 +124,16 @@ int Model::getCurrentSpeed()
     return _current_speed;
 }
 
+bool Model::is_paused() const
+{
+    return _paused;
+}
+
+void Model::set_paused(bool paused)
+{
+    _paused = paused;
+}
+
 //====================================================
 //==================AUTRES METHODES===================
 
@@ -142,186 +147,190 @@ void Model::nextStep()
      * anime tout les objets et supprime ceux qui ne sont plus affichés à l'écran
     */
 {
-    _end = std::chrono::system_clock::now();
-    _timecheck = std::chrono::system_clock::now();
-    _bonuscheck = std::chrono::system_clock::now();
-    _scorecheck = std::chrono::system_clock::now();
-    int timelapse = std::chrono::duration_cast<std::chrono::milliseconds>
-            (_end-_start).count();
-    int gametime = std::chrono::duration_cast<std::chrono::seconds>
-            (_timecheck-_gamestart).count();
-    int startime = std::chrono::duration_cast<std::chrono::seconds>
-            (_bonuscheck-_bonusstart).count();
-    int scoretime = std::chrono::duration_cast<std::chrono::milliseconds>
-            (_scorecheck-_scorestart).count();
-
-
-    if(scoretime >= 100)
+    if(!is_paused())
     {
-        _score_counter.increment();
-        scoretime = 0;
-        _scorestart = std::chrono::system_clock::now();
-    }
-
-    movePlayer();
-    _player.treatCollisions(_coins,_diamonds, _bonus, _obstacles);
-
-    if(startime >=10)
-        _player.setInvincibility(false);
-
-    if(gametime%20 == 0) //augmentation de la vitesse des objets en fonction du temps
-    {
-        _current_speed = MEDIUM_SPEED;
-        actualiseSpeed(_current_speed);
-    }
-    else if(gametime%40 == 0)
-    {
-        _current_speed = HARD_SPEED;
-        actualiseSpeed(_current_speed);
-    }
-
-    if(_player.isJumping())
-    {
-        _player.jump();
-    }
+        _end = std::chrono::system_clock::now();
+        _timecheck = std::chrono::system_clock::now();
+        _bonuscheck = std::chrono::system_clock::now();
+        _scorecheck = std::chrono::system_clock::now();
+        int timelapse = std::chrono::duration_cast<std::chrono::milliseconds>
+                (_end-_start).count();
+        int gametime = std::chrono::duration_cast<std::chrono::seconds>
+                (_timecheck-_gamestart).count();
+        int startime = std::chrono::duration_cast<std::chrono::seconds>
+                (_bonuscheck-_bonusstart).count();
+        int scoretime = std::chrono::duration_cast<std::chrono::milliseconds>
+                (_scorecheck-_scorestart).count();
 
 
-    if((_score_counter.getValue() % 1000) == 0)
-    {
-        if (2000 - _difficulte >= 500)
-            _difficulte += 200;
-    }
-
-    if(timelapse >= (2000-_difficulte))
-    {
-        _canpop = true;
-        _start = std::chrono::system_clock::now();
-    }
-
-    if(_canpop)
-    {
-
-
-        if(rand()%40 == 0)
+        if(scoretime >= 100)
         {
-            addCoin();
-            _canpop = false;
-        }
-        else if (rand()%4000 == 1)
-        {
-            addDiamond();
-            _canpop = false;
-        }
-        else if (rand()%80 == 2 && _bonus.size()<1)
-        {
-            addBonus();
-            _canpop = false;
+            _score_counter.increment();
+            scoretime = 0;
+            _scorestart = std::chrono::system_clock::now();
         }
 
-        else if(rand()%80 == 3)
+        movePlayer();
+        _player.treatCollisions(_coins,_diamonds, _bonus, _obstacles);
+
+        if(startime >=10)
+            _player.setInvincibility(false);
+
+        if(gametime%20 == 0) //augmentation de la vitesse des objets en fonction du temps
         {
-            addObstacle();
-            _canpop = false;
+            _current_speed = MEDIUM_SPEED;
+            actualiseSpeed(_current_speed);
         }
-    }
-
-    for(auto c : _coins) //supprime les pièces qui ne sont plus affichées à l'écran
-    {
-        if(c->getPosition().x < 0 || c->isPicked())
+        else if(gametime%40 == 0)
         {
-            c->set_ball_detected(false);
-            if(c->isPicked())
-                _coin_counter.increment();
-
-            std::vector<Coin*>::iterator it =
-                    std::find(_coins.begin(), _coins.end(), c);
-            delete *it;
-            _coins.erase(it);
+            _current_speed = HARD_SPEED;
+            actualiseSpeed(_current_speed);
         }
-        else if(distance(c->getPosition(), _player.getPos()) < DETECTION_RADIUS)
-            c->set_ball_detected(true);
-    }
 
-    for(auto d : _diamonds)
-    {
-        if (d->getPosition().x < 0 || d->isPicked())
+        if(_player.isJumping())
         {
-            if(d->isPicked())
-                _diamond_counter.increment();
-
-            std::vector<Diamond*>::iterator it =
-                    std::find(_diamonds.begin(), _diamonds.end(), d);
-            delete *it;
-            _diamonds.erase(it);
+            _player.jump();
         }
-    }
 
-    for(auto o : _obstacles)
-    {
-        if (o->getPosition().x < -100 || o->isDestroyed())
+
+        if((_score_counter.getValue() % 1000) == 0)
         {
-            std::vector<Obstacle*>::iterator it =
-                    std::find(_obstacles.begin(), _obstacles.end(), o);
-            delete *it;
-            _obstacles.erase(it);
+            if (2000 - _difficulte >= 500)
+                _difficulte += 200;
         }
-    }
 
-    for(auto b : _bonus)
-    {
-        if (b->getPosition().x < 0 || b->isPicked())
+        if(timelapse >= (2000-_difficulte))
         {
-            if (b->isPicked())
+            _canpop = true;
+            _start = std::chrono::system_clock::now();
+        }
+
+        if(_canpop)
+        {
+
+
+            if(rand()%40 == 0)
             {
-                _player.setInvincibility(false);
-                switch(bt)
-                {
-                case magnet:
-                    _magnetpicked = true;
-                    break;
-                case randombonus:
-                    break;
-                case shield:
-                    _player.winLife();
-                    break;
-                case health:
-                    _player.winLife();
-                    break;
-                case star:
-                    _player.setInvincibility(true);
-                    _bonusstart = std::chrono::system_clock::now();
-                    break;
-                case feather:
-                    break;
-                case hourglass:
-                    break;
-                case redcoin:
-                    _coin_counter.hundredincrement();
-                    break;
-                default:
-                    break;
-                }
+                addCoin();
+                _canpop = false;
             }
-            std::vector<Bonus*>::iterator it =
-                    std::find(_bonus.begin(), _bonus.end(), b);
-            delete *it;
-            _bonus.erase(it);
+            else if (rand()%4000 == 1)
+            {
+                addDiamond();
+                _canpop = false;
+            }
+            else if (rand()%80 == 2 && _bonus.size()<1)
+            {
+                addBonus();
+                _canpop = false;
+            }
+
+            else if(rand()%80 == 3)
+            {
+                addObstacle();
+                _canpop = false;
+            }
         }
+
+        for(auto c : _coins) //supprime les pièces qui ne sont plus affichées à l'écran
+        {
+            if(c->getPosition().x < 0 || c->isPicked())
+            {
+                c->set_ball_detected(false);
+                if(c->isPicked())
+                    _coin_counter.increment();
+
+                std::vector<Coin*>::iterator it =
+                        std::find(_coins.begin(), _coins.end(), c);
+                delete *it;
+                _coins.erase(it);
+            }
+            else if(distance(c->getPosition(), _player.getPos()) < DETECTION_RADIUS)
+                c->set_ball_detected(true);
+        }
+
+        for(auto d : _diamonds)
+        {
+            if (d->getPosition().x < 0 || d->isPicked())
+            {
+                if(d->isPicked())
+                    _diamond_counter.increment();
+
+                std::vector<Diamond*>::iterator it =
+                        std::find(_diamonds.begin(), _diamonds.end(), d);
+                delete *it;
+                _diamonds.erase(it);
+            }
+        }
+
+        for(auto o : _obstacles)
+        {
+            if (o->getPosition().x < -100 || o->isDestroyed())
+            {
+                std::vector<Obstacle*>::iterator it =
+                        std::find(_obstacles.begin(), _obstacles.end(), o);
+                delete *it;
+                _obstacles.erase(it);
+            }
+        }
+
+        for(auto b : _bonus)
+        {
+            if (b->getPosition().x < 0 || b->isPicked())
+            {
+                if (b->isPicked())
+                {
+                    _player.setInvincibility(false);
+                    switch(bt)
+                    {
+                    case magnet:
+                        _magnetpicked = true;
+                        break;
+                    case randombonus:
+                        break;
+                    case shield:
+                        _player.winLife();
+                        break;
+                    case health:
+                        _player.winLife();
+                        break;
+                    case star:
+                        _player.setInvincibility(true);
+                        _bonusstart = std::chrono::system_clock::now();
+                        break;
+                    case feather:
+                        break;
+                    case hourglass:
+                        break;
+                    case redcoin:
+                        _coin_counter.hundredincrement();
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                std::vector<Bonus*>::iterator it =
+                        std::find(_bonus.begin(), _bonus.end(), b);
+                delete *it;
+                _bonus.erase(it);
+            }
+        }
+
+        if(_magnetpicked)
+            for(auto c: _coins)
+            {
+                if(c->get_ball_detected())
+                    c->move_magnet(&_player);
+                else
+                    c->move();
+            }
+        else
+            for_each(_coins.begin(), _coins.end(), [](Coin* &c){c->move();});
+        for_each(_diamonds.begin(), _diamonds.end(), [](Diamond* &d){d->move();});
+        for_each(_bonus.begin(), _bonus.end(), [](Bonus* &b){b->move();});
+        for_each(_obstacles.begin(), _obstacles.end(), [](Obstacle* &o){o->move();});
     }
 
-    if(_magnetpicked)
-        for(auto c: _coins)
-        {
-            if(c->get_ball_detected())
-                c->move_magnet(&_player);
-            else
-                c->move();
-        }
-    else
-        for_each(_coins.begin(), _coins.end(), [](Coin* &c){c->move();});
-    for_each(_diamonds.begin(), _diamonds.end(), [](Diamond* &d){d->move();});
-    for_each(_bonus.begin(), _bonus.end(), [](Bonus* &b){b->move();});
-    for_each(_obstacles.begin(), _obstacles.end(), [](Obstacle* &o){o->move();});
 }
 
 void Model::movePlayer()

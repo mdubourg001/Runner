@@ -35,6 +35,7 @@ protected:
 
     bool _canpop;
     bool _magnetpicked;
+    bool _paused;
     int _magnetcpt;
     int _difficulte;
 
@@ -67,9 +68,10 @@ public:
     Counter* getCounterScore();
     Counter* getCounterCoin();
     Counter* getCounterDiamond();
-    void getPlayerPosition(int &x, int &y);
     void setPlayerDirection(direction d);
     void setDifficulte(int d);
+    bool is_paused() const;
+    void set_paused(bool paused);
 
     static int getCurrentSpeed();
 

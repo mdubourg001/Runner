@@ -99,6 +99,7 @@ private:
     sf::Text _textBall;
     sf::Text _textBack;
     sf::Text _textPass;
+    sf::Text _text_pause;
 
     sf::RectangleShape _rectBall;
     sf::RectangleShape _rectBack;
@@ -130,6 +131,8 @@ public:
     gamestates getGs();
     difficulte getDiff();
     bool getLoaded() const;
+    bool get_popup_displayed() const;
+    void set_popup_displayed(bool popup_displayed);
 
     void setModel(Model * model);
     void load();

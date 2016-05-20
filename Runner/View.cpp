@@ -12,6 +12,7 @@ using namespace std;
 //=======================================
 // Constructeur
 //=======================================
+
 View::View(int w, int h)
     : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(0, 0 , SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5),
       gs(intro), lg(fr), dif(facile), cs(ball),
@@ -157,9 +158,9 @@ void View::load()
     //============BOUTONS DU SHOP=============================================//
 
     _buy_button.initialise(BLUECUBE, REDCUBE, "ACHETER",
-            POLICEMENU, sf::Color::Black, 400, (SCREEN_HEIGHT/4)+475);
+                           POLICEMENU, sf::Color::Black, 400, (SCREEN_HEIGHT/4)+475);
     _select_button.initialise(YELLOWCUBE, REDCUBE, "SELECTIONNER",
-            POLICEMENU, sf::Color::Black, 700, (SCREEN_HEIGHT/4)+475);
+                              POLICEMENU, sf::Color::Black, 700, (SCREEN_HEIGHT/4)+475);
 
     //========================================================================//
 
@@ -187,6 +188,12 @@ void View::load()
     _textBack.setColor(sf::Color::Blue);
     _textBack.setString("Background : ");
     _textBack.setPosition((SCREEN_WIDTH/2)+10,10);
+
+    _text_pause.setFont(_font);
+    _text_pause.setColor(sf::Color::Black);
+    _text_pause.setString("PAUSE (P)");
+    _text_pause.setCharacterSize(150);
+    _text_pause.setPosition(SCREEN_WIDTH/2 - SCREEN_WIDTH/5, SCREEN_HEIGHT/2 - SCREEN_HEIGHT/5);
 
     _topScores.setFont(_font);
     _topScores.setColor(sf::Color::Black);
@@ -233,20 +240,22 @@ void View::load()
     _rectScreen.setOutlineColor(sf::Color::Black);
 
 
-        for(unsigned int i=0;i<14;i++)
-            _items.push_back(new Item());
+    for(unsigned int i=0;i<14;i++)
+        _items.push_back(new Item());
 
-        for(unsigned int i=0;i<_items.size();i++)
-        {
-            _items.at(i)->setPosition(3,53 + 51*i);
-            _items.at(i)->setOutlineThickness(3);
-            _items.at(i)->setOutlineColor(sf::Color::Black);
-            _items.at(i)->setSize(sf::Vector2f(SCREEN_WIDTH/6,50));
-            _items.at(i)->setName("");
-            this->synchroniseShopBack();
-        }
+    for(unsigned int i=0;i<_items.size();i++)
+    {
+        _items.at(i)->setPosition(3,53 + 51*i);
+        _items.at(i)->setOutlineThickness(3);
+        _items.at(i)->setOutlineColor(sf::Color::Black);
+        _items.at(i)->setSize(sf::Vector2f(SCREEN_WIDTH/6,50));
+        _items.at(i)->setName("");
+        this->synchroniseShopBack();
+    }
 
-        _items.at(0)->setSelected(true);
+    _items.at(0)->setSelected(true);
+
+    _popup = new Popup("JEU EN PAUSE");
 
     _loaded = true;
     _textPass.setString("<  APPUYEZ SUR ESPACE POUR COMMENCER  >");
@@ -278,109 +287,130 @@ bool View::getLoaded() const
 
 void View::synchronise()
 {
-    _end = std::chrono::system_clock::now();
-    int timelapse = std::chrono::duration_cast<std::chrono::milliseconds>
-            (_end - _start).count();
-
-    //===SYNCHRO PLAYER===//
-
-    _playerSprite.setPosition(sf::Vector2f(_model->getPlayer()->getPosx(), _model->getPlayer()->getPosy()));
-
-    //====================//
-    //===SYNCHRO BACKGROUND===//
-
-    _background.move();
-
-    //=======================//
-    //===SYNCHRO PIECES ET DIAMANTS===//
-
-    if(timelapse >= 55)
+    if(!_model->is_paused())
     {
-        _start = std::chrono::system_clock::now();
-        for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->animate(50);});
-        for_each(_model->Diamonds()->begin(), _model->Diamonds()->end(), [](Diamond* &d){d->animate(50);});
-        for_each(_model->Awards()->begin(), _model->Awards()->end(), [](Bonus* &b){b->animate(50);});
-    }
+        set_popup_displayed(true);
+        _end = std::chrono::system_clock::now();
+        int timelapse = std::chrono::duration_cast<std::chrono::milliseconds>
+                (_end - _start).count();
 
-    if(!_model->getPlayer()->isJumping())
-        _model->getPlayer()->rotate(_playerSprite);
+        //===SYNCHRO PLAYER===//
 
-    //===============================//
+        _playerSprite.setPosition(sf::Vector2f(_model->getPlayer()->getPosx(), _model->getPlayer()->getPosy()));
 
-    //===================//
+        //====================//
+        //===SYNCHRO BACKGROUND===//
 
-    _healthRect.setSize(sf::Vector2f(_model->getPlayer()->getHealth(),_healthRect.getSize().y));
-    _shieldRect.setSize(sf::Vector2f(-_model->getPlayer()->getShield(),_shieldRect.getSize().y));
+        _background.move();
 
-    if(_model->getPlayer()->getHealth() == 0)
-    {
-        //        _popup->setString("VOULEZ VOUS REVIVRE ?");
-        //        _popup->setLeftString("OUI");
-        //        _popup->setRightString("NON");
-        //        _popup_displayed = true;
+        //=======================//
+        //===SYNCHRO PIECES ET DIAMANTS===//
 
-        gs = menu;
-        _model->save();
-        this->recup();
-        _model->reset();
-    }
-
-    if(_model->getPlayer()->isInvincibility() == true)
-    {
-
-        if(cpt1 >= 10 && cpt2 >= 10)
+        if(timelapse >= 55)
         {
-            cpt1=0;
-            cpt2=0;
+            _start = std::chrono::system_clock::now();
+            for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->animate(50);});
+            for_each(_model->Diamonds()->begin(), _model->Diamonds()->end(), [](Diamond* &d){d->animate(50);});
+            for_each(_model->Awards()->begin(), _model->Awards()->end(), [](Bonus* &b){b->animate(50);});
         }
-        if(cpt1 < 10)
+
+        if(!_model->getPlayer()->isJumping())
+            _model->getPlayer()->rotate(_playerSprite);
+
+        //===============================//
+
+        //===================//
+
+        _healthRect.setSize(sf::Vector2f(_model->getPlayer()->getHealth(),_healthRect.getSize().y));
+        _shieldRect.setSize(sf::Vector2f(-_model->getPlayer()->getShield(),_shieldRect.getSize().y));
+
+        if(_model->getPlayer()->getHealth() == 0)
         {
+            _model->set_paused(true);
+            _popup_displayed = true;
+            _popup->initialise("VOULEZ VOUS REVIVRE?", "OUI", "NON");
+
+            gs = menu;
+            _model->save();
+            this->recup();
+            _model->reset();
+        }
+
+        if(_model->getPlayer()->isInvincibility() == true)
+        {
+
+            if(cpt1 >= 10 && cpt2 >= 10)
+            {
+                cpt1=0;
+                cpt2=0;
+            }
+            if(cpt1 < 10)
+            {
+                _playerSprite.setTexture(_player);
+                cpt1++;
+            }
+            else if(cpt2 < 10)
+            {
+                _playerSprite.setTexture(_playerStar);
+                cpt2++;
+            }
+
+        }
+        else
             _playerSprite.setTexture(_player);
-            cpt1++;
-        }
-        else if(cpt2 < 10)
-        {
-            _playerSprite.setTexture(_playerStar);
-            cpt2++;
-        }
-
     }
-    else
-        _playerSprite.setTexture(_player);
-
+    else if(_model->is_paused())
+    {
+        if(_popup->answered())
+        {
+            if(_popup->getanswer())
+                _model->set_paused(false);
+            else if(!_popup->getanswer())
+            {
+                _model->reset();
+                gs == menu;
+            }
+        }
+    }
 }
 
 void View::synchroniseShop()
 {
-    for(auto i : _items)
+    if(!_model->is_paused())
     {
-        if(i->isSelected())
-            i->setFillColor(sf::Color(150,175,175,255));
-        else
-            i->setFillColor(sf::Color(200,200,200,255));
-    }
+        for(auto i : _items)
+        {
+            if(i->isSelected())
+                i->setFillColor(sf::Color(150,175,175,255));
+            else
+                i->setFillColor(sf::Color(200,200,200,255));
+        }
 
 
-    if(cs == ball)
-    {
-        _items.at(0)->initialiseBall(BALL_IMAGE, "Orange smiley");
-        _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Bleue clair");
-        _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Rouge et Noir");
-        _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Bleu fonce");
-        _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Rouge et Blanc");
-        _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Verte");
+        if(cs == ball)
+        {
+            _items.at(0)->initialiseBall(BALL_IMAGE, "Orange smiley");
+            _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Bleue clair");
+            _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Rouge et Noir");
+            _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Bleu fonce");
+            _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Rouge et Blanc");
+            _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Verte");
+        }
     }
 }
 
 void View::synchroniseShopBack()
 {
-    for(auto i : _items)
-        i->setName("");
-
-    if (cs == back)
+    if(!_model->is_paused())
     {
-        _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "City");
-        _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "City OldSchool");
+        for(auto i : _items)
+            i->setName("");
+
+        if (cs == back)
+        {
+            _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "City");
+            _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "City OldSchool");
+        }
     }
 }
 
@@ -438,6 +468,16 @@ void View::recup()
     this->recupDiamonds();
 }
 
+bool View::get_popup_displayed() const
+{
+    return _popup_displayed;
+}
+
+void View::set_popup_displayed(bool popup_displayed)
+{
+    _popup_displayed = popup_displayed;
+}
+
 //=======================================
 // Fonction de dessin
 //======================================Awards=
@@ -482,7 +522,7 @@ void View::draw()
     //dessin des obstacles
 
     for(auto o : *_model->Obstacles())
-       o->draw(_window);
+        o->draw(_window);
 
     //--------------------
 
@@ -493,6 +533,11 @@ void View::draw()
     _window->draw(_healthRect); // dessin de la vie (vert)
     _window->draw(_shieldRect); // dessin du bouclier
 
+
+    if(_model->is_paused())
+        _popup->draw(_window);
+    else
+        this->set_popup_displayed(false);
 
     _window->display();
 }
@@ -669,238 +714,248 @@ bool View::treatEvents()
         int y;
 
 
-        while (_window->pollEvent(event)) //tant qu'un évenement est détécté
+        if(!_model->is_paused())
         {
-            if (event.type == sf::Event::Closed || ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs == intro)) //si on clique sur la croix de fermeture
+            while (_window->pollEvent(event)) //tant qu'un évenement est détécté
             {
-                _window->close(); //la fenetre est fermée
-                result = false;
-                _model->save();
-
-            }
-            else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs!= menu && gs!=intro)
-            {
-                gs = menu;
-                _model->save();
-                this->recup();
-                _model->reset();
-            }
-            else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs== menu)
-            {
-                gs = intro;
-            }
-
-
-            else if (event.type == sf::Event::KeyPressed)
-            {
-                if((event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::Space) && !_model->getPlayer()->isJumping() && gs==game)
+                if (event.type == sf::Event::Closed || ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs == intro)) //si on clique sur la croix de fermeture
                 {
-                    _model->setPlayerDirection(up);
-                }
+                    _window->close(); //la fenetre est fermée
+                    result = false;
+                    _model->save();
 
-                if(event.key.code == sf::Keyboard::Left && gs==game)
-                {
-                    _model->setPlayerDirection(l);
                 }
-
-                if(event.key.code == sf::Keyboard::Right && gs==game)
-                {
-                    _model->setPlayerDirection(r);
-                }
-                if((event.key.code == sf::Keyboard::Space) && gs==intro && this->getLoaded())
+                else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs!= menu && gs!=intro)
                 {
                     gs = menu;
+                    _model->save();
+                    this->recup();
+                    _model->reset();
+                }
+                else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs== menu)
+                {
+                    gs = intro;
                 }
 
-                else if(event.key.code == sf::Keyboard::Right && gs==shop)
-                {
-                    if(_rectBall.getFillColor() == sf::Color(100,100,100,255))
-                    {
-                        _rectBall.setFillColor(sf::Color(150,150,150,255));
-                        _rectBack.setFillColor(sf::Color(100,100,100,255));
-                        cs = back;
-                    }
-                    else
-                    {
-                        _rectBall.setFillColor(sf::Color(100,100,100,255));
-                        _rectBack.setFillColor(sf::Color(150,150,150,255));
-                        cs = ball;
-                    }
-                    for(auto i : _items)
-                        i->setSelected(false);
-                    _items.at(0)->setSelected(true);
-                    this->synchroniseShopBack();
-                }
-                else if(event.key.code == sf::Keyboard::Left && gs==shop)
-                {
-                    if(_rectBall.getFillColor() == sf::Color(100,100,100,255))
-                    {
-                        _rectBall.setFillColor(sf::Color(150,150,150,255));
-                        _rectBack.setFillColor(sf::Color(100,100,100,255));
-                        cs = back;
-                    }
-                    else
-                    {
-                        _rectBall.setFillColor(sf::Color(100,100,100,255));
-                        _rectBack.setFillColor(sf::Color(150,150,150,255));
-                        cs = ball;
-                    }
-                    for(auto i : _items)
-                        i->setSelected(false);
-                    _items.at(0)->setSelected(true);
-                    this->synchroniseShopBack();
-                }
 
-                else if (event.key.code == sf::Keyboard::Down && gs==shop)
+                else if (event.type == sf::Event::KeyPressed)
                 {
-                    for(unsigned int i=0;i<_items.size();i++)
+                    if((event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::Space) && !_model->getPlayer()->isJumping() && gs==game)
+                        _model->setPlayerDirection(up);
+
+                    if(event.key.code == sf::Keyboard::Left && gs==game)
+                        _model->setPlayerDirection(l);
+
+                    if(event.key.code == sf::Keyboard::Right && gs==game)
+                        _model->setPlayerDirection(r);
+
+                    if((event.key.code == sf::Keyboard::P) && gs == game)
                     {
-                        if(_items.at(i)->isSelected() && i != 13)
+                        _model->set_paused(true);
+                        _popup->initialise("JEU EN PAUSE", "OK", "QUITTER");
+                    }
+
+                    if((event.key.code == sf::Keyboard::Space) && gs==intro && this->getLoaded())
+                        gs = menu;
+
+
+                    else if(event.key.code == sf::Keyboard::Right && gs==shop)
+                    {
+                        if(_rectBall.getFillColor() == sf::Color(100,100,100,255))
                         {
-                            _items.at(i)->setSelected(false);
-                            _items.at(i)->reset();
-                            _items.at(i+1)->setSelected(true);
-                            if(cs == ball)
-                                _items.at(i+1)->getPreview()->setBackgroundTexture(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L);
-                            else
-                                _items.at(i+1)->getPreview()->setBallTexture(BALL_IMAGE);
-                            break;
+                            _rectBall.setFillColor(sf::Color(150,150,150,255));
+                            _rectBack.setFillColor(sf::Color(100,100,100,255));
+                            cs = back;
+                        }
+                        else
+                        {
+                            _rectBall.setFillColor(sf::Color(100,100,100,255));
+                            _rectBack.setFillColor(sf::Color(150,150,150,255));
+                            cs = ball;
+                        }
+                        for(auto i : _items)
+                            i->setSelected(false);
+                        _items.at(0)->setSelected(true);
+                        this->synchroniseShopBack();
+                    }
+                    else if(event.key.code == sf::Keyboard::Left && gs==shop)
+                    {
+                        if(_rectBall.getFillColor() == sf::Color(100,100,100,255))
+                        {
+                            _rectBall.setFillColor(sf::Color(150,150,150,255));
+                            _rectBack.setFillColor(sf::Color(100,100,100,255));
+                            cs = back;
+                        }
+                        else
+                        {
+                            _rectBall.setFillColor(sf::Color(100,100,100,255));
+                            _rectBack.setFillColor(sf::Color(150,150,150,255));
+                            cs = ball;
+                        }
+                        for(auto i : _items)
+                            i->setSelected(false);
+                        _items.at(0)->setSelected(true);
+                        this->synchroniseShopBack();
+                    }
+
+                    else if (event.key.code == sf::Keyboard::Down && gs==shop)
+                    {
+                        for(unsigned int i=0;i<_items.size();i++)
+                        {
+                            if(_items.at(i)->isSelected() && i != 13)
+                            {
+                                _items.at(i)->setSelected(false);
+                                _items.at(i)->reset();
+                                _items.at(i+1)->setSelected(true);
+                                if(cs == ball)
+                                    _items.at(i+1)->getPreview()->setBackgroundTexture(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L);
+                                else
+                                    _items.at(i+1)->getPreview()->setBallTexture(BALL_IMAGE);
+                                break;
+                            }
+                        }
+                    }
+
+                    else if (event.key.code == sf::Keyboard::Up && gs==shop)
+                    {
+                        for(unsigned int i=0;i<_items.size();i++)
+                        {
+                            if(_items.at(i)->isSelected() && i != 0)
+                            {
+                                _items.at(i)->setSelected(false);
+                                _items.at(i)->reset();
+                                _items.at(i-1)->setSelected(true);
+                                if(cs == ball)
+                                    _items.at(i-1)->getPreview()->setBackgroundTexture(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L);
+                                else
+                                    _items.at(i-1)->getPreview()->setBallTexture(BALL_IMAGE);
+                                break;
+                            }
                         }
                     }
                 }
 
-                else if (event.key.code == sf::Keyboard::Up && gs==shop)
+                else if(event.type == sf::Event::KeyReleased)
                 {
-                    for(unsigned int i=0;i<_items.size();i++)
+                    if(event.key.code != sf::Keyboard::Up && event.key.code != sf::Keyboard::Space)
+                        _model->setPlayerDirection(none);
+                }
+
+                else if (event.type == sf::Event::MouseButtonPressed && gs == menu)
+                {
+                    x = event.mouseButton.x;
+                    y = event.mouseButton.y;
+
+                    if(x>=80 && x<=270 && y>=300 && y<=485)
+                        gs = settings;
+                    else if(x>=340 && x<=520 && y>=300 && y<=485)
+                        gs = highscores;
+                    else if(x>=575 && x<=770 && y>=300 && y<=485)
+                        gs = game;
+                    else if(x>=835 && x<=1025 && y>=300 && y<=485)
+                        gs = shop;
+                    else if (x>=1085 && x<=1275 && y>=300 && y<=485)
                     {
-                        if(_items.at(i)->isSelected() && i != 0)
-                        {
-                            _items.at(i)->setSelected(false);
-                            _items.at(i)->reset();
-                            _items.at(i-1)->setSelected(true);
-                            if(cs == ball)
-                                _items.at(i-1)->getPreview()->setBackgroundTexture(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L);
-                            else
-                                _items.at(i-1)->getPreview()->setBallTexture(BALL_IMAGE);
-                            break;
-                        }
+                        _window->close();
+                        result = false;
                     }
                 }
-            }
-
-            else if(event.type == sf::Event::KeyReleased)
-            {
-                if(event.key.code != sf::Keyboard::Up && event.key.code != sf::Keyboard::Space)
-                    _model->setPlayerDirection(none);
-            }
-
-            else if (event.type == sf::Event::MouseButtonPressed && gs == menu)
-            {
-                x = event.mouseButton.x;
-                y = event.mouseButton.y;
-
-                if(x>=80 && x<=270 && y>=300 && y<=485)
-                    gs = settings;
-                else if(x>=340 && x<=520 && y>=300 && y<=485)
-                    gs = highscores;
-                else if(x>=575 && x<=770 && y>=300 && y<=485)
-                    gs = game;
-                else if(x>=835 && x<=1025 && y>=300 && y<=485)
-                    gs = shop;
-                else if (x>=1085 && x<=1275 && y>=300 && y<=485)
+                else if (event.type == sf::Event::MouseButtonPressed && gs == shop)
                 {
-                    _window->close();
-                    result = false;
+                    x = event.mouseButton.x;
+                    y = event.mouseButton.y;
+
+                    if(x>= 460 && x<=585 && y>=670 && y<=740)
+                        // acheter
+                        break;
+                    else if (x>=630 && x<=820 && y>=670 && y<=740)
+                        // selectionner
+                        break;
+                }
+                else if (event.type == sf::Event::MouseButtonPressed && gs == settings)
+                {
+                    x = event.mouseButton.x;
+                    y = event.mouseButton.y;
+
+                    if(x>=570 && x<=770 && y>=100 && y<=295)
+                    {
+                        lg = fr;
+                        toFrench();
+                    }
+                    else if(x>=830 && x<=1030 && y>=100 && y<=295)
+                    {
+                        lg = ang;
+                        toEnglish();
+                    }
+                    else if(x>=570 && x<=770 && y>=495 && y<=670)
+                    {
+                        dif = facile;
+                        _model->setDifficulte(0);
+                    }
+                    else if(x>=830 && x<=1030 && y>=495 && y<=670)
+                    {
+                        dif = moyen;
+                        _model->setDifficulte(1000);
+                    }
+                    else if (x>=1080 && x<=1270 && y>=495 && y<=670)
+                    {
+                        dif = difficile;
+                        _model->setDifficulte(1300);
+                    }
+                }
+                else if (event.type == sf::Event::MouseMoved && gs == menu)
+                {
+                    int xM = event.mouseMove.x;
+                    int yM = event.mouseMove.y;
+
+                    if(xM>=80 && xM<=270 && yM>=300 && yM<=485)
+                        _settings_button.second.setSelected(true);
+                    else
+                        _settings_button.second.setSelected(false);
+
+                    if(xM>=340 && xM<=520 && yM>=300 && yM<=485)
+                        _highscores_button.second.setSelected(true);
+                    else
+                        _highscores_button.second.setSelected(false);
+
+                    if(xM>=575 && xM<=770 && yM>=300 && yM<=485)
+                        _game_button.second.setSelected(true);
+                    else
+                        _game_button.second.setSelected(false);
+
+                    if(xM>=835 && xM<=1025 && yM>=300 && yM<=485)
+                        _shop_button.second.setSelected(true);
+                    else
+                        _shop_button.second.setSelected(false);
+
+                    if(xM>=1085 && xM<=1275 && yM>=300 && yM<=485)
+                        _exit_button.second.setSelected(true);
+                    else
+                        _exit_button.second.setSelected(false);
+                }
+                else if (event.type == sf::Event::MouseMoved && gs == shop)
+                {
+                    int xM = event.mouseMove.x;
+                    int yM = event.mouseMove.y;
+
+                    if(xM>= 460 && xM<=585 && yM>=670 && yM<=740)
+                        _buy_button.setSelected(true);
+                    else
+                        _buy_button.setSelected(false);
+                    if (xM>=630 && xM<=820 && yM>=670 && yM<=740)
+                        _select_button.setSelected(true);
+                    else
+                        _select_button.setSelected(false);
                 }
             }
-            else if (event.type == sf::Event::MouseButtonPressed && gs == shop)
-            {
-                x = event.mouseButton.x;
-                y = event.mouseButton.y;
+        }
 
-                if(x>= 460 && x<=585 && y>=670 && y<=740)
-                    // acheter
-                    break;
-                else if (x>=630 && x<=820 && y>=670 && y<=740)
-                    // selectionner
-                    break;
-            }
-            else if (event.type == sf::Event::MouseButtonPressed && gs == settings)
-            {
-                x = event.mouseButton.x;
-                y = event.mouseButton.y;
-
-                if(x>=570 && x<=770 && y>=100 && y<=295)
-                {
-                    lg = fr;
-                    toFrench();
-                }
-                else if(x>=830 && x<=1030 && y>=100 && y<=295)
-                {
-                    lg = ang;
-                    toEnglish();
-                }
-                else if(x>=570 && x<=770 && y>=495 && y<=670)
-                {
-                    dif = facile;
-                    _model->setDifficulte(0);
-                }
-                else if(x>=830 && x<=1030 && y>=495 && y<=670)
-                {
-                    dif = moyen;
-                    _model->setDifficulte(1000);
-                }
-                else if (x>=1080 && x<=1270 && y>=495 && y<=670)
-                {
-                    dif = difficile;
-                    _model->setDifficulte(1300);
-                }
-            }
-            else if (event.type == sf::Event::MouseMoved && gs == menu)
-            {
-                int xM = event.mouseMove.x;
-                int yM = event.mouseMove.y;
-
-                if(xM>=80 && xM<=270 && yM>=300 && yM<=485)
-                    _settings_button.second.setSelected(true);
-                else
-                    _settings_button.second.setSelected(false);
-
-                if(xM>=340 && xM<=520 && yM>=300 && yM<=485)
-                    _highscores_button.second.setSelected(true);
-                else
-                    _highscores_button.second.setSelected(false);
-
-                if(xM>=575 && xM<=770 && yM>=300 && yM<=485)
-                    _game_button.second.setSelected(true);
-                else
-                    _game_button.second.setSelected(false);
-
-                if(xM>=835 && xM<=1025 && yM>=300 && yM<=485)
-                    _shop_button.second.setSelected(true);
-                else
-                    _shop_button.second.setSelected(false);
-
-                if(xM>=1085 && xM<=1275 && yM>=300 && yM<=485)
-                    _exit_button.second.setSelected(true);
-                else
-                    _exit_button.second.setSelected(false);
-            }
-            else if (event.type == sf::Event::MouseMoved && gs == shop)
-            {
-                int xM = event.mouseMove.x;
-                int yM = event.mouseMove.y;
-
-                if(xM>= 460 && xM<=585 && yM>=670 && yM<=740)
-                    _buy_button.setSelected(true);
-                else
-                    _buy_button.setSelected(false);
-                if (xM>=630 && xM<=820 && yM>=670 && yM<=740)
-                    _select_button.setSelected(true);
-                else
-                    _select_button.setSelected(false);
-            }
-
+        else if(_model->is_paused())
+        {
+//            while(_window->pollEvent(event))
+//                if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
+//                    _model->set_paused(false);
+            _popup->treat_events(_window, event);
         }
     }
     return result;
