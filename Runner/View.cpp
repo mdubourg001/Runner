@@ -203,7 +203,6 @@ void View::load()
 
     _topScores.setFont(_font);
     _topScores.setColor(sf::Color::Black);
-    _topScores.setString("HIGHCORES :  ");
     _topScores.setPosition(_highscores_button.first.getPos().x+400,_highscores_button.first.getPos().y);
 
     _healthRect.setSize(sf::Vector2f(400,50));
@@ -835,17 +834,12 @@ bool View::treatEvents()
                     _model->save();
 
                 }
-                else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs== game)
+                else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs!= menu && gs!=intro)
                 {
                     gs = menu;
                     _model->save();
                     this->recup();
                     _model->reset();
-                }
-                else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs== shop)
-                {
-                    this->loadNextShop();
-                    gs = menu;
                 }
                 else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs== menu)
                 {
@@ -1007,7 +1001,7 @@ bool View::treatEvents()
                                 break;
                             }
                         }
-                    // selectionner
+                    this->loadNextShop();
                     break;
                 }
                 else if (event.type == sf::Event::MouseButtonPressed && gs == settings)
