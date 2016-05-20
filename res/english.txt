@@ -1,0 +1,16 @@
+French
+English
+Hard
+Easy
+Medium
+Settings
+Highscores
+Play
+Shop
+Exit
+HEALTH : 
+PRESS SPACE TO START
+Ball : 
+Background : 
+Buy
+Select

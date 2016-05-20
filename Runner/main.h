@@ -70,6 +70,8 @@
 #define FICHIER_SCORE  "res/scores.txt"
 #define FICHIER_COIN  "res/coins.txt"
 #define FICHIER_DIAMOND  "res/diamonds.txt"
+#define FICHIER_ENGLISH "res/english.txt"
+#define FICHIER_FRENCH "res/french.txt"
 
 
 enum direction

@@ -8,6 +8,7 @@ Item::Item()
     _name.setFont(_font);
     _name.setColor(sf::Color::Black);
     _selected = false;
+    _choose = false;
     _preview = new Preview();
 }
 
@@ -39,6 +40,15 @@ bool Item::isSelected()
     return _selected;
 }
 
+void Item::setChoose(bool c)
+{
+    _choose = c;
+}
+
+bool Item::isChoose()
+{
+    return _choose;
+}
 
 Preview *Item::getPreview()
 {
@@ -49,37 +59,35 @@ Preview *Item::getPreview()
 //================AUTRES METHODES======================
 
 void Item::drawText(sf::RenderWindow *w)
-    //dessine le nom de l'item dans le shop
+//dessine le nom de l'item dans le shop
 {
     _name.setPosition(sf::Vector2f(getPosition().x + 20, getPosition().y + 10));
     w->draw(_name);
 }
 
 void Item::reset()
-    //remet la preview de cet item à 0
+//remet la preview de cet item à 0
 {
     _preview->reset();
 }
 
 void Item::drawPreview(sf::RenderWindow *w)
-    //dessine la preview de l'item (ie un aperçu de l'item)
+//dessine la preview de l'item (ie un aperçu de l'item)
 {
     _preview->draw(w);
     _preview->move();
 }
 
 void Item::initialiseBall(const std::string B, const std::string Name)
-    //change la texture et le nom de la balle en fonction de l'item
+//change la texture et le nom de la balle en fonction de l'item
 {
     _preview->setBallTexture(B);
     this->setName(Name);
 }
 
 void Item::initialiseBackground(const std::string BackBig, const std::string BackLittle, const std::string Name)
-    //initialise la preview
+//initialise la preview
 {
     _preview->setBackgroundTexture(BackBig, BackLittle);
     this->setName(Name);
 }
-
-//========================================================

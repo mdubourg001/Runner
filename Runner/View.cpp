@@ -58,6 +58,12 @@ void View::load()
     _totalCoin.setTexture("res/coin.png");
     _totalDiamond.setTexture("res/diamond.png");
 
+    for(unsigned int i=0;i<14;i++)
+        _items.push_back(new Item());
+
+    _items.at(0)->setSelected(true);
+    _items.at(0)->setChoose(true);
+
     if (!_background.loadTextures(BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
     {
         std::cerr << "ERROR when loading image file: "
@@ -158,7 +164,7 @@ void View::load()
     //============BOUTONS DU SHOP=============================================//
 
     _buy_button.initialise(BLUECUBE, REDCUBE, "ACHETER",
-                           POLICEMENU, sf::Color::Black, 400, (SCREEN_HEIGHT/4)+475);
+                           POLICEMENU, sf::Color::Black, 500, (SCREEN_HEIGHT/4)+475);
     _select_button.initialise(YELLOWCUBE, REDCUBE, "SELECTIONNER",
                               POLICEMENU, sf::Color::Black, 700, (SCREEN_HEIGHT/4)+475);
 
@@ -240,9 +246,6 @@ void View::load()
     _rectScreen.setOutlineColor(sf::Color::Black);
 
 
-    for(unsigned int i=0;i<14;i++)
-        _items.push_back(new Item());
-
     for(unsigned int i=0;i<_items.size();i++)
     {
         _items.at(i)->setPosition(3,53 + 51*i);
@@ -253,12 +256,94 @@ void View::load()
         this->synchroniseShopBack();
     }
 
-    _items.at(0)->setSelected(true);
-
     _popup = new Popup("JEU EN PAUSE");
 
     _loaded = true;
     _textPass.setString("<  APPUYEZ SUR ESPACE POUR COMMENCER  >");
+}
+
+void View::loadNextShop()
+{
+    if(cs == ball)
+    {
+        if( _items.at(0)->isChoose())
+        {
+            if (!_player.loadFromFile(BALL_IMAGE))
+            {
+                std::cerr << "Error when loading image file: "
+                          << BALL_IMAGE << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        }
+        if( _items.at(1)->isChoose())
+        {
+            if (!_player.loadFromFile(BALL_TWO_IMAGE))
+            {
+                std::cerr << "Error when loading image file: "
+                          << BALL_TWO_IMAGE << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        }
+        if( _items.at(2)->isChoose())
+        {
+            if (!_player.loadFromFile(BALL_THREE_IMAGE))
+            {
+                std::cerr << "Error when loading image file: "
+                          << BALL_THREE_IMAGE << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        }
+        if( _items.at(3)->isChoose())
+        {
+            if (!_player.loadFromFile(BALL_FOUR_IMAGE))
+            {
+                std::cerr << "Error when loading image file: "
+                          << BALL_FOUR_IMAGE << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        }
+        if( _items.at(4)->isChoose())
+        {
+            if (!_player.loadFromFile(BALL_FIVE_IMAGE))
+            {
+                std::cerr << "Error when loading image file: "
+                          << BALL_FIVE_IMAGE << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        }
+        if ( _items.at(5)->isChoose())
+        {
+            if (!_player.loadFromFile(BALL_SIX_IMAGE))
+            {
+                std::cerr << "Error when loading image file: "
+                          << BALL_SIX_IMAGE << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        }
+    }
+    else if (cs == back)
+    {
+        if( _items.at(0)->isChoose())
+        {
+            if (!_background.loadTextures(BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
+            {
+                std::cerr << "ERROR when loading image file: "
+                          << BACKGROUND_IMAGE_B << "/"
+                          << BACKGROUND_IMAGE_L << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        }
+        if( _items.at(1)->isChoose())
+        {
+            if (!_background.loadTextures(BACKGROUND_TWO_IMAGE_B, BACKGROUND_TWO_IMAGE_B, BACKGROUND_TWO_IMAGE_L, BACKGROUND_TWO_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
+            {
+                std::cerr << "ERROR when loading image file: "
+                          << BACKGROUND_TWO_IMAGE_B << "/"
+                          << BACKGROUND_TWO_IMAGE_L << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        }
+    }
 }
 
 //=======================================
@@ -359,6 +444,7 @@ void View::synchronise()
         else
             _playerSprite.setTexture(_player);
     }
+
     else if(_model->is_paused())
     {
         if(_popup->answered())
@@ -389,12 +475,24 @@ void View::synchroniseShop()
 
         if(cs == ball)
         {
-            _items.at(0)->initialiseBall(BALL_IMAGE, "Orange smiley");
-            _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Bleue clair");
-            _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Rouge et Noir");
-            _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Bleu fonce");
-            _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Rouge et Blanc");
-            _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Verte");
+            if(lg == fr)
+            {
+                _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley");
+                _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Bleue clair");
+                _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Rouge et Noir");
+                _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Bleu fonce");
+                _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Rouge et Blanc");
+                _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Verte");
+            }
+            else if (lg == ang)
+            {
+                _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley");
+                _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Light blue");
+                _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Red and Black");
+                _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Dark blue");
+                _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Red and White");
+                _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Green");
+            }
         }
     }
 }
@@ -406,59 +504,71 @@ void View::synchroniseShopBack()
         for(auto i : _items)
             i->setName("");
 
-        if (cs == back)
+
+        if(cs == ball)
         {
-            _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "City");
-            _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "City OldSchool");
+            _items.at(1)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "");
+        }
+        else if (cs == back)
+        {
+            if (lg == fr)
+            {
+                _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "Ville");
+                _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "Ville ancienne");
+            }
+            else if (lg == ang)
+            {
+                _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "City");
+                _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "City Oldschool");
+            }
+
         }
     }
 }
 
 void View::recupBest()
 {
-    ifstream fichierRecup;
-    string line = "";
-    fichierRecup.open(FICHIER_SCORE, ios::in );
-    if( fichierRecup.fail())
+    ifstream readHS (FICHIER_SCORE, ios::in );
+    string best[5];
+    if(readHS.fail())
     {
         cerr << "ouverture en lecture impossible" << endl;
         exit(EXIT_FAILURE);
     }
-    getline(fichierRecup, line);
-    _best.setValue(atoi(line.c_str()));
-    fichierRecup.close();
-
-    _topScores.setString(to_string(_best.getValue()));
+    for(int i=0;i<5;i++)
+    {
+        getline(readHS, best[i]);
+    }
+    _topScores.setString(best[0] + "\n \n" + best[1] + "\n \n" + best[2] + "\n \n" + best[3] + "\n \n" + best[4]);
+    readHS.close();
 }
 
 void View::recupCoins()
 {
-    ifstream fichierRecup;
+    ifstream readCoins (FICHIER_COIN, ios::in);
     string line = "";
-    fichierRecup.open(FICHIER_COIN, ios::in );
-    if( fichierRecup.fail())
+    if(readCoins.fail())
     {
         cerr << "ouverture en lecture impossible" << endl;
         exit(EXIT_FAILURE);
     }
-    getline(fichierRecup, line);
+    getline(readCoins, line);
     _totalCoin.setValue(atoi(line.c_str()));
-    fichierRecup.close();
+    readCoins.close();
 }
 
 void View::recupDiamonds()
 {
-    ifstream fichierRecup;
+    ifstream readDiamonds (FICHIER_DIAMOND, ios::in);
     string line = "";
-    fichierRecup.open(FICHIER_DIAMOND, ios::in );
-    if( fichierRecup.fail())
+    if( readDiamonds.fail())
     {
         cerr << "ouverture en lecture impossible" << endl;
         exit(EXIT_FAILURE);
     }
-    getline(fichierRecup, line);
+    getline(readDiamonds, line);
     _totalDiamond.setValue(atoi(line.c_str()));
-    fichierRecup.close();
+    readDiamonds.close();
 }
 
 void View::recup()
@@ -725,18 +835,30 @@ bool View::treatEvents()
                     _model->save();
 
                 }
-                else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs!= menu && gs!=intro)
+                else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs== game)
                 {
                     gs = menu;
                     _model->save();
                     this->recup();
                     _model->reset();
                 }
+                else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs== shop)
+                {
+                    this->loadNextShop();
+                    gs = menu;
+                }
                 else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs== menu)
                 {
                     gs = intro;
                 }
-
+                else if((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs == settings)
+                {
+                    gs = menu;
+                }
+                else if((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs == highscores)
+                {
+                    gs = menu;
+                }
 
                 else if (event.type == sf::Event::KeyPressed)
                 {
@@ -869,8 +991,24 @@ bool View::treatEvents()
                         // acheter
                         break;
                     else if (x>=630 && x<=820 && y>=670 && y<=740)
-                        // selectionner
-                        break;
+                        for(unsigned int i=0; i<_items.size();i++)
+                        {
+                            if(_items.at(i)->isSelected())
+                            {
+                                for(unsigned int j=0; j<_items.size();j++)
+                                {
+                                    if(_items.at(j)->isChoose())
+                                    {
+                                        _items.at(j)->setChoose(false);
+                                        break;
+                                    }
+                                }
+                                _items.at(i)->setChoose(true);
+                                break;
+                            }
+                        }
+                    // selectionner
+                    break;
                 }
                 else if (event.type == sf::Event::MouseButtonPressed && gs == settings)
                 {
@@ -952,9 +1090,9 @@ bool View::treatEvents()
 
         else if(_model->is_paused())
         {
-//            while(_window->pollEvent(event))
-//                if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
-//                    _model->set_paused(false);
+            //            while(_window->pollEvent(event))
+            //                if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
+            //                    _model->set_paused(false);
             _popup->treat_events(_window, event);
         }
     }
@@ -968,65 +1106,113 @@ gamestates View::getGs()
 
 void View::toEnglish()
 {
-    _french_button.first.setString("French");
-    _english_button.first.setString("English");
-    _hard_button.first.setString("Hard");
-    _easy_button.first.setString("Easy");
-    _medium_button.first.setString("Medium");
-
-    _settings_button.first.setString("Settings");
-    _highscores_button.first.setString("Highscores");
-    _game_button.first.setString("Play");
-    _shop_button.first.setString("Shop");
-    _exit_button.first.setString("Exit");
-
-
-    _french_button.second.setString("French");
-    _english_button.second.setString("English");
-    _hard_button.second.setString("Hard");
-    _easy_button.second.setString("Easy");
-    _medium_button.second.setString("Medium");
-
-    _settings_button.second.setString("Settings");
-    _highscores_button.second.setString("Highscores");
-    _game_button.second.setString("Play");
-    _shop_button.second.setString("Shop");
-    _exit_button.second.setString("Exit");
-
-    _healthText.setString("HEALTH : ");
-
-    _textPass.setString("<  PRESS SPACE TO START  >");
+    ifstream readEnglish(FICHIER_ENGLISH, ios::in);
+    string line = "";
+    if(readEnglish)
+    {
+        getline(readEnglish,line);
+        _french_button.first.setString(line);
+        _french_button.second.setString(line);
+        getline(readEnglish,line);
+        _english_button.first.setString(line);
+        _english_button.second.setString(line);
+        getline(readEnglish,line);
+        _hard_button.first.setString(line);
+        _hard_button.second.setString(line);
+        getline(readEnglish,line);
+        _easy_button.first.setString(line);
+        _easy_button.second.setString(line);
+        getline(readEnglish,line);
+        _medium_button.first.setString(line);
+        _medium_button.second.setString(line);
+        getline(readEnglish,line);
+        _settings_button.first.setString(line);
+        _settings_button.second.setString(line);
+        getline(readEnglish,line);
+        _highscores_button.first.setString(line);
+        _highscores_button.second.setString(line);
+        getline(readEnglish,line);
+        _game_button.first.setString(line);
+        _game_button.second.setString(line);
+        getline(readEnglish,line);
+        _shop_button.first.setString(line);
+        _shop_button.second.setString(line);
+        getline(readEnglish,line);
+        _exit_button.first.setString(line);
+        _exit_button.second.setString(line);
+        getline(readEnglish,line);
+        _healthText.setString(line);
+        getline(readEnglish,line);
+        _textPass.setString("< " + line + " >");
+        getline(readEnglish,line);
+        _textBall.setString(line);
+        getline(readEnglish,line);
+        _textBack.setString(line);
+        getline(readEnglish,line);
+        _buy_button.setString(line);
+        getline(readEnglish,line);
+        _select_button.setString(line);
+    }
+    else
+    {
+        cerr << "ouverture en lecture impossible";
+        exit(EXIT_FAILURE);
+    }
 }
 
 void View::toFrench()
 {
-    _french_button.first.setString("Francais");
-    _english_button.first.setString("Anglais");
-    _hard_button.first.setString("Difficile");
-    _easy_button.first.setString("Facile");
-    _medium_button.first.setString("Moyen");
-
-    _settings_button.first.setString("Parametres");
-    _highscores_button.first.setString("Topscores");
-    _game_button.first.setString("Jouer");
-    _shop_button.first.setString("Boutique");
-    _exit_button.first.setString("Quitter");
-
-
-    _french_button.second.setString("Francais");
-    _english_button.second.setString("Anglais");
-    _hard_button.second.setString("Difficile");
-    _easy_button.second.setString("Facile");
-    _medium_button.second.setString("Moyen");
-
-    _settings_button.second.setString("Parametres");
-    _highscores_button.second.setString("Topscores");
-    _game_button.second.setString("Jouer");
-    _shop_button.second.setString("Boutique");
-    _exit_button.second.setString("Quitter");
-
-    _healthText.setString("SANTE : ");
-
-    _textPass.setString("<  APPUYER SUR ESPACE POUR COMMENCER  >");
+    ifstream readFrench(FICHIER_FRENCH, ios::in);
+    string line = "";
+    if(readFrench)
+    {
+        getline(readFrench,line);
+        _french_button.first.setString(line);
+        _french_button.second.setString(line);
+        getline(readFrench,line);
+        _english_button.first.setString(line);
+        _english_button.second.setString(line);
+        getline(readFrench,line);
+        _hard_button.first.setString(line);
+        _hard_button.second.setString(line);
+        getline(readFrench,line);
+        _easy_button.first.setString(line);
+        _easy_button.second.setString(line);
+        getline(readFrench,line);
+        _medium_button.first.setString(line);
+        _medium_button.second.setString(line);
+        getline(readFrench,line);
+        _settings_button.first.setString(line);
+        _settings_button.second.setString(line);
+        getline(readFrench,line);
+        _highscores_button.first.setString(line);
+        _highscores_button.second.setString(line);
+        getline(readFrench,line);
+        _game_button.first.setString(line);
+        _game_button.second.setString(line);
+        getline(readFrench,line);
+        _shop_button.first.setString(line);
+        _shop_button.second.setString(line);
+        getline(readFrench,line);
+        _exit_button.first.setString(line);
+        _exit_button.second.setString(line);
+        getline(readFrench,line);
+        _healthText.setString(line);
+        getline(readFrench,line);
+        _textPass.setString("< " + line + " >");
+        getline(readFrench,line);
+        _textBall.setString(line);
+        getline(readFrench,line);
+        _textBack.setString(line);
+        getline(readFrench,line);
+        _buy_button.setString(line);
+        getline(readFrench,line);
+        _select_button.setString(line);
+    }
+    else
+    {
+        cerr << "ouverture en lecture impossible";
+        exit(EXIT_FAILURE);
+    }
 
 }

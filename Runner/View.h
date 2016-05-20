@@ -136,6 +136,7 @@ public:
 
     void setModel(Model * model);
     void load();
+    void loadNextShop();
     void draw();
     void drawIntro();
     void drawMenu();

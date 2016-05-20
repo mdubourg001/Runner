@@ -11,6 +11,8 @@ protected:
     sf::Text _name;
     sf::Font _font;
     bool _selected;
+    bool _choose;
+
     Preview *_preview;
 
 public:
@@ -21,6 +23,8 @@ public:
     void setName(std::string texte);
     bool isSelected();
     void setSelected(bool s);
+    bool isChoose();
+    void setChoose(bool c);
     Preview *getPreview();
 
     void drawText(sf::RenderWindow *w);
