@@ -22,10 +22,16 @@ Model::Model(int w, int h)
     _diamond_counter.setTexture("res/diamond.png");
     srand(time(NULL));
 
+    _jump_timer.set_alarm(Moment(0, 0, 0, 11, 0));
 
-    _start = std::chrono::system_clock::now();
-    _gamestart = std::chrono::system_clock::now();
-    _scorestart = std::chrono::system_clock::now();
+    _score_timer.set_alarm(Moment(0, 0, 0, 100, 0));
+    _score_timer.start();
+
+    _game_timer.set_alarm(Moment(0, 0, 20, 0, 0));
+    _game_timer.start();
+
+    _spawn_timer.set_alarm(Moment(0, 0, 0, 2000 -_difficulte, 0));
+    _spawn_timer.start();
 }
 
 Model::~Model()
@@ -114,6 +120,7 @@ void Model::setPlayerDirection(direction d)
 
     else if(d == up)
     {
+        _jump_timer.start();
         _player.setJumping(true);
         _player.setMvty(-JUMP_INITIAL_SPEED);
     }
@@ -149,49 +156,55 @@ void Model::nextStep()
 {
     if(!is_paused())
     {
-        _end = std::chrono::system_clock::now();
-        _timecheck = std::chrono::system_clock::now();
-        _bonuscheck = std::chrono::system_clock::now();
-        _scorecheck = std::chrono::system_clock::now();
-        int timelapse = std::chrono::duration_cast<std::chrono::milliseconds>
-                (_end-_start).count();
-        int gametime = std::chrono::duration_cast<std::chrono::seconds>
-                (_timecheck-_gamestart).count();
-        int startime = std::chrono::duration_cast<std::chrono::seconds>
-                (_bonuscheck-_bonusstart).count();
-        int scoretime = std::chrono::duration_cast<std::chrono::milliseconds>
-                (_scorecheck-_scorestart).count();
-
-
-        if(scoretime >= 100)
-        {
-            _score_counter.increment();
-            scoretime = 0;
-            _scorestart = std::chrono::system_clock::now();
-        }
 
         movePlayer();
         _player.treatCollisions(_coins,_diamonds, _bonus, _obstacles);
 
+        _bonuscheck = std::chrono::system_clock::now();
+        int startime = std::chrono::duration_cast<std::chrono::seconds>
+                (_bonuscheck-_bonusstart).count();
+
+        _jump_timer.update();
+        _jump_timer.check_time();
+
+        _score_timer.update();
+        _score_timer.check_time();
+
+        _game_timer.update();
+        _game_timer.check_time();
+
+        _spawn_timer.update();
+        _spawn_timer.check_time();
+
+        if(_score_timer.is_running() && _score_timer.has_ticked())
+        {
+            _score_counter.increment();
+            _score_timer.reset();
+        }
+
         if(startime >=10)
             _player.setInvincibility(false);
 
-        if(gametime%20 == 0) //augmentation de la vitesse des objets en fonction du temps
+        if(_game_timer.is_running() && _game_timer.has_ticked())
         {
-            _current_speed = MEDIUM_SPEED;
-            actualiseSpeed(_current_speed);
-        }
-        else if(gametime%40 == 0)
-        {
-            _current_speed = HARD_SPEED;
+            _game_timer.reset();
+            if(_current_speed == EASY_SPEED)
+                _current_speed = MEDIUM_SPEED;
+            else
+                _current_speed = HARD_SPEED;
             actualiseSpeed(_current_speed);
         }
 
-        if(_player.isJumping())
+        if(_player.isJumping() && _jump_timer.has_ticked() && _jump_timer.is_running())
         {
+            _jump_timer.reset();
             _player.jump();
         }
-
+        else if(!_jump_timer.is_running())
+        {
+            _jump_timer.stop();
+            _jump_timer.reset();
+        }
 
         if((_score_counter.getValue() % 1000) == 0)
         {
@@ -199,16 +212,15 @@ void Model::nextStep()
                 _difficulte += 200;
         }
 
-        if(timelapse >= (2000-_difficulte))
+        if(_spawn_timer.is_running() && _spawn_timer.has_ticked())
         {
+            _spawn_timer.set_alarm(Moment(0, 0, 0, 2000 - _difficulte, 0));
+            _spawn_timer.reset();
             _canpop = true;
-            _start = std::chrono::system_clock::now();
         }
 
         if(_canpop)
         {
-
-
             if(rand()%40 == 0)
             {
                 addCoin();
@@ -485,6 +497,9 @@ void Model::reset()
     _player.setHealth(400);
     _player.setShield(0);
     _current_speed = EASY_SPEED;
+    _magnetpicked = false;
+    _score_timer.stop();
+    _score_timer.reset();
 }
 
 void Model::actualiseSpeed(int speed)

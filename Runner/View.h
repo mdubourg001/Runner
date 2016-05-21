@@ -10,6 +10,7 @@
 #include "Button.h"
 #include "Model.h"
 #include "Popup.h"
+#include "clock.h"
 
 enum gamestates
 {
@@ -59,8 +60,6 @@ private:
     sf::Texture _playerStar;
 
     SlidingBackground _background;
-
-    std::chrono::time_point<std::chrono::system_clock> _start, _end;
 
     sf::RectangleShape _healthRect;
     sf::RectangleShape _backhealthRect;
@@ -117,6 +116,9 @@ private:
     Counter _best;
     Counter _totalCoin;
     Counter _totalDiamond;
+
+    Clock _background_timer;
+    Clock _animation_timer;
 
     Popup* _popup;
     bool _popup_displayed;

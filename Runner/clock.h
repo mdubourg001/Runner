@@ -30,7 +30,7 @@ public:
     void reset(); //n'arrete pas la clock
     void set_alarm(Moment m);
     void update();
-    bool check_time();
+    void check_time();
 };
 
 #endif // CLOCK_H

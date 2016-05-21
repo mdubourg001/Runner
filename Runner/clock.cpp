@@ -69,7 +69,7 @@ void Clock::update()
     }
 }
 
-bool Clock::check_time()
+void Clock::check_time()
 {
     if(_timelapse >= _limit)
         _has_ticked = true;

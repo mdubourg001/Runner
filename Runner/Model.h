@@ -9,6 +9,7 @@
 #include "Bonus.h"
 #include "Obstacle.h"
 #include "utils.h"
+#include "clock.h"
 
 #include <chrono>
 #include <ctime>
@@ -51,11 +52,12 @@ protected:
 
     BonusType bt;
 
-    std::chrono::time_point<std::chrono::system_clock> _start, _end;
-    std::chrono::time_point<std::chrono::system_clock> _gamestart, _timecheck;
     std::chrono::time_point<std::chrono::system_clock> _bonusstart, _bonuscheck;
-    std::chrono::time_point<std::chrono::system_clock> _scorestart, _scorecheck;
 
+    Clock _jump_timer;
+    Clock _score_timer;
+    Clock _game_timer;
+    Clock _spawn_timer;
 
     static int _current_speed;
 

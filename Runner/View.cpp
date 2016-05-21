@@ -30,8 +30,6 @@ View::View(int w, int h)
     _font.loadFromFile(POLICE);
     _fontmenu.loadFromFile(POLICE);
 
-    _start = std::chrono::system_clock::now();
-
     if (!_backgroundIntro.loadFromFile(BACKGROUND_INTRO_IMAGE)) //charge le fichier city.png et le place dans la texture background
     {
         std::cerr << "ERROR when loading image file: "
@@ -49,6 +47,12 @@ View::View(int w, int h)
     _textPass.setString("<  PATIENTEZ, CHARGEMENT DU JEU...  >");
     _textPass.setOrigin(_textPass.getLocalBounds().width/2, _textPass.getLocalBounds().height/2);
     _textPass.setPosition(sf::Vector2f(SCREEN_WIDTH/2, SCREEN_HEIGHT-SCREEN_HEIGHT/5));
+
+    _background_timer.set_alarm(Moment(0, 0, 0, 11, 0));
+    _background_timer.start();
+
+    _animation_timer.set_alarm(Moment(0, 0, 0, 55, 0));
+    _animation_timer.start();
 
     _popup = new Popup();
 }
@@ -373,10 +377,11 @@ void View::synchronise()
 {
     if(!_model->is_paused())
     {
-        set_popup_displayed(true);
-        _end = std::chrono::system_clock::now();
-        int timelapse = std::chrono::duration_cast<std::chrono::milliseconds>
-                (_end - _start).count();
+        _background_timer.update();
+        _background_timer.check_time();
+
+        _animation_timer.update();
+        _animation_timer.check_time();
 
         //===SYNCHRO PLAYER===//
 
@@ -385,14 +390,18 @@ void View::synchronise()
         //====================//
         //===SYNCHRO BACKGROUND===//
 
-        _background.move();
+        if(_background_timer.is_running() && _background_timer.has_ticked())
+        {
+            _background_timer.reset();
+            _background.move();
+        }
 
         //=======================//
         //===SYNCHRO PIECES ET DIAMANTS===//
 
-        if(timelapse >= 55)
+        if(_animation_timer.is_running() && _animation_timer.has_ticked())
         {
-            _start = std::chrono::system_clock::now();
+            _animation_timer.reset();
             for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->animate(50);});
             for_each(_model->Diamonds()->begin(), _model->Diamonds()->end(), [](Diamond* &d){d->animate(50);});
             for_each(_model->Awards()->begin(), _model->Awards()->end(), [](Bonus* &b){b->animate(50);});
@@ -453,7 +462,7 @@ void View::synchronise()
             else if(!_popup->getanswer())
             {
                 _model->reset();
-                gs == menu;
+                gs = menu;
             }
         }
     }

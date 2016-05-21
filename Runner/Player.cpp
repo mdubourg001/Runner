@@ -113,6 +113,8 @@ void Player::rotate(sf::Sprite &p)
 
 void Player::drawShadow(sf::RenderWindow* window)
 {
+    _shadow.setOrigin(_shadow.getLocalBounds().width/2
+                      , _shadow.getLocalBounds().height/2);
     _shadow.setPosition(sf::Vector2f(_posx, SCREEN_HEIGHT-SCREEN_HEIGHT/6));
     window->draw(_shadow);
 }
