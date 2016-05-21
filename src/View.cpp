@@ -53,8 +53,6 @@ View::View(int w, int h)
 
     _animation_timer.set_alarm(Moment(0, 0, 0, 55, 0));
     _animation_timer.start();
-
-    _popup = new Popup();
 }
 
 void View::load()
@@ -259,8 +257,6 @@ void View::load()
         this->synchroniseShopBack();
     }
 
-    _popup = new Popup("JEU EN PAUSE");
-
     _loaded = true;
     _textPass.setString("<  APPUYEZ SUR ESPACE POUR COMMENCER  >");
 }
@@ -421,7 +417,7 @@ void View::synchronise()
         {
             _model->set_paused(true);
             _popup_displayed = true;
-            _popup->initialise("VOULEZ VOUS REVIVRE?", "OUI", "NON");
+            _popup.initialise("VOULEZ VOUS REVIVRE?", "OUI", "NON");
 
             gs = menu;
             _model->save();
@@ -455,11 +451,11 @@ void View::synchronise()
 
     else if(_model->is_paused())
     {
-        if(_popup->answered())
+        if(_popup.answered())
         {
-            if(_popup->getanswer())
+            if(_popup.getanswer())
                 _model->set_paused(false);
-            else if(!_popup->getanswer())
+            else if(!_popup.getanswer())
             {
                 _model->reset();
                 gs = menu;
@@ -470,67 +466,69 @@ void View::synchronise()
 
 void View::synchroniseShop()
 {
-    if(!_model->is_paused())
+    if(_popup_displayed)
     {
-        for(auto i : _items)
+        sf::Event event;
+        _popup.treat_events(_window, event);
+        _popup.draw(_window);
+    }
+
+    for(auto i : _items)
+    {
+        if(i->isSelected())
+            i->setFillColor(sf::Color(150,175,175,255));
+        else
+            i->setFillColor(sf::Color(200,200,200,255));
+    }
+
+
+    if(cs == ball)
+    {
+        if(lg == fr)
         {
-            if(i->isSelected())
-                i->setFillColor(sf::Color(150,175,175,255));
-            else
-                i->setFillColor(sf::Color(200,200,200,255));
+            _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley");
+            _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Bleue clair");
+            _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Rouge et Noir");
+            _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Bleu fonce");
+            _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Rouge et Blanc");
+            _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Verte");
         }
-
-
-        if(cs == ball)
+        else if (lg == ang)
         {
-            if(lg == fr)
-            {
-                _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley");
-                _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Bleue clair");
-                _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Rouge et Noir");
-                _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Bleu fonce");
-                _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Rouge et Blanc");
-                _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Verte");
-            }
-            else if (lg == ang)
-            {
-                _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley");
-                _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Light blue");
-                _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Red and Black");
-                _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Dark blue");
-                _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Red and White");
-                _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Green");
-            }
+            _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley");
+            _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Light blue");
+            _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Red and Black");
+            _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Dark blue");
+            _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Red and White");
+            _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Green");
         }
     }
+
 }
 
 void View::synchroniseShopBack()
 {
-    if(!_model->is_paused())
+    for(auto i : _items)
+        i->setName("");
+
+
+    if(cs == ball)
     {
-        for(auto i : _items)
-            i->setName("");
-
-
-        if(cs == ball)
+        _items.at(1)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "");
+    }
+    else if (cs == back)
+    {
+        if (lg == fr)
         {
-            _items.at(1)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "");
+            _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "Ville");
+            _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "Ville ancienne");
         }
-        else if (cs == back)
+        else if (lg == ang)
         {
-            if (lg == fr)
-            {
-                _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "Ville");
-                _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "Ville ancienne");
-            }
-            else if (lg == ang)
-            {
-                _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "City");
-                _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "City Oldschool");
-            }
-
+            _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "City");
+            _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "City Oldschool");
         }
+
     }
 }
 
@@ -657,8 +655,8 @@ void View::draw()
     _window->draw(_shieldRect); // dessin du bouclier
 
 
-    if(_model->is_paused())
-        _popup->draw(_window);
+    if(_model->is_paused() || get_popup_displayed())
+        _popup.draw(_window);
     else
         this->set_popup_displayed(false);
 
@@ -882,7 +880,8 @@ bool View::treatEvents()
                     if((event.key.code == sf::Keyboard::P) && gs == game)
                     {
                         _model->set_paused(true);
-                        _popup->initialise("JEU EN PAUSE", "OK", "QUITTER");
+                        set_popup_displayed(true);
+                        _popup.initialise("JEU EN PAUSE", "OK", "QUITTER");
                     }
 
                     if((event.key.code == sf::Keyboard::Space) && gs==intro && this->getLoaded())
@@ -967,7 +966,8 @@ bool View::treatEvents()
 
                 else if(event.type == sf::Event::KeyReleased)
                 {
-                    if(event.key.code != sf::Keyboard::Up && event.key.code != sf::Keyboard::Space)
+                    if(event.key.code != sf::Keyboard::Up
+                            && event.key.code != sf::Keyboard::Space)
                         _model->setPlayerDirection(none);
                 }
 
@@ -1096,12 +1096,11 @@ bool View::treatEvents()
             }
         }
 
-        else if(_model->is_paused())
+        else if(_model->is_paused() || get_popup_displayed())
         {
-            //            while(_window->pollEvent(event))
-            //                if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
-            //                    _model->set_paused(false);
-            _popup->treat_events(_window, event);
+            _popup.treat_events(_window, event);
+            if(_popup.getanswer())
+                set_popup_displayed(false);
         }
     }
     return result;

@@ -120,7 +120,7 @@ private:
     Clock _background_timer;
     Clock _animation_timer;
 
-    Popup* _popup;
+    Popup _popup;
     bool _popup_displayed;
 
     int cpt1=0;
