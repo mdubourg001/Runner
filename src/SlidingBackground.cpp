@@ -15,7 +15,12 @@ SlidingBackground::SlidingBackground(int posx, int posy, int w, int h, int sB, i
 //========================================
 //========================================
 
-void SlidingBackground::move() //gestion du défilement paralaxe
+
+/*!
+ * \brief SlidingBackground::move
+ * gestion du défilement paralaxe du background
+ */
+void SlidingBackground::move()
 {
     if(_leftBig.getPosition().x <= _posx -_width)
         _leftBig.setPosition(sf::Vector2f(_posx + _width - 5, _posy));
@@ -79,6 +84,10 @@ void SlidingBackground::draw(sf::RenderWindow *window)
 }
 
 
+/*!
+ * \brief SlidingBackground::reset
+ * remet le background à 0
+ */
 void SlidingBackground::reset()
 {
     _rightBig.setPosition(sf::Vector2f(_posx + _width -5 , _posy));

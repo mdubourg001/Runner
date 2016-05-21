@@ -43,6 +43,11 @@ Obstacle::Obstacle(int category, int ms)
     _hitbox.setPosition(sf::Vector2f(_cubes.at(0)->getPos().x, _cubes.at(0)->getPos().y + 25));
 }
 
+
+/*!
+ * \brief Obstacle::move
+ * déplace l'obstacle de _movespeed;
+ */
 void Obstacle::move()
 {
     for(unsigned int i=0 ; i<_cubes.size() ; i++)
@@ -63,6 +68,11 @@ bool Obstacle::isDestroyed() const
     return _destroyed;
 }
 
+/*!
+ * \brief Obstacle::draw
+ * \param w
+ * dessine l'obstacle (dessine tout les cubes de l'obstacle)
+ */
 void Obstacle::draw(sf::RenderWindow *w)
 {
     for(unsigned int i=0 ; i<_cubes.size() ; i++)
@@ -81,6 +91,12 @@ sf::Vector2f Obstacle::getSize() const
     return _hitbox.getSize();
 }
 
+
+/*!
+ * \brief Obstacle::actualiseSpeed
+ * \param speed
+ * actualise la vitesse des obstacles
+ */
 void Obstacle::actualiseSpeed(int speed)
 {
     _movespeed = speed;

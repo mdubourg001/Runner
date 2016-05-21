@@ -44,6 +44,10 @@ void Player::setPosition(int x, int y)
 // Méthodes
 //=======================================
 
+/*!
+ * \brief Player::jump
+ * gère le saut de la balle
+ */
 void Player::jump()
 {
     if(_posy >= SCREEN_HEIGHT-SCREEN_HEIGHT/5)
@@ -63,6 +67,14 @@ void Player::jump()
     }
 }
 
+/*!
+ * \brief Player::treatCollisions
+ * \param coins
+ * \param diamonds
+ * \param bonus
+ * \param obstacles
+ * traite les collisions entre la balle et les objets du jeu
+ */
 void Player::treatCollisions(std::vector<Coin *> coins, std::vector<Diamond *> diamonds, std::vector<Bonus *> bonus, std::vector<Obstacle *> obstacles)
 {
     for(unsigned int i=0 ; i<coins.size() ; i++) //collision entre la balle et les pièces
@@ -97,6 +109,11 @@ void Player::treatCollisions(std::vector<Coin *> coins, std::vector<Diamond *> d
         }
 }
 
+/*!
+ * \brief Player::rotate
+ * \param p
+ * gère la rotation de la balle
+ */
 void Player::rotate(sf::Sprite &p)
 {
     if(dir == none)
@@ -110,7 +127,11 @@ void Player::rotate(sf::Sprite &p)
 }
 
 
-
+/*!
+ * \brief Player::drawShadow
+ * \param window
+ * dessine l'ombre de la balle au sol
+ */
 void Player::drawShadow(sf::RenderWindow* window)
 {
     _shadow.setOrigin(_shadow.getLocalBounds().width/2
@@ -137,7 +158,10 @@ void Player::setShield(int s)
     _shield = s;
 }
 
-
+/*!
+ * \brief Player::looseLife
+ * fait perdre 80 pv au joueur
+ */
 void Player::looseLife()
 {
     if(_shield>0)
@@ -146,7 +170,10 @@ void Player::looseLife()
         _health-=80;
 }
 
-
+/*!
+ * \brief Player::winLife
+ * octroie 80 pv au joueur
+ */
 void Player::winLife()
 {
     if(_health<400)

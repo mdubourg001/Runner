@@ -59,26 +59,39 @@ void Counter::setTexture(std::string filename)
 //==========================================================================
 //=========================AUTRES METHODES==================================
 
+/*!
+ * \brief Counter::increment
+ * incrémente le compteur de 1
+ */
 void Counter::increment()
-    //incrémente le compteur de 1
 {
     _value++;
 }
 
+/*!
+ * \brief Counter::hundredincrement
+ * incrémente le compteur de 100
+ */
 void Counter::hundredincrement()
-    //incrémente le compteur de 100
 {
     _value+=100;
 }
 
+/*!
+ * \brief Counter::decrement
+ * décremente le compteur de 1
+ */
 void Counter::decrement()
-    //décremente le compteur de 1
 {
     _value--;
 }
 
+/*!
+ * \brief Counter::draw
+ * \param w
+ * met a jour le texte du compteur et le dessine
+ */
 void Counter::draw(sf::RenderWindow *w)
-    //met a jour le texte du compteur et le dessine
 {
     _text.setString(std::to_string(_value));;
     w->draw(_sprite);

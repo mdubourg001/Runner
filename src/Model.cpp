@@ -144,15 +144,17 @@ void Model::set_paused(bool paused)
 //====================================================
 //==================AUTRES METHODES===================
 
-void Model::nextStep()
-/* calcule la prochaine étape de jeu:
+/*!
+ * \brief Model::nextStep
+ * calcule la prochaine étape de jeu:
      * le temps de jeu -> calcul de la vitesse des objets
      * déplacement du joueur et saut du joueur
      * traitement des collisions
      * incrémentation du score
      * apparition des obstacles
      * anime tout les objets et supprime ceux qui ne sont plus affichés à l'écran
-    */
+ */
+void Model::nextStep()
 {
     if(!is_paused())
     {
@@ -352,21 +354,36 @@ void Model::nextStep()
 
 }
 
+/*!
+ * \brief Model::movePlayer
+ */
 void Model::movePlayer()
 {
     _player.move();
 }
 
+/*!
+ * \brief Model::addCoin
+ * ajoute une pièce au vector de pièces
+ */
 void Model::addCoin()
 {
     _coins.push_back(new Coin(COIN, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 8));
 }
 
+/*!
+ * \brief Model::addDiamond
+ * ajoute un diamant au vector de diamants
+ */
 void Model::addDiamond()
 {
     _diamonds.push_back(new Diamond(DIAMOND, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 5));
 }
 
+/*!
+ * \brief Model::addBonus
+ * ajoute un bonus au vecteur de bonus
+ */
 void Model::addBonus()
 {
     switch(rand()%9)
@@ -413,11 +430,22 @@ void Model::addBonus()
     }
 }
 
+
+/*!
+ * \brief Model::addObstacle
+ * ajoute un obstacle au vecteur d'obstacle
+ */
 void Model::addObstacle()
 {
     _obstacles.push_back(new Obstacle(rand()%4+1, _current_speed));
 }
 
+
+/*!
+ * \brief Model::drawInterface
+ * \param w
+ * dessine les compteurs de pièces/diamants/score
+ */
 void Model::drawInterface(sf::RenderWindow *w)
 {
     _coin_counter.draw(w); //dessin du compteur de pièces
@@ -425,6 +453,11 @@ void Model::drawInterface(sf::RenderWindow *w)
     _diamond_counter.draw(w); //dessin du compteur de diamants
 }
 
+
+/*!
+ * \brief Model::saveScore
+ * sauvegarde le score dans le fichier de highscores
+ */
 void Model::saveScore()
 {
     int best=0; // peut etre faire des attributs de classes pour pouvoir gérer plus facilement lorsqu'on veut afficher le best score ou bien le nombre de pieces dans le menu
@@ -446,6 +479,11 @@ void Model::saveScore()
     }
 }
 
+
+/*!
+ * \brief Model::saveCoin
+ * sauvegarde les pièces dans le fichier de pièces
+ */
 void Model::saveCoin()
 {
     int total=0;
@@ -465,6 +503,11 @@ void Model::saveCoin()
     fichierCoins.close();
 }
 
+
+/*!
+ * \brief Model::saveDiamond
+ * sauvegarde les diamants dans le fichier de diamants
+ */
 void Model::saveDiamond()
 {
     int total=0;
@@ -484,6 +527,10 @@ void Model::saveDiamond()
     fichierDiamonds.close();
 }
 
+/*!
+ * \brief Model::save
+ * sauvegarde le jeu
+ */
 void Model::save()
 {
     this->saveScore();
@@ -491,6 +538,11 @@ void Model::save()
     this->saveDiamond();
 }
 
+
+/*!
+ * \brief Model::reset
+ * reset le model à 0
+ */
 void Model::reset()
 {
     _coin_counter.setValue(0);
@@ -509,6 +561,12 @@ void Model::reset()
     _score_timer.reset();
 }
 
+
+/*!
+ * \brief Model::actualiseSpeed
+ * \param speed
+ * actualise la vitesse des objets du jeu
+ */
 void Model::actualiseSpeed(int speed)
 {
     for(auto c : _coins) {c->actualiseSpeed(speed) ;}

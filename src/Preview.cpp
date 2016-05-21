@@ -13,6 +13,11 @@ Preview::Preview()
     _playerSprite.setOrigin(sf::Vector2f(25, 25));
 }
 
+/*!
+ * \brief Preview::draw
+ * \param w
+ * dessine la preview (backgound + balle)
+ */
 void Preview::draw(sf::RenderWindow *w)
 {
     _background->draw(w);
@@ -20,15 +25,24 @@ void Preview::draw(sf::RenderWindow *w)
     w->draw(_playerSprite);
 }
 
+/*!
+ * \brief Preview::move
+ *  anime le background
+ */
 void Preview::move()
 {
     _background->move();
 }
 
+/*!
+ * \brief Preview::reset
+ * remet la preview à 0
+ */
 void Preview::reset()
 {
     _background->reset();
 }
+
 
 void Preview::setBallTexture(std::string B)
 {

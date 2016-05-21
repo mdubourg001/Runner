@@ -59,6 +59,11 @@ bool Popup::getanswer() const
 { return _answer; }
 
 
+/*!
+ * \brief Popup::draw
+ * \param w
+ * dessine le popup au milieu de l'écran
+ */
 void Popup::draw(sf::RenderWindow *w)
 {
     w->draw(*this);
@@ -67,6 +72,12 @@ void Popup::draw(sf::RenderWindow *w)
     _right.draw(w);
 }
 
+/*!
+ * \brief Popup::treat_events
+ * \param w
+ * \param event
+ * traite les évenements souris quand le popup est affiché
+ */
 void Popup::treat_events(sf::RenderWindow *w, sf::Event &event)
 {
     while(w->pollEvent(event))

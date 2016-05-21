@@ -58,35 +58,60 @@ Preview *Item::getPreview()
 //=====================================================
 //================AUTRES METHODES======================
 
+/*!
+ * \brief Item::drawText
+ * \param w
+ * dessine le nom de l'item dans le shop
+ */
 void Item::drawText(sf::RenderWindow *w)
-//dessine le nom de l'item dans le shop
 {
     _name.setPosition(sf::Vector2f(getPosition().x + 20, getPosition().y + 10));
     w->draw(_name);
 }
 
+
+/*!
+ * \brief Item::reset
+ * remet la preview de cet item à 0
+ */
 void Item::reset()
-//remet la preview de cet item à 0
 {
     _preview->reset();
 }
 
+
+/*!
+ * \brief Item::drawPreview
+ * \param w
+ * dessine la preview de l'item (ie un aperçu de l'item)
+ */
 void Item::drawPreview(sf::RenderWindow *w)
-//dessine la preview de l'item (ie un aperçu de l'item)
 {
     _preview->draw(w);
     _preview->move();
 }
 
+/*!
+ * \brief Item::initialiseBall
+ * \param B
+ * \param Name
+ * change la texture et le nom de la balle en fonction de l'item
+ */
 void Item::initialiseBall(const std::string B, const std::string Name)
-//change la texture et le nom de la balle en fonction de l'item
 {
     _preview->setBallTexture(B);
     this->setName(Name);
 }
 
+
+/*!
+ * \brief Item::initialiseBackground
+ * \param BackBig
+ * \param BackLittle
+ * \param Name
+ * initialise la preview
+ */
 void Item::initialiseBackground(const std::string BackBig, const std::string BackLittle, const std::string Name)
-//initialise la preview
 {
     _preview->setBackgroundTexture(BackBig, BackLittle);
     this->setName(Name);

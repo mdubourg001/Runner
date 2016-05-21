@@ -8,9 +8,10 @@ Coin::Coin(std::string texture, int ms, int posx, int posy, int width, int heigh
     : AnimatedSprite(texture, ms, posx, posy, width, height, nbrsprites)
     ,_alpha_opacity(255),_picked(false), _destroyed(false), _ball_detect(false)
 {
-    _font.loadFromFile(POLICEMENU);
+    _font.loadFromFile(POLICE);
     _alphatext.setFont(_font);
     _alphatext.setString("+1");
+    _alphatext.setCharacterSize(35);
     _alphatext.setOrigin(_alphatext.getLocalBounds().width/2
                          ,_alphatext.getLocalBounds().height/2);
     _alphatext.setPosition(this->getPosition().x + this->getLocalBounds().width
@@ -65,6 +66,11 @@ bool Coin::clock_has_ticked() const
 //================================================================
 //=======================AUTRES METHODES==========================
 
+/*!
+ * \brief Coin::move_magnet
+ * \param player
+ * fait bouger la pièce en direction du joueur(aimant)
+ */
 void Coin::move_magnet(Player* player)
 {
     _movespeed = 13;
@@ -79,6 +85,11 @@ void Coin::move_magnet(Player* player)
                                    ,this->getPosition().y + y_movespeed));
 }
 
+/*!
+ * \brief Coin::draw_alpha
+ * \param w
+ *  dessine le '+1' lorsque la pièce est ramassée
+ */
 void Coin::draw_alpha(sf::RenderWindow *w)
 {
     _alpha_opacity -= 2;

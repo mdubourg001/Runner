@@ -10,6 +10,10 @@ Clock::Clock()
 }
 
 
+/*!
+ * \brief Clock::get_time
+ * \return la valeur courante de la clock (_check - _start)
+ */
 Moment Clock::get_time() const
 {
     int temp = _timelapse;
@@ -36,17 +40,29 @@ bool Clock::has_ticked() const
     return _has_ticked;
 }
 
+/*!
+ * \brief Clock::start
+ * start la clock
+ */
 void Clock::start()
 {
     _start = chrono::system_clock::now();
     _running = true;
 }
 
+/*!
+ * \brief Clock::stop
+ * stop la clock
+ */
 void Clock::stop()
 {
     _running = false;
 }
 
+/*!
+ * \brief Clock::reset
+ * _start = _check mais ne stoppe pas la clock
+ */
 void Clock::reset()
 {
     _start = _check;
@@ -54,11 +70,20 @@ void Clock::reset()
     _has_ticked = false;
 }
 
+/*!
+ * \brief Clock::set_alarm
+ * \param m
+ * la clock tickera dans m milliseconds
+ */
 void Clock::set_alarm(Moment m)
 {
     _limit = m.to_microseconds();
 }
 
+/*!
+ * \brief Clock::update
+ * met a jour la valeur de _check et le temps depuis le start du timer
+ */
 void Clock::update()
 {
     if(is_running())
@@ -69,6 +94,10 @@ void Clock::update()
     }
 }
 
+/*!
+ * \brief Clock::check_time
+ * check si la clock a attends sa limite
+ */
 void Clock::check_time()
 {
     if(_timelapse >= _limit)

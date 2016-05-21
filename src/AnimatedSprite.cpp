@@ -30,16 +30,24 @@ AnimatedSprite::~AnimatedSprite()
 //============AUTRES METHODES====================================
 
 
+/*!
+ * \brief AnimatedSprite::move
+ * déplace le sprite de _movespeed vers la gauche
+ */
 void AnimatedSprite::move()
-    //déplace le sprite de _movespeed vers la gauche
 {
     setPosition(sf::Vector2f(getPosition().x - _movespeed, getPosition().y));
 }
 
 
+/*!
+ * \brief AnimatedSprite::animate
+ * \param value
+ * gère l'animation du sprite en fonction du nombre de sprites dont il est composé
+ * déplace le rectangle de lecture et actualise la texture
+ */
 void AnimatedSprite::animate(int value)
-    //gère l'animation du sprite en fonction du nombre de sprites dont il est composé
-    //déplace le rectangle de lecture et actualise la texture
+
 {
     if(_sourceRect.left  >= (_nbrsprites-1)*value)
         _sourceRect.left = _sourceRect.top =  0;
@@ -52,8 +60,12 @@ void AnimatedSprite::animate(int value)
 }
 
 
+/*!
+ * \brief AnimatedSprite::actualiseSpeed
+ * \param speed
+ * actualise la _movespeed du sprite lorsque le jeu s'accélère
+ */
 void AnimatedSprite::actualiseSpeed(int speed)
-    //actualise la _movespeed du sprite lorsque le jeu s'accélère
 {
     _movespeed = speed;
 }

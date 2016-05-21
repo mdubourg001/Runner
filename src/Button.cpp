@@ -109,8 +109,12 @@ sf::FloatRect Button::getLocalBounds() const
 //==============================================================
 //===============AUTRES METHODES================================
 
+/*!
+ * \brief Button::draw
+ * \param w
+ * dessine le bouton (sprite), puis son texte
+ */
 void Button::draw(sf::RenderWindow *w)
-    //dessine le bouton (sprite), puis son texte
 {
     w->draw(*this);
     w->draw(_text);

@@ -2,6 +2,11 @@
 
 //==========================CONSTRUCTEUR==============================
 
+/*!
+ * \brief Cube::Cube
+ * \param color défini la couleur du cube
+ * \param stage défini a quelle étage de l'obstacle le cube se trouvera
+ */
 Cube::Cube(int color, int stage)
     : _color {color} //1->red 2->blue 3->green 4->yellow 5->purple
 {
@@ -130,14 +135,23 @@ sf::Vector2f Cube::getOri() const
 //=================================================================
 //======================AUTRES METHODES============================
 
+/*!
+ * \brief Cube::draw
+ * \param w
+ * dessine le cube
+ */
 void Cube::draw(sf::RenderWindow *w)
-    //dessine le cube
 {
     w->draw(*this);
 }
 
+
+/*!
+ * \brief Cube::move
+ * \param movespeed
+ * déplace le cube de _movespeed vers la gauche
+ */
 void Cube::move(int movespeed)
-    //déplace le cube de _movespeed vers la gauche
 {
     setPosition(getPosition().x - movespeed, getPosition().y);
 }

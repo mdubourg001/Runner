@@ -58,6 +58,10 @@ direction MovableElement::getDirection() const
 // Méthodes
 //=======================================
 
+/*!
+ * \brief MovableElement::move
+ * déplace le sprite
+ */
 void MovableElement::move()
 {
     if((_posx-_width/2 >= 0 && _posx+_width/2 <= SCREEN_WIDTH)
