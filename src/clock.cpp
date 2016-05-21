@@ -5,9 +5,7 @@ Clock::Clock()
     , _limit {0}
     ,_running {false}
     , _has_ticked {false}
-{
-
-}
+{ }
 
 
 /*!
@@ -30,6 +28,22 @@ Moment Clock::get_time() const
     return m;
 }
 
+/*!
+ * \brief Clock::get_ticks
+ * \return un vecteur contenant les moments ou la clock à tické
+ */
+vector<Moment> Clock::get_ticks() const
+{
+    vector<Moment> moments;
+    for(auto i : _ticks)
+    {
+        moments.push_back(
+                    Moment(0, 0, 0, 0,chrono::duration_cast<chrono::microseconds>
+                                 (i - _begin).count()));
+    }
+    return moments;
+}
+
 bool Clock::is_running() const
 {
     return _running;
@@ -46,6 +60,7 @@ bool Clock::has_ticked() const
  */
 void Clock::start()
 {
+    _begin = chrono::system_clock::now();
     _start = chrono::system_clock::now();
     _running = true;
 }
@@ -101,6 +116,38 @@ void Clock::update()
 void Clock::check_time()
 {
     if(_timelapse >= _limit)
+    {
         _has_ticked = true;
+        _ticks.push_back(chrono::time_point<chrono::system_clock>(chrono::system_clock::now()));
+    }
+}
+
+
+/*!
+ * \brief Clock::get_elapsed_time
+ * \param earlier
+ * \param later
+ * \return le temps passé entre 2 chrono::time_point
+ */
+Moment Clock::get_time_between(chrono::time_point<chrono::_V2::system_clock> earlier
+                               , chrono::time_point<chrono::_V2::system_clock> later)
+{
+    return Moment(0,0,0,0
+                  ,chrono::duration_cast<chrono::microseconds>
+                  (later - earlier).count());
+}
+
+
+/*!
+ * \brief Clock::get_time_since
+ * \param time_point
+ * \return le temps passé depuis un chrono::time_point
+ */
+Moment Clock::get_time_since(chrono::time_point<chrono::_V2::system_clock> time_point)
+{
+
+    return Moment(0,0,0,0
+                  ,chrono::duration_cast<chrono::microseconds>
+                  (chrono::system_clock::now() - time_point).count());
 }
 
