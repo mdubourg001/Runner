@@ -6,9 +6,18 @@
 
 Coin::Coin(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites)
     : AnimatedSprite(texture, ms, posx, posy, width, height, nbrsprites)
-    ,_picked(false), _ball_detect(false)
+    ,_alpha_opacity(255),_picked(false), _destroyed(false), _ball_detect(false)
 {
     _font.loadFromFile(POLICEMENU);
+    _alphatext.setFont(_font);
+    _alphatext.setString("+1");
+    _alphatext.setOrigin(_alphatext.getLocalBounds().width/2
+                         ,_alphatext.getLocalBounds().height/2);
+    _alphatext.setPosition(this->getPosition().x + this->getLocalBounds().width
+                           ,this->getPosition().y + this->getLocalBounds().height);
+    _alphatext.setColor(sf::Color(255, 255, 255, _alpha_opacity));
+
+    _alpha_clock.set_alarm(Moment(0, 0, 0, 500, 0));
 }
 
 Coin::~Coin()
@@ -20,11 +29,22 @@ Coin::~Coin()
 void Coin::setPicked(bool picked)
 {
     _picked = picked;
+    _alpha_clock.start();
 }
 
 bool Coin::isPicked() const
 {
     return _picked;
+}
+
+void Coin::setDestroyed(bool destroyed)
+{
+    _destroyed = destroyed;
+}
+
+bool Coin::getDestroyed() const
+{
+    return _destroyed;
 }
 
 bool Coin::get_ball_detected() const
@@ -35,6 +55,11 @@ bool Coin::get_ball_detected() const
 void Coin::set_ball_detected(bool detected)
 {
     _ball_detect = detected;
+}
+
+bool Coin::clock_has_ticked() const
+{
+    return _alpha_clock.has_ticked();
 }
 
 //================================================================
@@ -52,6 +77,17 @@ void Coin::move_magnet(Player* player)
             / (abs(direction.x) + abs(direction.y));
     this->setPosition(sf::Vector2f(this->getPosition().x + x_movespeed
                                    ,this->getPosition().y + y_movespeed));
+}
+
+void Coin::draw_alpha(sf::RenderWindow *w)
+{
+    _alpha_opacity -= 2;
+    _alpha_clock.update();
+    _alpha_clock.check_time();
+    _alphatext.setPosition(this->getPosition().x + this->getLocalBounds().width
+                           ,_alphatext.getPosition().y - 5);
+    _alphatext.setColor(sf::Color(255, 255, 255, _alpha_opacity));
+    w->draw(_alphatext);
 }
 
 //================================================================

@@ -23,7 +23,9 @@ SOURCES += main.cpp \
     Cube.cpp \
     Button.cpp \
     Popup.cpp \
-    utils.cpp
+    utils.cpp \
+    clock.cpp \
+    moment.cpp
 
 HEADERS += \
     Player.h \
@@ -43,4 +45,6 @@ HEADERS += \
     Cube.h \
     Button.h \
     Popup.h \
-    utils.h
+    utils.h \
+    clock.h \
+    moment.h

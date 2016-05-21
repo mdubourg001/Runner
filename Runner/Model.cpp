@@ -246,11 +246,18 @@ void Model::nextStep()
 
         for(auto c : _coins) //supprime les pièces qui ne sont plus affichées à l'écran
         {
-            if(c->getPosition().x < 0 || c->isPicked())
+            if(c->isPicked())
             {
+                if(c->clock_has_ticked())
+                {
+                    c->setPicked(false);
+                    c->setDestroyed(true);
+                }
+            }
+            if(c->getPosition().x < 0 || c->getDestroyed())
+            {
+                _coin_counter.increment();
                 c->set_ball_detected(false);
-                if(c->isPicked())
-                    _coin_counter.increment();
 
                 std::vector<Coin*>::iterator it =
                         std::find(_coins.begin(), _coins.end(), c);

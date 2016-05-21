@@ -612,7 +612,12 @@ void View::draw()
     //dessin des pièces
 
     for(auto c : *_model->Coins())
-        _window->draw(*c);
+    {
+        if(!c->isPicked())
+            _window->draw(*c);
+        else if(c->isPicked() && !c->clock_has_ticked())
+            c->draw_alpha(_window);
+    }
 
     //--------------------
 
