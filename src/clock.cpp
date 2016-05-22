@@ -8,11 +8,29 @@ Clock::Clock()
 { }
 
 
+Moment Clock::get_time_since_begin() const
+{
+    int temp = chrono::duration_cast<chrono::microseconds>
+            (_check - _begin).count();
+    int hours = temp / 3600000000;
+    temp %= 3600000000;
+    int min = temp / 60000000;
+    temp %= 60000000;
+    int sec = temp / 1000000;
+    temp %= 1000000;
+    int milliseconds = temp / 1000;
+    temp %= 1000;
+    int microseconds = temp;
+    Moment m(hours, min, sec, milliseconds, microseconds);
+    return m;
+}
+
+
 /*!
  * \brief Clock::get_time
  * \return la valeur courante de la clock (_check - _start)
  */
-Moment Clock::get_time() const
+Moment Clock::get_time_since_tick() const
 {
     int temp = _timelapse;
     int hours = temp / 3600000000;

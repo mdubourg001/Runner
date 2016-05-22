@@ -155,6 +155,5 @@ public:
     void recupCoins();
     void recupDiamonds();
     void recup();
-
 };
 #endif

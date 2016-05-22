@@ -1,4 +1,3 @@
-#include "View.h"
 #include "Model.h"
 #include "main.h"
 
@@ -8,6 +7,7 @@ int main()
 
     Model model(SCREEN_WIDTH, SCREEN_HEIGHT);
     View view(SCREEN_WIDTH, SCREEN_HEIGHT);
+    model.setView(&view);
     view.setModel(&model);
     view.recup();
 

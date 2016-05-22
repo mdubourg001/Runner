@@ -415,10 +415,9 @@ void View::synchronise()
 
         if(_model->getPlayer()->getHealth() == 0)
         {
-            _model->set_paused(true);
-            _popup_displayed = true;
-            _popup.initialise("VOULEZ VOUS REVIVRE?", "OUI", "NON");
-
+//            _model->set_paused(true);
+//            _popup_displayed = true;
+//            _popup.initialise("VOULEZ VOUS REVIVRE?", "OUI", "NON");
             gs = menu;
             _model->save();
             this->recup();
@@ -1221,5 +1220,4 @@ void View::toFrench()
         cerr << "ouverture en lecture impossible";
         exit(EXIT_FAILURE);
     }
-
 }

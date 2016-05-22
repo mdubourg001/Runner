@@ -23,7 +23,8 @@ protected:
 public:
     Clock();
 
-    Moment get_time() const;
+    Moment get_time_since_begin() const;
+    Moment get_time_since_tick() const;
     vector<Moment> get_ticks() const;
     bool is_running() const;
     bool has_ticked() const;

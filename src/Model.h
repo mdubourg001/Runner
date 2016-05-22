@@ -2,6 +2,7 @@
 #define _MODEL_
 #include "main.h"
 #include "Player.h"
+#include "View.h"
 #include "AnimatedSprite.h"
 #include "Coin.h"
 #include "Counter.h"
@@ -28,11 +29,14 @@ enum BonusType
     redcoin
 };
 
+class View;
+
 class Model
 {
 protected:
     int _w, _h;
     Player _player;
+    View* _view;
 
     bool _canpop;
     bool _magnetpicked;
@@ -49,21 +53,21 @@ protected:
     Counter _score_counter;
     Counter _diamond_counter;
 
-
     BonusType bt;
-
-    std::chrono::time_point<std::chrono::system_clock> _bonusstart, _bonuscheck;
 
     Clock _jump_timer;
     Clock _score_timer;
     Clock _game_timer;
     Clock _spawn_timer;
+    Clock _bonus_timer;
 
     static int _current_speed;
 
 public:
     Model(int w, int h);
     ~Model();
+
+    void setView(View *view);
 
     void nextStep();
     Player* getPlayer();

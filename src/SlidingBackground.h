@@ -33,6 +33,7 @@ public:
     void move();
     bool loadTextures(std::string leftBig, std::string rightBig, std::string leftLittle, std::string rightLittle);
     void draw(sf::RenderWindow* window);
+    void actualise_speed(int speed);
     void reset();
 };
 

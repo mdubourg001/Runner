@@ -85,6 +85,17 @@ void SlidingBackground::draw(sf::RenderWindow *window)
 
 
 /*!
+ * \brief SlidingBackground::actualise_speed
+ * \param speed
+ */
+//void SlidingBackground::actualise_speed(int speed)
+//{
+//    _speedBig = speed/2;
+//    _speedLittle = speed;
+//}
+
+
+/*!
  * \brief SlidingBackground::reset
  * remet le background à 0
  */

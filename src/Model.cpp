@@ -32,6 +32,8 @@ Model::Model(int w, int h)
 
     _spawn_timer.set_alarm(Moment(0, 0, 0, 2000 -_difficulte, 0));
     _spawn_timer.start();
+
+    _bonus_timer.set_alarm(Moment(0, 0, 10, 0, 0));
 }
 
 Model::~Model()
@@ -141,6 +143,11 @@ void Model::set_paused(bool paused)
     _paused = paused;
 }
 
+void Model::setView(View *view)
+{
+    _view = view;
+}
+
 //====================================================
 //==================AUTRES METHODES===================
 
@@ -162,10 +169,6 @@ void Model::nextStep()
         movePlayer();
         _player.treatCollisions(_coins,_diamonds, _bonus, _obstacles);
 
-        _bonuscheck = std::chrono::system_clock::now();
-        int startime = std::chrono::duration_cast<std::chrono::seconds>
-                (_bonuscheck-_bonusstart).count();
-
         _jump_timer.update();
         _jump_timer.check_time();
 
@@ -178,14 +181,14 @@ void Model::nextStep()
         _spawn_timer.update();
         _spawn_timer.check_time();
 
+        _bonus_timer.update();
+        _bonus_timer.check_time();
+
         if(_score_timer.is_running() && _score_timer.has_ticked())
         {
             _score_counter.increment();
             _score_timer.reset();
         }
-
-        if(startime >=10)
-            _player.setInvincibility(false);
 
         if(_game_timer.is_running() && _game_timer.has_ticked())
         {
@@ -212,6 +215,20 @@ void Model::nextStep()
         {
             if (2000 - _difficulte >= 500)
                 _difficulte += 200;
+        }
+
+        if(_bonus_timer.is_running() && _bonus_timer.has_ticked())
+        {
+            _bonus_timer.stop();
+            _bonus_timer.reset();
+            _player.setInvincibility(false);
+            _magnetpicked = false;
+            if(_game_timer.get_time_since_begin().get_sec() >= 40)
+                _current_speed = HARD_SPEED;
+            else if(_game_timer.get_time_since_begin().get_sec() >= 20)
+                _current_speed = MEDIUM_SPEED;
+            else
+                _current_speed = EASY_SPEED;
         }
 
         if(_spawn_timer.is_running() && _spawn_timer.has_ticked())
@@ -306,6 +323,8 @@ void Model::nextStep()
                     {
                     case magnet:
                         _magnetpicked = true;
+                        _bonus_timer.reset();
+                        _bonus_timer.start();
                         break;
                     case randombonus:
                         break;
@@ -317,11 +336,16 @@ void Model::nextStep()
                         break;
                     case star:
                         _player.setInvincibility(true);
-                        _bonusstart = std::chrono::system_clock::now();
+                        _bonus_timer.reset();
+                        _bonus_timer.start();
                         break;
                     case feather:
                         break;
                     case hourglass:
+                        _current_speed = HOURGLASS_SPEED;
+                        actualiseSpeed(HOURGLASS_SPEED);
+                        _bonus_timer.reset();
+                        _bonus_timer.start();
                         break;
                     case redcoin:
                         _coin_counter.hundredincrement();
