@@ -24,6 +24,10 @@
 #define BACKGROUND_TWO_IMAGE_B  "res/city_4.png"
 #define BACKGROUND_TWO_IMAGE_PREVIEW_L  "res/city3_preview.png"
 #define BACKGROUND_TWO_IMAGE_PREVIEW_B  "res/city4_preview.png"
+#define BACKGROUND_THREE_IMAGE_L  "res/duck.png"
+#define BACKGROUND_THREE_IMAGE_B  "res/backDuckHunt.png"
+#define BACKGROUND_THREE_IMAGE_PREVIEW_L  "res/duck_preview.png"
+#define BACKGROUND_THREE_IMAGE_PREVIEW_B  "res/backDuckHunt_preview.png"
 
 #define BALL_IMAGE  "res/ball.png"
 #define BALL_STAR_IMAGE  "res/ball_v5.png"
@@ -73,6 +77,7 @@
 #define FICHIER_DIAMOND  "res/diamonds.txt"
 #define FICHIER_ENGLISH "res/english.txt"
 #define FICHIER_FRENCH "res/french.txt"
+#define FICHIER_LOCK_ITEM "res/lock.txt"
 
 
 enum direction

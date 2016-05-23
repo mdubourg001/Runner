@@ -1,5 +1,9 @@
 #include "Item.h"
 
+#include <fstream>
+#include <sstream>
+#include <iostream>
+
 //===================CONSTRUCTEUR=====================
 
 Item::Item()
@@ -48,6 +52,16 @@ void Item::setChoose(bool c)
 bool Item::isChoose()
 {
     return _choose;
+}
+
+void Item::setLock(bool l)
+{
+    _lock = l;
+}
+
+bool Item::isLock()
+{
+    return _lock;
 }
 
 Preview *Item::getPreview()
@@ -115,4 +129,40 @@ void Item::initialiseBackground(const std::string BackBig, const std::string Bac
 {
     _preview->setBackgroundTexture(BackBig, BackLittle);
     this->setName(Name);
+}
+
+void Item::LockOrNot(int i)
+{
+    ifstream readLock(FICHIER_LOCK_ITEM, ios::in);
+    string line = "";
+    if(readLock)
+    {
+        for(int j=-1; j<i;j++)
+            getline(readLock, line);
+        if(line == "u")
+            _lock = false;
+        else if(line == "l")
+            _lock = true;
+        readLock.close();
+    }
+    else
+    {
+        cerr << "ouverture en lecture impossible";
+        exit(EXIT_FAILURE);
+    }
+}
+
+void Item::unLock()
+{
+    ofstream writeLock(FICHIER_LOCK_ITEM, ios::in);
+    if(writeLock)
+    {
+        writeLock.seekp(2, ios::beg);
+        writeLock << "\nu";
+    }
+    else
+    {
+        cerr << "ouverture en écriture impossible";
+        exit(EXIT_FAILURE);
+    }
 }

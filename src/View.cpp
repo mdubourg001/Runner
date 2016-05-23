@@ -63,8 +63,16 @@ void View::load()
     for(unsigned int i=0;i<14;i++)
         _items.push_back(new Item());
 
+
     _items.at(0)->setSelected(true);
     _items.at(0)->setChoose(true);
+    for(unsigned int i=0; i<_items.size(); i++)
+    {
+        _items.at(i)->LockOrNot(i);
+    }
+
+    _items.at(1)->unLock();
+
 
     if (!_background.loadTextures(BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
     {
@@ -342,6 +350,16 @@ void View::loadNextShop()
                 exit(EXIT_FAILURE);
             }
         }
+        if(_items.at(2)->isChoose())
+        {
+            if (!_background.loadTextures(BACKGROUND_THREE_IMAGE_B, BACKGROUND_THREE_IMAGE_B, BACKGROUND_THREE_IMAGE_L, BACKGROUND_THREE_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
+            {
+                std::cerr << "ERROR when loading image file: "
+                          << BACKGROUND_THREE_IMAGE_B << "/"
+                          << BACKGROUND_THREE_IMAGE_L << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        }
     }
 }
 
@@ -527,6 +545,7 @@ void View::synchroniseShopBack()
             _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "City");
             _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "City Oldschool");
         }
+        _items.at(2)->initialiseBackground(BACKGROUND_THREE_IMAGE_PREVIEW_B, BACKGROUND_THREE_IMAGE_PREVIEW_L, "DuckHunt");
 
     }
 }
@@ -1000,7 +1019,7 @@ bool View::treatEvents()
                     else if (x>=630 && x<=820 && y>=670 && y<=740)
                         for(unsigned int i=0; i<_items.size();i++)
                         {
-                            if(_items.at(i)->isSelected())
+                            if(_items.at(i)->isSelected() && !_items.at(i)->isLock())
                             {
                                 for(unsigned int j=0; j<_items.size();j++)
                                 {
@@ -1012,6 +1031,11 @@ bool View::treatEvents()
                                 }
                                 _items.at(i)->setChoose(true);
                                 break;
+                            }
+                            else if (_items.at(i)->isSelected() && _items.at(i)->isLock())
+                            {
+                                //pop-up
+                                cout << "doit etre acheter" << endl;
                             }
                         }
                     this->loadNextShop();
@@ -1158,6 +1182,8 @@ void View::toEnglish()
         _buy_button.setString(line);
         getline(readEnglish,line);
         _select_button.setString(line);
+
+        readEnglish.close();
     }
     else
     {
@@ -1214,6 +1240,8 @@ void View::toFrench()
         _buy_button.setString(line);
         getline(readFrench,line);
         _select_button.setString(line);
+
+        readFrench.close();
     }
     else
     {

@@ -484,22 +484,45 @@ void Model::drawInterface(sf::RenderWindow *w)
  */
 void Model::saveScore()
 {
-    int best=0; // peut etre faire des attributs de classes pour pouvoir gérer plus facilement lorsqu'on veut afficher le best score ou bien le nombre de pieces dans le menu
-    fstream fichierScore;
-    fichierScore.open(FICHIER_SCORE, ios::in );
-    if( fichierScore.fail() )
+    int best[5];
+    bool asChanged = false;
+    ifstream readHS(FICHIER_SCORE, ios::in);
+    if(readHS)
     {
-        cerr << "ouverture en lecture impossible" << endl;
+        for(unsigned int i=0; i<5;i++)
+            readHS >> best[i];
+        readHS.close();
+    }
+    else
+    {
+        cerr << "ouverture en lecture impossible";
         exit(EXIT_FAILURE);
     }
-    fichierScore >> best;
-    fichierScore.close();
-
-    if(_score_counter.getValue() > best)
+    for(unsigned int i=0;i<5 && !asChanged;i++)
     {
-        fichierScore.open(FICHIER_SCORE, ios::out);
-        fichierScore << to_string(_score_counter.getValue());
-        fichierScore.close();
+        if(best[i] < _score_counter.getValue())
+        {
+            asChanged = true;
+
+            for(unsigned int j=4;j>i;j--)
+                best[j] = best[j-1];
+            best[i] = _score_counter.getValue();
+        }
+    }
+    if(asChanged)
+    {
+        ofstream writeHS(FICHIER_SCORE, ios::out);
+        if(writeHS)
+        {
+            for(unsigned int i=0; i<5;i++)
+                writeHS << best[i] << endl;
+            writeHS.close();
+        }
+        else
+        {
+            cerr << "ouverture en écriture impossible";
+            exit(EXIT_FAILURE);
+        }
     }
 }
 
@@ -510,21 +533,33 @@ void Model::saveScore()
  */
 void Model::saveCoin()
 {
-    int total=0;
-    fstream fichierCoins;
-    fichierCoins.open(FICHIER_COIN, ios::in );
-    if( fichierCoins.fail() )
+    int total = 0;
+    ifstream readCoins(FICHIER_COIN, ios::in);
+    if(readCoins)
     {
-        cerr << "ouverture en lecture impossible" << endl;
+        readCoins >> total;
+        readCoins.close();
+    }
+    else
+    {
+        cerr << "ouverture en lecture impossible";
         exit(EXIT_FAILURE);
     }
-    fichierCoins >> total;
-    total += _coin_counter.getValue();
-    fichierCoins.close();
-
-    fichierCoins.open(FICHIER_COIN, ios::out);
-    fichierCoins << to_string(total);
-    fichierCoins.close();
+    if(_coin_counter.getValue() > 0)
+    {
+        ofstream writeCoins(FICHIER_COIN, ios::out);
+        if(writeCoins)
+        {
+            total += _coin_counter.getValue();
+            writeCoins << to_string(total);
+            writeCoins.close();
+        }
+        else
+        {
+            cerr << "ouverture en écriture impossible";
+            exit(EXIT_FAILURE);
+        }
+    }
 }
 
 
@@ -534,21 +569,33 @@ void Model::saveCoin()
  */
 void Model::saveDiamond()
 {
-    int total=0;
-    fstream fichierDiamonds;
-    fichierDiamonds.open(FICHIER_DIAMOND, ios::in );
-    if( fichierDiamonds.fail() )
+    int total = 0;
+    ifstream readDiamonds(FICHIER_DIAMOND, ios::in);
+    if(readDiamonds)
     {
-        cerr << "ouverture en lecture impossible" << endl;
+        readDiamonds >> total;
+        readDiamonds.close();
+    }
+    else
+    {
+        cerr << "ouverture en lecture impossible";
         exit(EXIT_FAILURE);
     }
-    fichierDiamonds >> total;
-    total += _diamond_counter.getValue();
-    fichierDiamonds.close();
-
-    fichierDiamonds.open(FICHIER_DIAMOND, ios::out);
-    fichierDiamonds << to_string(total);
-    fichierDiamonds.close();
+    if(_diamond_counter.getValue() > 0)
+    {
+        ofstream writeDiamonds(FICHIER_DIAMOND, ios::out);
+        if(writeDiamonds)
+        {
+            total += _diamond_counter.getValue();
+            writeDiamonds << to_string(total);
+            writeDiamonds.close();
+        }
+        else
+        {
+            cerr << "ouverture en écriture impossible";
+            exit(EXIT_FAILURE);
+        }
+    }
 }
 
 /*!

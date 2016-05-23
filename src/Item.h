@@ -12,6 +12,7 @@ protected:
     sf::Font _font;
     bool _selected;
     bool _choose;
+    bool _lock;
 
     Preview *_preview;
 
@@ -25,6 +26,8 @@ public:
     void setSelected(bool s);
     bool isChoose();
     void setChoose(bool c);
+    bool isLock();
+    void setLock(bool l);
     Preview *getPreview();
 
     void drawText(sf::RenderWindow *w);
@@ -32,6 +35,8 @@ public:
     void initialiseBall(const std::string B, const std::string Name);
     void initialiseBackground(const std::string BackBig, const std::string BackLittle, const std::string Name);
     void reset();
+    void LockOrNot(int i);
+    void unLock();
 
 };
 
