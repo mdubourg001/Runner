@@ -78,7 +78,6 @@ private:
     sf::Sprite _backgroundShopSprite;
 
     sf::Font _font;
-    sf::Font _fontmenu;
 
     std::pair<Button, Button> _settings_button;
     std::pair<Button, Button> _highscores_button;

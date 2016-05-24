@@ -1,0 +1,16 @@
+Francais
+Anglais
+Difficile
+Facile
+Moyen
+Parametres
+Topscores
+Jouer
+Boutique
+Quitter
+SANTE
+APPUYER SUR ESPACE POUR COMMENCER
+Balle : 
+Fond : 
+Acheter
+Selectionner
