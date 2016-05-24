@@ -6,13 +6,14 @@
 
 //===================CONSTRUCTEUR=====================
 
+
+
 Item::Item()
+    : _selected(false), _choose(false), _loaded(false)
 {
     _font.loadFromFile(POLICE);
     _name.setFont(_font);
     _name.setColor(sf::Color::Black);
-    _selected = false;
-    _choose = false;
     _preview = new Preview();
 }
 
@@ -62,6 +63,16 @@ void Item::setLock(bool l)
 bool Item::isLock()
 {
     return _lock;
+}
+
+bool Item::getLoaded() const
+{
+    return _loaded;
+}
+
+void Item::setLoaded(bool loaded)
+{
+    _loaded = loaded;
 }
 
 Preview *Item::getPreview()
@@ -115,6 +126,7 @@ void Item::initialiseBall(const std::string B, const std::string Name)
 {
     _preview->setBallTexture(B);
     this->setName(Name);
+    _loaded = true;
 }
 
 
@@ -129,19 +141,21 @@ void Item::initialiseBackground(const std::string BackBig, const std::string Bac
 {
     _preview->setBackgroundTexture(BackBig, BackLittle);
     this->setName(Name);
+    _loaded = true;
 }
 
 void Item::LockOrNot(int i)
 {
     ifstream readLock(FICHIER_LOCK_ITEM, ios::in);
     string line = "";
+    string test = "";
     if(readLock)
     {
         for(int j=-1; j<i;j++)
             getline(readLock, line);
-        if(line == "u")
+        if(line == "unlock")
             _lock = false;
-        else if(line == "l")
+        else if(line == "lock")
             _lock = true;
         readLock.close();
     }
@@ -152,17 +166,37 @@ void Item::LockOrNot(int i)
     }
 }
 
-void Item::unLock()
+void Item::unLock(int l)
 {
-    ofstream writeLock(FICHIER_LOCK_ITEM, ios::in);
-    if(writeLock)
+    ifstream readLock(FICHIER_LOCK_ITEM, ios::in);
+    string line[14];
+    if(readLock)
     {
-        writeLock.seekp(2, ios::beg);
-        writeLock << "\nu";
+        for(int i=0;i<14;i++)
+        {
+            getline(readLock,line[i]);
+            line[i] += "\n";
+        }
+        readLock.close();
     }
     else
     {
-        cerr << "ouverture en écriture impossible";
+        cerr << "ouverture en lecture impossible";
+        exit(EXIT_FAILURE);
+    }
+    line[l] = "unlock\n";
+    ofstream writeLock(FICHIER_LOCK_ITEM, ios::out);
+    if(writeLock)
+    {
+        for(int i=0;i<14;i++)
+        {
+            writeLock << line[i];
+        }
+        writeLock.close();
+    }
+    else
+    {
+        cerr << "ouverture en écriture imossible";
         exit(EXIT_FAILURE);
     }
 }

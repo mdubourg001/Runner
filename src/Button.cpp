@@ -106,6 +106,11 @@ sf::FloatRect Button::get_size() const
     return this->getLocalBounds();
 }
 
+sf::Text Button::getText()
+{
+    return _text;
+}
+
 //==============================================================
 //===============AUTRES METHODES================================
 

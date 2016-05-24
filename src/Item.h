@@ -13,6 +13,7 @@ protected:
     bool _selected;
     bool _choose;
     bool _lock;
+    bool _loaded;
 
     Preview *_preview;
 
@@ -28,6 +29,8 @@ public:
     void setChoose(bool c);
     bool isLock();
     void setLock(bool l);
+    bool getLoaded() const;
+    void setLoaded(bool loaded);
     Preview *getPreview();
 
     void drawText(sf::RenderWindow *w);
@@ -36,7 +39,8 @@ public:
     void initialiseBackground(const std::string BackBig, const std::string BackLittle, const std::string Name);
     void reset();
     void LockOrNot(int i);
-    void unLock();
+    void unLock(int l);
+
 
 };
 

@@ -67,12 +67,6 @@ void View::load()
 
     _items.at(0)->setSelected(true);
     _items.at(0)->setChoose(true);
-    for(unsigned int i=0; i<_items.size(); i++)
-    {
-        _items.at(i)->LockOrNot(i);
-    }
-
-    _items.at(1)->unLock();
 
 
     if (!_background.loadTextures(BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
@@ -83,7 +77,7 @@ void View::load()
         exit(EXIT_FAILURE);
     }
 
-    if (!_player.loadFromFile(BALL_TWO_IMAGE))
+    if (!_player.loadFromFile(BALL_IMAGE))
     {
         std::cerr << "Error when loading image file: "
                   << BALL_IMAGE << std::endl;
@@ -174,9 +168,9 @@ void View::load()
     //========================================================================//
     //============BOUTONS DU SHOP=============================================//
 
-    _buy_button.initialise(BLUECUBE, REDCUBE, "ACHETER",
+    _buy_button.initialise(COIN_UNIQUE, COIN_UNIQUE, "ACHETER",
                            POLICEMENU, sf::Color::Black, 500, (SCREEN_HEIGHT/4)+475);
-    _select_button.initialise(YELLOWCUBE, REDCUBE, "SELECTIONNER",
+    _select_button.initialise(GREENCUBE, REDCUBE, "SELECTIONNER",
                               POLICEMENU, sf::Color::Black, 700, (SCREEN_HEIGHT/4)+475);
 
     //========================================================================//
@@ -387,6 +381,12 @@ difficulte View::getDiff()
     return dif;
 }
 
+choixShop View::getCs()
+{
+    return cs;
+}
+
+
 bool View::getLoaded() const
 {
     return _loaded;
@@ -488,7 +488,7 @@ void View::synchronise()
         }
         else if(_popup_confirm)
         {
-            _popup->initialise("VRAIMENT QUITTER?", "OUI", "NON");
+            _popup->initialise("VOULEZ VOUS VRAIMENT QUITTER?", "OUI", "NON");
             if(_popup->answered())
             {
                 if(_popup->getanswer())
@@ -617,24 +617,23 @@ void View::synchroniseShop()
     {
         if(lg == fr)
         {
-            _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley");
-            _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Bleue clair");
-            _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Rouge et Noir");
-            _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Bleu fonce");
-            _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Rouge et Blanc");
-            _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Verte");
+            if(!_items.at(0)->getLoaded()) _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley");
+            if(!_items.at(1)->getLoaded()) _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Bleue clair");
+            if(!_items.at(2)->getLoaded()) _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Rouge et Noir");
+            if(!_items.at(3)->getLoaded()) _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Bleu fonce");
+            if(!_items.at(4)->getLoaded()) _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Rouge et Blanc");
+            if(!_items.at(5)->getLoaded()) _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Verte");
         }
         else if (lg == ang)
         {
-            _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley");
-            _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Light blue");
-            _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Red and Black");
-            _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Dark blue");
-            _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Red and White");
-            _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Green");
+            if(!_items.at(0)->getLoaded()) _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley");
+            if(!_items.at(1)->getLoaded()) _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Light blue");
+            if(!_items.at(2)->getLoaded()) _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Red and Black");
+            if(!_items.at(3)->getLoaded()) _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Dark blue");
+            if(!_items.at(4)->getLoaded()) _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Red and White");
+            if(!_items.at(5)->getLoaded()) _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Green");
         }
     }
-
 }
 
 void View::synchroniseShopBack()
@@ -642,13 +641,20 @@ void View::synchroniseShopBack()
     for(auto i : _items)
         i->setName("");
 
-
     if(cs == ball)
     {
-        _items.at(1)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "");
+        for(unsigned int i=0; i<6; i++)
+        {
+            _items.at(i)->LockOrNot(i);
+        }
     }
-    else if (cs == back)
+    else if(cs == back)
     {
+        for(unsigned int i=0; i<3; i++)
+        {
+            _items.at(i)->LockOrNot(i+6);
+        }
+
         if (lg == fr)
         {
             _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "Ville");
@@ -660,7 +666,6 @@ void View::synchroniseShopBack()
             _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "City Oldschool");
         }
         _items.at(2)->initialiseBackground(BACKGROUND_THREE_IMAGE_PREVIEW_B, BACKGROUND_THREE_IMAGE_PREVIEW_L, "DuckHunt");
-
     }
 }
 
@@ -977,7 +982,7 @@ bool View::treatEvents()
                     _model->save();
 
                 }
-                else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs!= menu && gs!=intro)
+                else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs!= menu && gs!=intro && gs!= game)
                 {
                     gs = menu;
                     _model->save();
@@ -1008,7 +1013,7 @@ bool View::treatEvents()
                     if(event.key.code == sf::Keyboard::Right && gs==game)
                         _model->setPlayerDirection(r);
 
-                    if(event.key.code == sf::Keyboard::P && gs == game)
+                    if((event.key.code == sf::Keyboard::P || event.key.code == sf::Keyboard::Escape) && gs == game)
                     {
                         set_popup_displayed(true);
                         _model->set_paused(true);
@@ -1033,7 +1038,10 @@ bool View::treatEvents()
                             cs = ball;
                         }
                         for(auto i : _items)
+                        {
                             i->setSelected(false);
+                            i->setLoaded(false);
+                        }
                         _items.at(0)->setSelected(true);
                         this->synchroniseShopBack();
                     }
@@ -1052,7 +1060,10 @@ bool View::treatEvents()
                             cs = ball;
                         }
                         for(auto i : _items)
+                        {
                             i->setSelected(false);
+                            i->setLoaded(false);
+                        }
                         _items.at(0)->setSelected(true);
                         this->synchroniseShopBack();
                     }
@@ -1126,8 +1137,18 @@ bool View::treatEvents()
                     y = event.mouseButton.y;
 
                     if(x>= 460 && x<=585 && y>=670 && y<=740)
-                        // acheter
-                        break;
+                    {
+                        for(unsigned int i=0; i<_items.size();i++)
+                        {
+                            if(_items.at(i)->isSelected() && _items.at(i)->isLock())
+                            {
+                                if(cs == ball)
+                                    _items.at(i)->unLock(i);
+                                else if(cs == back)
+                                    _items.at(i)->unLock(i+6);
+                            }
+                        }
+                    }
                     else if (x>=630 && x<=820 && y>=670 && y<=740)
                         for(unsigned int i=0; i<_items.size();i++)
                         {
@@ -1144,14 +1165,14 @@ bool View::treatEvents()
                                 _items.at(i)->setChoose(true);
                                 break;
                             }
-                            else if (_items.at(i)->isSelected() && _items.at(i)->isLock())
+                            else if(_items.at(i)->isSelected() && _items.at(i)->isLock())
                             {
-                                //pop-up
+                                // pop-up
                                 cout << "doit etre acheter" << endl;
                             }
+
                         }
                     this->loadNextShop();
-                    break;
                 }
                 else if (event.type == sf::Event::MouseButtonPressed && gs == settings)
                 {

@@ -44,6 +44,7 @@
 #define POLICE "res/slapstick.ttf"
 #define POLICEMENU "res/slapstick_shaded.ttf"
 
+#define COIN_UNIQUE "res/coin.png"
 #define COIN "res/coinsprite.png"
 #define DIAMOND "res/diamondsprite.png"
 #define MAGNET "res/aimant.png"
