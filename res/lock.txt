@@ -1,7 +1,7 @@
 unlock
-lock
-lock
-lock
+unlock
+unlock
+unlock
 lock
 lock
 unlock
