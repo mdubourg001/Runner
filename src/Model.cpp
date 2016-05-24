@@ -18,8 +18,9 @@ Model::Model(int w, int h)
       _score_counter(0, SCREEN_WIDTH - 500, SCREEN_HEIGHT-70),
       _diamond_counter(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70)
 {
-    _coin_counter.setTexture("res/coin.png");
-    _diamond_counter.setTexture("res/diamond.png");
+    _coin_counter.setTexture(ONE_COIN);
+    _diamond_counter.setTexture(ONE_DIAMOND);
+
     srand(time(NULL));
 
     _jump_timer.set_alarm(Moment(0, 0, 0, 11, 0));

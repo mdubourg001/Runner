@@ -6,9 +6,9 @@
 Counter::Counter()
     : _value {0}
 {
-    if(!_font.loadFromFile("res/slapstick.ttf"))
+    if(!_font.loadFromFile(POLICE))
     {
-        std::cerr << "ERROR WHEN LOADING FILE : " << "res/slapstick.ttf" << std::endl;
+        std::cerr << "ERROR WHEN LOADING FILE : " << POLICE << std::endl;
         exit(EXIT_FAILURE);
     }
 
@@ -20,9 +20,9 @@ Counter::Counter()
 Counter::Counter(int value, int posx, int posy)
     : _value {value}
 {
-    if(!_font.loadFromFile("res/slapstick.ttf"))
+    if(!_font.loadFromFile(POLICE))
     {
-        std::cerr << "ERROR WHEN LOADING FILE : " << "res/slapstick.ttf" << std::endl;
+        std::cerr << "ERROR WHEN LOADING FILE : " << POLICE << std::endl;
         exit(EXIT_FAILURE);
     }
 

@@ -26,8 +26,7 @@ View::View(int w, int h)
     _window->setVerticalSyncEnabled(true);
     _window->setKeyRepeatEnabled(true); //désactive la répétition des touches
 
-    _font.loadFromFile(POLICE);
-    _fontmenu.loadFromFile(POLICE);
+    _font.loadFromFile(POLICEMENU);
 
     if (!_backgroundIntro.loadFromFile(BACKGROUND_INTRO_IMAGE)) //charge le fichier city.png et le place dans la texture background
     {
@@ -58,8 +57,8 @@ View::View(int w, int h)
 
 void View::load()
 {
-    _totalCoin.setTexture("res/coin.png");
-    _totalDiamond.setTexture("res/diamond.png");
+    _totalCoin.setTexture(ONE_COIN);
+    _totalDiamond.setTexture(ONE_DIAMOND);
 
     for(unsigned int i=0;i<14;i++)
         _items.push_back(new Item());
@@ -168,7 +167,7 @@ void View::load()
     //========================================================================//
     //============BOUTONS DU SHOP=============================================//
 
-    _buy_button.initialise(COIN_UNIQUE, COIN_UNIQUE, "ACHETER",
+    _buy_button.initialise(ONE_COIN, ONE_COIN, "ACHETER",
                            POLICEMENU, sf::Color::Black, 500, (SCREEN_HEIGHT/4)+475);
     _select_button.initialise(GREENCUBE, REDCUBE, "SELECTIONNER",
                               POLICEMENU, sf::Color::Black, 700, (SCREEN_HEIGHT/4)+475);
@@ -227,7 +226,7 @@ void View::load()
 
     _healthText.setFont(_font);
     _healthText.setColor(sf::Color::Black);
-    _healthText.setString("SANTE :");
+    _healthText.setString("SANTE");
     _healthText.setCharacterSize(60);
     _healthText.setPosition(10,690);
 
