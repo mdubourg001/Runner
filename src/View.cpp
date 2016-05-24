@@ -518,7 +518,7 @@ void View::synchronise()
             _popup->set_size_timebar(250 - _revive_timer.get_time_since_begin().to_microseconds()/20000);
             _popup->initialise("VOULEZ VOUS REVIVRE POUR "
                                + std::to_string((int)pow(2, _model->getPlayer()->get_nb_deaths()-1)) + " DIAMANT?", "OUI", "NON");
-            if(_revive_timer.is_running() && _revive_timer.has_ticked())
+            if(_revive_timer.is_running() && _revive_timer.has_ticked()) //si le temps de réponse est écoulé
             {
                 gs = menu;
                 _model->save();
@@ -534,7 +534,7 @@ void View::synchronise()
 
             else if(_popup->answered())
             {
-                if(_popup->getanswer())
+                if(_popup->getanswer()) //si la réponse est positive
                 {
                     _popup_confirm = true;
                     _popup->reset();
@@ -543,7 +543,7 @@ void View::synchronise()
                     _revive_timer.set_alarm(Moment(0, 0, 3, 0, 999));
                     _revive_timer.start(); //reinitialisation de _begin
                 }
-                else
+                else //sinon si elle est négative
                 {
                     gs = menu;
                     _model->save();
@@ -558,9 +558,9 @@ void View::synchronise()
                 }
             }
         }
-        else if(_popup_confirm)
+        else if(_popup_confirm) //affichage du deuxième popup
         {
-            if(_totalDiamond.getValue() >= (int)pow(2, _model->getPlayer()->get_nb_deaths()-1))
+            if(_totalDiamond.getValue() >= (int)pow(2, _model->getPlayer()->get_nb_deaths()-1)) //si le joueur possède assez de diamants
             {
                 std::cout << _totalDiamond.getValue() << std::endl;
                 _model->getPlayer()->revive();
@@ -579,7 +579,7 @@ void View::synchronise()
                     _totalDiamond.setValue(_totalDiamond.getValue() - (int)pow(2, _model->getPlayer()->get_nb_deaths()-1));
                 }
             }
-            else
+            else //sinon si il n'en a pas assez
             {
                 _popup->initialise("VOUS N'AVEZ PAS ASSEZ DE DIAMANTS\n"
                                    "                DOMMAGE.");
