@@ -163,11 +163,12 @@ void Model::setView(View *view)
  */
 void Model::nextStep()
 {
-    if(!is_paused())
+    if(!is_paused() && !_player.is_dead())
     {
-
         movePlayer();
         _player.treatCollisions(_coins,_diamonds, _bonus, _obstacles);
+        if(_player.getHealth() == 0)
+            _player.set_dead(true);
 
         _jump_timer.update();
         _jump_timer.check_time();
@@ -269,13 +270,13 @@ void Model::nextStep()
             {
                 if(c->clock_has_ticked())
                 {
-                    c->setPicked(false);
                     c->setDestroyed(true);
                 }
             }
             if(c->getPosition().x < 0 || c->getDestroyed())
             {
-                _coin_counter.increment();
+                if(c->isPicked())
+                    _coin_counter.increment();
                 c->set_ball_detected(false);
 
                 std::vector<Coin*>::iterator it =
@@ -375,8 +376,8 @@ void Model::nextStep()
         for_each(_bonus.begin(), _bonus.end(), [](Bonus* &b){b->move();});
         for_each(_obstacles.begin(), _obstacles.end(), [](Obstacle* &o){o->move();});
     }
-
 }
+
 
 /*!
  * \brief Model::movePlayer
@@ -385,6 +386,7 @@ void Model::movePlayer()
 {
     _player.move();
 }
+
 
 /*!
  * \brief Model::addCoin
@@ -395,6 +397,7 @@ void Model::addCoin()
     _coins.push_back(new Coin(COIN, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 8));
 }
 
+
 /*!
  * \brief Model::addDiamond
  * ajoute un diamant au vector de diamants
@@ -403,6 +406,7 @@ void Model::addDiamond()
 {
     _diamonds.push_back(new Diamond(DIAMOND, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 5));
 }
+
 
 /*!
  * \brief Model::addBonus
@@ -626,9 +630,11 @@ void Model::reset()
     _bonus.clear();
     _player.setHealth(400);
     _player.setShield(0);
+    _player.set_dead(false);
+    _player.set_nb_deaths(0);
+    this->setPlayerDirection(none);
     _current_speed = EASY_SPEED;
     _magnetpicked = false;
-    _score_timer.stop();
     _score_timer.reset();
 }
 

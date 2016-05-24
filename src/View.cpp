@@ -19,8 +19,7 @@ View::View(int w, int h)
       _loaded(false),
       _totalCoin(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70),
       _totalDiamond(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70),
-
-      _popup_displayed(false)
+      _popup_displayed(false), _popup_confirm(false)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D
     _window->setFramerateLimit(FRAMERATE_LIMIT); //fixe la limite de fps
@@ -53,6 +52,8 @@ View::View(int w, int h)
 
     _animation_timer.set_alarm(Moment(0, 0, 0, 55, 0));
     _animation_timer.start();
+
+    _revive_timer.set_alarm(Moment(0, 0, 5, 0, 0));
 }
 
 void View::load()
@@ -267,6 +268,10 @@ void View::load()
 
     _loaded = true;
     _textPass.setString("<  APPUYEZ SUR ESPACE POUR COMMENCER  >");
+
+    _popup = new Popup("TEST", "TEST", "TEST");
+    _popup->setOrigin(_popup->getSize().x/2, _popup->getSize().y/2);
+    _popup->setPosition(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
 }
 
 void View::loadNextShop()
@@ -389,107 +394,216 @@ bool View::getLoaded() const
 
 void View::synchronise()
 {
-    if(!_model->is_paused())
+    _background_timer.update();
+    _background_timer.check_time();
+
+    _animation_timer.update();
+    _animation_timer.check_time();
+
+    //===SYNCHRO PLAYER===//
+
+    _playerSprite.setPosition(sf::Vector2f(_model->getPlayer()->getPosx(), _model->getPlayer()->getPosy()));
+
+    //====================//
+    //===SYNCHRO BACKGROUND===//
+
+    if(_background_timer.is_running() && _background_timer.has_ticked() && !_model->is_paused())
     {
-        _background_timer.update();
-        _background_timer.check_time();
-
-        _animation_timer.update();
-        _animation_timer.check_time();
-
-        //===SYNCHRO PLAYER===//
-
-        _playerSprite.setPosition(sf::Vector2f(_model->getPlayer()->getPosx(), _model->getPlayer()->getPosy()));
-
-        //====================//
-        //===SYNCHRO BACKGROUND===//
-
-        if(_background_timer.is_running() && _background_timer.has_ticked())
-        {
-            _background_timer.reset();
-            _background.move();
-        }
-
-        //=======================//
-        //===SYNCHRO PIECES ET DIAMANTS===//
-
-        if(_animation_timer.is_running() && _animation_timer.has_ticked())
-        {
-            _animation_timer.reset();
-            for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->animate(50);});
-            for_each(_model->Diamonds()->begin(), _model->Diamonds()->end(), [](Diamond* &d){d->animate(50);});
-            for_each(_model->Awards()->begin(), _model->Awards()->end(), [](Bonus* &b){b->animate(50);});
-        }
-
-        if(!_model->getPlayer()->isJumping())
-            _model->getPlayer()->rotate(_playerSprite);
-
-        //===============================//
-
-        //===================//
-
-        _healthRect.setSize(sf::Vector2f(_model->getPlayer()->getHealth(),_healthRect.getSize().y));
-        _shieldRect.setSize(sf::Vector2f(-_model->getPlayer()->getShield(),_shieldRect.getSize().y));
-
-        if(_model->getPlayer()->getHealth() == 0)
-        {
-//            _model->set_paused(true);
-//            _popup_displayed = true;
-//            _popup.initialise("VOULEZ VOUS REVIVRE?", "OUI", "NON");
-            gs = menu;
-            _model->save();
-            this->recup();
-            _model->reset();
-        }
-
-        if(_model->getPlayer()->isInvincibility() == true)
-        {
-
-            if(cpt1 >= 10 && cpt2 >= 10)
-            {
-                cpt1=0;
-                cpt2=0;
-            }
-            if(cpt1 < 10)
-            {
-                _playerSprite.setTexture(_player);
-                cpt1++;
-            }
-            else if(cpt2 < 10)
-            {
-                _playerSprite.setTexture(_playerStar);
-                cpt2++;
-            }
-
-        }
-        else
-            _playerSprite.setTexture(_player);
+        _background_timer.reset();
+        _background.move();
     }
 
-    else if(_model->is_paused())
+    //=======================//
+    //===SYNCHRO PIECES ET DIAMANTS===//
+
+    if(_animation_timer.is_running() && _animation_timer.has_ticked())
     {
-        if(_popup.answered())
+        _animation_timer.reset();
+        for_each(_model->Coins()->begin(), _model->Coins()->end(), [](Coin* &c){c->animate(50);});
+        for_each(_model->Diamonds()->begin(), _model->Diamonds()->end(), [](Diamond* &d){d->animate(50);});
+        for_each(_model->Awards()->begin(), _model->Awards()->end(), [](Bonus* &b){b->animate(50);});
+    }
+
+    if(!_model->getPlayer()->isJumping())
+        _model->getPlayer()->rotate(_playerSprite);
+
+    //===============================//
+
+    //===================//
+
+    _healthRect.setSize(sf::Vector2f(_model->getPlayer()->getHealth(),_healthRect.getSize().y));
+    _shieldRect.setSize(sf::Vector2f(-_model->getPlayer()->getShield(),_shieldRect.getSize().y));
+
+    if(_model->getPlayer()->getHealth() == 0 && !get_popup_displayed())
+    {
+        _revive_timer.start();
+        _model->getPlayer()->die();
+        set_popup_displayed(true);
+    }
+
+    if(_model->getPlayer()->isInvincibility() == true)
+    {
+
+        if(cpt1 >= 10 && cpt2 >= 10)
         {
-            if(_popup.getanswer())
-                _model->set_paused(false);
-            else if(!_popup.getanswer())
+            cpt1=0;
+            cpt2=0;
+        }
+        if(cpt1 < 10)
+        {
+            _playerSprite.setTexture(_player);
+            cpt1++;
+        }
+        else if(cpt2 < 10)
+        {
+            _playerSprite.setTexture(_playerStar);
+            cpt2++;
+        }
+
+    }
+    else
+        _playerSprite.setTexture(_player);
+
+    if(_model->is_paused()) // quand le jeu est en mis en pause
+    {
+        _popup->set_size_timebar(0);
+        if(!_popup_confirm)
+        {
+            _popup->initialise("JEU EN PAUSE", "OK", "QUITTER");
+            if(_popup->answered())
             {
-                _model->reset();
+                if(!_popup->getanswer())
+                {
+                    _popup_confirm = true;
+                    _popup->reset();
+
+                }
+                else
+                {
+                    _model->set_paused(false);
+                    set_popup_displayed(false);
+                    _popup->reset();
+                }
+            }
+        }
+        else if(_popup_confirm)
+        {
+            _popup->initialise("VRAIMENT QUITTER?", "OUI", "NON");
+            if(_popup->answered())
+            {
+                if(_popup->getanswer())
+                {
+                    gs = menu;
+                    _popup_confirm = false;
+                    _model->reset();
+                    _model->set_paused(false);
+                    set_popup_displayed(false);
+                    _popup->reset();
+                }
+                else
+                {
+                    _popup_confirm = false;
+                    _popup->reset();
+                }
+            }
+        }
+    }
+
+    else if(_model->getPlayer()->is_dead()) //quand le joueur meurs
+    {
+        _revive_timer.update();
+        _revive_timer.check_time();
+        if(!_popup_confirm)
+        {
+            _popup->set_size_timebar(250 - _revive_timer.get_time_since_begin().to_microseconds()/20000);
+            _popup->initialise("VOULEZ VOUS REVIVRE POUR "
+                               + std::to_string((int)pow(2, _model->getPlayer()->get_nb_deaths()-1)) + " DIAMANT?", "OUI", "NON");
+            if(_revive_timer.is_running() && _revive_timer.has_ticked())
+            {
                 gs = menu;
+                _model->save();
+                _model->reset();
+                _model->getPlayer()->set_dead(false);
+                this->recup();
+                set_popup_displayed(false);
+                _popup->reset();
+                _revive_timer.stop();
+                _revive_timer.reset();
+                _revive_timer.set_alarm(Moment(0, 0, 5, 0, 0));
+            }
+
+            else if(_popup->answered())
+            {
+                if(_popup->getanswer())
+                {
+                    _popup_confirm = true;
+                    _popup->reset();
+                    _revive_timer.stop();
+                    _revive_timer.reset();
+                    _revive_timer.set_alarm(Moment(0, 0, 3, 0, 999));
+                    _revive_timer.start(); //reinitialisation de _begin
+                }
+                else
+                {
+                    gs = menu;
+                    _model->save();
+                    _model->reset();
+                    this->recup();
+                    set_popup_displayed(false);
+                    _popup->reset();
+                    _popup_confirm = false;
+                    _revive_timer.stop();
+                    _revive_timer.reset();
+                    _revive_timer.set_alarm(Moment(0, 0, 5, 0, 0));
+                }
+            }
+        }
+        else if(_popup_confirm)
+        {
+            if(_totalDiamond.getValue() >= (int)pow(2, _model->getPlayer()->get_nb_deaths()-1))
+            {
+                std::cout << _totalDiamond.getValue() << std::endl;
+                _model->getPlayer()->revive();
+                _model->Obstacles()->clear();
+                _popup->initialise("REPRISE DANS " + std::to_string(2 - _revive_timer.get_time_since_begin().get_sec() + 1), "PREPAREZ", "VOUS");
+                if(_revive_timer.is_running() && _revive_timer.has_ticked())
+                {
+                    set_popup_displayed(false);
+                    _popup->reset();
+                    _popup_confirm = false;
+                    _model->getPlayer()->set_dead(false);
+                    _model->setPlayerDirection(none);
+                    _revive_timer.stop();
+                    _revive_timer.reset();
+                    _revive_timer.set_alarm(Moment(0, 0, 5, 0, 0));
+                    _totalDiamond.setValue(_totalDiamond.getValue() - (int)pow(2, _model->getPlayer()->get_nb_deaths()-1));
+                }
+            }
+            else
+            {
+                _popup->initialise("VOUS N'AVEZ PAS ASSEZ DE DIAMANTS\n"
+                                   "                DOMMAGE.");
+                if(_popup->answered())
+                {
+                    gs = menu;
+                    _model->save();
+                    _model->reset();
+                    this->recup();
+                    set_popup_displayed(false);
+                    _popup->reset();
+                    _popup_confirm = false;
+                    _revive_timer.stop();
+                    _revive_timer.reset();
+                    _revive_timer.set_alarm(Moment(0, 0, 5, 0, 0));
+                }
             }
         }
     }
 }
 
+
 void View::synchroniseShop()
 {
-    if(_popup_displayed)
-    {
-        sf::Event event;
-        _popup.treat_events(_window, event);
-        _popup.draw(_window);
-    }
-
     for(auto i : _items)
     {
         if(i->isSelected())
@@ -672,11 +786,10 @@ void View::draw()
     _window->draw(_healthRect); // dessin de la vie (vert)
     _window->draw(_shieldRect); // dessin du bouclier
 
-
-    if(_model->is_paused() || get_popup_displayed())
-        _popup.draw(_window);
-    else
-        this->set_popup_displayed(false);
+    if(get_popup_displayed())
+    {
+        _popup->draw(_window);
+    }
 
     _window->display();
 }
@@ -853,7 +966,7 @@ bool View::treatEvents()
         int y;
 
 
-        if(!_model->is_paused())
+        if(!get_popup_displayed())
         {
             while (_window->pollEvent(event)) //tant qu'un évenement est détécté
             {
@@ -895,11 +1008,10 @@ bool View::treatEvents()
                     if(event.key.code == sf::Keyboard::Right && gs==game)
                         _model->setPlayerDirection(r);
 
-                    if((event.key.code == sf::Keyboard::P) && gs == game)
+                    if(event.key.code == sf::Keyboard::P && gs == game)
                     {
-                        _model->set_paused(true);
                         set_popup_displayed(true);
-                        _popup.initialise("JEU EN PAUSE", "OK", "QUITTER");
+                        _model->set_paused(true);
                     }
 
                     if((event.key.code == sf::Keyboard::Space) && gs==intro && this->getLoaded())
@@ -1119,11 +1231,9 @@ bool View::treatEvents()
             }
         }
 
-        else if(_model->is_paused() || get_popup_displayed())
+        else if(get_popup_displayed())
         {
-            _popup.treat_events(_window, event);
-            if(_popup.getanswer())
-                set_popup_displayed(false);
+            _popup->treat_events(_window, event);
         }
     }
     return result;

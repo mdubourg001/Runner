@@ -14,6 +14,7 @@ protected:
     Button _right; //bouton 'annuler'
     sf::Text _text; //texte du popup
     sf::Font _font;
+    sf::RectangleShape _timebar; //temps restant pour répondre
     bool _answered;
     bool _answer; //oui ou non
 
@@ -26,10 +27,14 @@ public:
     void setLeftString(string str);
     void setRightString(string str);
     bool answered() const;
+    bool getanswer() const;
+    void set_size_timebar(unsigned int size);
+    void set_color_timebar(sf::Color color);
+    int get_size_timebar() const;
 
     void draw(sf::RenderWindow *w);
     void treat_events(sf::RenderWindow *w, sf::Event &event);
-    bool getanswer() const;
+    void reset();
 };
 
 #endif // POPUP_H

@@ -11,9 +11,11 @@ class Player : public MovableElement
 private:
     bool _jumping;
     bool _invincibility;
+    bool _dead;
     sf::CircleShape _shadow;
     int _health;
     int _shield;
+    unsigned int _nb_deaths;
 
 public:
     Player();
@@ -30,6 +32,10 @@ public:
     int getShield() const;
     void setHealth(int h);
     void setShield(int s);
+    bool is_dead() const;
+    void set_dead(bool dead);
+    int get_nb_deaths() const;
+    void set_nb_deaths(unsigned int nb);
 
     void jump();
     void rotate(sf::Sprite &p);
@@ -37,6 +43,8 @@ public:
     void treatCollisions(std::vector<Coin*> coins, std::vector<Diamond*> diamonds, std::vector<Bonus*> bonus, std::vector<Obstacle*> obstacles);
     void looseLife();
     void winLife();
+    void revive();
+    void die();
 };
 
 #endif // PLAYER_H

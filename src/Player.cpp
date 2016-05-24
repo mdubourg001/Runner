@@ -6,7 +6,7 @@
 
 
 Player::Player(int posx, int posy, int width, int height, int mvtx, int mvty, int health, int shield)
-    :MovableElement(posx, posy, width, height, mvtx, mvty), _invincibility(false), _shadow(10), _health(health), _shield(shield)
+    :MovableElement(posx, posy, width, height, mvtx, mvty), _invincibility(false), _dead(false), _shadow(10), _health(health), _shield(shield), _nb_deaths(0)
 {
     _shadow.setScale(2, 1);
     _shadow.setOrigin(sf::Vector2f(10, 10));
@@ -39,6 +39,12 @@ void Player::setPosition(int x, int y)
    _posx = x;
    _posy = y;
 }
+
+bool Player::is_dead() const
+{ return _dead; }
+
+void Player::set_dead(bool dead)
+{ _dead = dead; }
 
 //=======================================
 // Méthodes
@@ -158,6 +164,14 @@ void Player::setShield(int s)
     _shield = s;
 }
 
+int Player::get_nb_deaths() const
+{
+    return _nb_deaths;
+}
+
+void Player::set_nb_deaths(unsigned int nb)
+{ _nb_deaths = nb; }
+
 /*!
  * \brief Player::looseLife
  * fait perdre 80 pv au joueur
@@ -180,4 +194,14 @@ void Player::winLife()
         _health+=80;
     else if (_shield<400)
         _shield+=80;
+}
+
+void Player::revive()
+{
+    _health = 400;
+}
+
+void Player::die()
+{
+    _nb_deaths++;
 }

@@ -101,7 +101,7 @@ void Button::setString(std::string string)
                       , this->getPosition().y + _texture.getSize().y);
 }
 
-sf::FloatRect Button::getLocalBounds() const
+sf::FloatRect Button::get_size() const
 {
     return this->getLocalBounds();
 }
