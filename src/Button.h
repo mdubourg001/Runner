@@ -33,6 +33,7 @@ public:
     sf::Color getColor() const;
     void setColor(sf::Color color);
     sf::FloatRect getLocalBounds() const;
+    sf::Text getText();
 
     void draw(sf::RenderWindow *w);
 
