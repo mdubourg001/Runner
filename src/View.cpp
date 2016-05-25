@@ -525,12 +525,12 @@ void View::synchronise()
     {
         _revive_timer.update();
         _revive_timer.check_time();
-        if(!_popup_confirm)
+        if(!_popup_confirm && !_popup->get_read_text())
         {
             _popup->set_size_timebar(250 - _revive_timer.get_time_since_begin().to_microseconds()/20000);
             _popup->initialise("VOULEZ VOUS REVIVRE POUR "
                                + std::to_string((int)pow(2, _model->getPlayer()->get_nb_deaths()-1)) + " DIAMANT?", "OUI", "NON");
-            if(_revive_timer.is_running() && _revive_timer.has_ticked())
+            if(_revive_timer.is_running() && _revive_timer.has_ticked()) //si le temps de réponse est écoulé
             {
                 gs = menu;
                 _model->save();
@@ -546,7 +546,7 @@ void View::synchronise()
 
             else if(_popup->answered())
             {
-                if(_popup->getanswer())
+                if(_popup->getanswer()) //si la réponse est positive
                 {
                     _popup_confirm = true;
                     _popup->reset();
@@ -555,24 +555,23 @@ void View::synchronise()
                     _revive_timer.set_alarm(Moment(0, 0, 3, 0, 999));
                     _revive_timer.start(); //reinitialisation de _begin
                 }
-                else
+                else //sinon si elle est négative
                 {
-                    gs = menu;
                     _model->save();
-                    _model->reset();
+                    _model->getPlayer()->set_dead(false);
                     this->recup();
-                    set_popup_displayed(false);
                     _popup->reset();
-                    _popup_confirm = false;
+                    _popup->set_read_text(true);
+                    _popup->initialise("SAISISSEZ VOTRE NOM: _ _ _ _ _ _", "VALIDER", "QUITTER");
                     _revive_timer.stop();
                     _revive_timer.reset();
                     _revive_timer.set_alarm(Moment(0, 0, 5, 0, 0));
                 }
             }
         }
-        else if(_popup_confirm)
+        else if(_popup_confirm && !_popup->get_read_text()) //affichage du deuxième popup
         {
-            if(_totalDiamond.getValue() >= (int)pow(2, _model->getPlayer()->get_nb_deaths()-1))
+            if(_totalDiamond.getValue() >= (int)pow(2, _model->getPlayer()->get_nb_deaths()-1)) //si le joueur possède assez de diamants
             {
                 _model->getPlayer()->revive();
                 _model->Obstacles()->clear();
@@ -591,7 +590,7 @@ void View::synchronise()
                     _model->addDiamonds_loose((int)pow(2, _model->getPlayer()->get_nb_deaths()-1));
                 }
             }
-            else
+            else //sinon si il n'en a pas assez
             {
                 _popup->initialise("VOUS N'AVEZ PAS ASSEZ DE DIAMANTS\n"
                                    "                DOMMAGE.");
@@ -599,15 +598,37 @@ void View::synchronise()
                 {
                     gs = menu;
                     _model->save();
-                    _model->reset();
+                    _model->getPlayer()->set_dead(false);
                     this->recup();
-                    set_popup_displayed(false);
                     _popup->reset();
                     _popup_confirm = false;
+                    _popup->set_read_text(true);
+                    _popup->initialise("SAISISSEZ VOTRE NOM: _ _ _ _ _ _", "VALIDER", "QUITTER");
                     _revive_timer.stop();
                     _revive_timer.reset();
                     _revive_timer.set_alarm(Moment(0, 0, 5, 0, 0));
                 }
+            }
+        }
+        else if(_popup->get_read_text())
+        {
+            if(_popup->answered())
+            {
+                if(_popup->getanswer())
+                {
+                    //enregistrer dans les highscores si > aux autres
+                }
+                gs = menu;
+                _model->save();
+                _model->reset();
+                this->recup();
+                _popup->reset();
+                _popup_confirm = false;
+                _popup->set_read_text(false);
+                set_popup_displayed(false);
+                _revive_timer.stop();
+                _revive_timer.reset();
+                _revive_timer.set_alarm(Moment(0, 0, 5, 0, 0));
             }
         }
     }

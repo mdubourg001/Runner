@@ -1,6 +1,6 @@
 unlock
-lock
-lock
+unlock
+unlock
 lock
 lock
 lock
