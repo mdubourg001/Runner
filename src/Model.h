@@ -62,6 +62,7 @@ protected:
     Clock _bonus_timer;
 
     static int _current_speed;
+    int _diamonds_loose;
 
 public:
     Model(int w, int h);
@@ -78,6 +79,8 @@ public:
     void setDifficulte(int d);
     bool is_paused() const;
     void set_paused(bool paused);
+    int getDiamonds_loose() const;
+    void addDiamonds_loose(int diamonds_loose);
 
     static int getCurrentSpeed();
 
@@ -98,5 +101,8 @@ public:
     void save();
     void reset();
     void actualiseSpeed(int speed);
+    bool looseMoney(int value, string type);
+
+
 };
 #endif

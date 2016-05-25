@@ -8,8 +8,9 @@
 
 
 
+
 Item::Item()
-    : _selected(false), _choose(false), _loaded(false)
+    : _selected(false), _choose(false), _loaded(false), _value(0)
 {
     _font.loadFromFile(POLICE);
     _name.setFont(_font);
@@ -80,6 +81,16 @@ Preview *Item::getPreview()
     return _preview;
 }
 
+int Item::getValue() const
+{
+    return _value;
+}
+
+string Item::getType() const
+{
+    return _type;
+}
+
 //=====================================================
 //================AUTRES METHODES======================
 
@@ -122,7 +133,7 @@ void Item::drawPreview(sf::RenderWindow *w)
  * \param Name
  * change la texture et le nom de la balle en fonction de l'item
  */
-void Item::initialiseBall(const std::string B, const std::string Name)
+void Item::initialiseBall(const std::string B, const std::string Name, int value, string type)
 {
     _preview->setBallTexture(B);
     this->setName(Name);
@@ -137,7 +148,7 @@ void Item::initialiseBall(const std::string B, const std::string Name)
  * \param Name
  * initialise la preview
  */
-void Item::initialiseBackground(const std::string BackBig, const std::string BackLittle, const std::string Name)
+void Item::initialiseBackground(const std::string BackBig, const std::string BackLittle, const std::string Name, int value, string type)
 {
     _preview->setBackgroundTexture(BackBig, BackLittle);
     this->setName(Name);

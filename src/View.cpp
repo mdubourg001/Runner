@@ -167,10 +167,21 @@ void View::load()
     //========================================================================//
     //============BOUTONS DU SHOP=============================================//
 
-    _buy_button.initialise(ONE_COIN, ONE_COIN, "ACHETER",
-                           POLICEMENU, sf::Color::Black, 500, (SCREEN_HEIGHT/4)+475);
-    _select_button.initialise(GREENCUBE, REDCUBE, "SELECTIONNER",
-                              POLICEMENU, sf::Color::Black, 700, (SCREEN_HEIGHT/4)+475);
+    for(unsigned int i=0;i<_items.size();i++)
+    {
+        if(_items.at(i)->isLock())
+        {
+            _buy_button.initialise(ONE_COIN, ONE_COIN, "ACHETER",
+                                   POLICEMENU, sf::Color::Black, 500, (SCREEN_HEIGHT/4)+475);
+        }
+        else
+        {
+            _select_button.initialise(GREENCUBE, REDCUBE, "SELECTIONNER",
+                                      POLICEMENU, sf::Color::Black, 500, (SCREEN_HEIGHT/4)+475);
+        }
+    }
+
+
 
     //========================================================================//
 
@@ -265,6 +276,8 @@ void View::load()
     _popup = new Popup("TEST", "TEST", "TEST");
     _popup->setOrigin(_popup->getSize().x/2, _popup->getSize().y/2);
     _popup->setPosition(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+
+    this->recup();
 }
 
 void View::loadNextShop()
@@ -561,7 +574,6 @@ void View::synchronise()
         {
             if(_totalDiamond.getValue() >= (int)pow(2, _model->getPlayer()->get_nb_deaths()-1))
             {
-                std::cout << _totalDiamond.getValue() << std::endl;
                 _model->getPlayer()->revive();
                 _model->Obstacles()->clear();
                 _popup->initialise("REPRISE DANS " + std::to_string(2 - _revive_timer.get_time_since_begin().get_sec() + 1), "PREPAREZ", "VOUS");
@@ -576,6 +588,7 @@ void View::synchronise()
                     _revive_timer.reset();
                     _revive_timer.set_alarm(Moment(0, 0, 5, 0, 0));
                     _totalDiamond.setValue(_totalDiamond.getValue() - (int)pow(2, _model->getPlayer()->get_nb_deaths()-1));
+                    _model->addDiamonds_loose((int)pow(2, _model->getPlayer()->get_nb_deaths()-1));
                 }
             }
             else
@@ -616,21 +629,21 @@ void View::synchroniseShop()
     {
         if(lg == fr)
         {
-            if(!_items.at(0)->getLoaded()) _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley");
-            if(!_items.at(1)->getLoaded()) _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Bleue clair");
-            if(!_items.at(2)->getLoaded()) _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Rouge et Noir");
-            if(!_items.at(3)->getLoaded()) _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Bleu fonce");
-            if(!_items.at(4)->getLoaded()) _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Rouge et Blanc");
-            if(!_items.at(5)->getLoaded()) _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Verte");
+            if(!_items.at(0)->getLoaded()) _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley", 0, "none");
+            if(!_items.at(1)->getLoaded()) _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Bleue clair", 100, "coins");
+            if(!_items.at(2)->getLoaded()) _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Rouge et Noir", 200, "coins");
+            if(!_items.at(3)->getLoaded()) _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Bleu fonce", 500, "coins");
+            if(!_items.at(4)->getLoaded()) _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Rouge et Blanc", 2, "diamonds");
+            if(!_items.at(5)->getLoaded()) _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Verte", 5, "diamonds");
         }
         else if (lg == ang)
         {
-            if(!_items.at(0)->getLoaded()) _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley");
-            if(!_items.at(1)->getLoaded()) _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Light blue");
-            if(!_items.at(2)->getLoaded()) _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Red and Black");
-            if(!_items.at(3)->getLoaded()) _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Dark blue");
-            if(!_items.at(4)->getLoaded()) _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Red and White");
-            if(!_items.at(5)->getLoaded()) _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Green");
+            if(!_items.at(0)->getLoaded()) _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley", 0, "none");
+            if(!_items.at(1)->getLoaded()) _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Light blue", 100, "coins");
+            if(!_items.at(2)->getLoaded()) _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Red and Black", 200, "coins");
+            if(!_items.at(3)->getLoaded()) _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Dark blue", 500, "coins");
+            if(!_items.at(4)->getLoaded()) _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Red and White", 2, "diamonds");
+            if(!_items.at(5)->getLoaded()) _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Green", 5, "diamonds");
         }
     }
 }
@@ -656,15 +669,15 @@ void View::synchroniseShopBack()
 
         if (lg == fr)
         {
-            _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "Ville");
-            _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "Ville ancienne");
+            _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "Ville", 0, "none");
+            _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "Ville ancienne", 1000, "coins");
         }
         else if (lg == ang)
         {
-            _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "City");
-            _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "City Oldschool");
+            _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "City", 0, "none");
+            _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "City Oldschool", 1000, "coins");
         }
-        _items.at(2)->initialiseBackground(BACKGROUND_THREE_IMAGE_PREVIEW_B, BACKGROUND_THREE_IMAGE_PREVIEW_L, "DuckHunt");
+        _items.at(2)->initialiseBackground(BACKGROUND_THREE_IMAGE_PREVIEW_B, BACKGROUND_THREE_IMAGE_PREVIEW_L, "DuckHunt", 3, "diamonds");
     }
 }
 
@@ -1137,41 +1150,43 @@ bool View::treatEvents()
 
                     if(x>= 460 && x<=585 && y>=670 && y<=740)
                     {
-                        for(unsigned int i=0; i<_items.size();i++)
+                        for(unsigned int i=0;i<_items.size();i++)
                         {
-                            if(_items.at(i)->isSelected() && _items.at(i)->isLock())
+                            if(_items.at(i)->isChoose())
                             {
-                                if(cs == ball)
-                                    _items.at(i)->unLock(i);
-                                else if(cs == back)
-                                    _items.at(i)->unLock(i+6);
-                            }
-                        }
-                    }
-                    else if (x>=630 && x<=820 && y>=670 && y<=740)
-                        for(unsigned int i=0; i<_items.size();i++)
-                        {
-                            if(_items.at(i)->isSelected() && !_items.at(i)->isLock())
-                            {
-                                for(unsigned int j=0; j<_items.size();j++)
-                                {
-                                    if(_items.at(j)->isChoose())
-                                    {
-                                        _items.at(j)->setChoose(false);
-                                        break;
-                                    }
-                                }
-                                _items.at(i)->setChoose(true);
+                                _items.at(i)->setChoose(false);
                                 break;
                             }
-                            else if(_items.at(i)->isSelected() && _items.at(i)->isLock())
-                            {
-                                // pop-up
-                                cout << "doit etre acheter" << endl;
-                            }
-
                         }
-                    this->loadNextShop();
+                        for(unsigned int i=0; i<_items.size();i++)
+                        {
+                            if(_items.at(i)->isSelected())
+                            {
+                                if(_items.at(i)->isLock())
+                                {
+                                    if(cs == ball)
+                                    {
+                                        if(_model->looseMoney(_items.at(i)->getValue(), _items.at(i)->getType()) == true)
+                                            _items.at(i)->unLock(i);
+                                        this->recup();
+                                    }
+                                    else if(cs == back)
+                                    {
+                                        if(_model->looseMoney(_items.at(i)->getValue(), _items.at(i)->getType()) == true)
+                                            _items.at(i)->unLock(i+6);
+                                        this->recup();
+                                    }
+                                }
+                                if(!_items.at(i)->isLock())
+                                    _items.at(i)->setChoose(true);
+                                else
+                                    _items.at(0)->setChoose(true);
+                                break;
+                            }
+                        }
+                        this->loadNextShop();
+                    }
+
                 }
                 else if (event.type == sf::Event::MouseButtonPressed && gs == settings)
                 {
@@ -1240,13 +1255,16 @@ bool View::treatEvents()
                     int yM = event.mouseMove.y;
 
                     if(xM>= 460 && xM<=585 && yM>=670 && yM<=740)
+                    {
                         _buy_button.setSelected(true);
-                    else
-                        _buy_button.setSelected(false);
-                    if (xM>=630 && xM<=820 && yM>=670 && yM<=740)
                         _select_button.setSelected(true);
+                    }
                     else
+                    {
+                        _buy_button.setSelected(false);
                         _select_button.setSelected(false);
+                    }
+
                 }
             }
         }

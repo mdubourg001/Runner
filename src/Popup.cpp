@@ -25,11 +25,11 @@ Popup::Popup(string text, string left_text, string right_text)
     _text.setPosition(this->getPosition().x
                       ,this->getPosition().y - 75);
 
-    _left.initialise("res/greencube.png", "res/greencube.png", left_text
+    _left.initialise(GREENCUBE, GREENCUBE, left_text
                      ,POLICEMENU, sf::Color::Black
                      , SCREEN_WIDTH/2 - 125
                      , SCREEN_HEIGHT/2 + 20);
-    _right.initialise("res/redcube.png", "res/redcube.png", right_text
+    _right.initialise(REDCUBE, REDCUBE, right_text
                       ,POLICEMENU, sf::Color::Black
                       , SCREEN_WIDTH/2 + 75
                       , SCREEN_HEIGHT/2 + 20);

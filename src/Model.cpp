@@ -10,13 +10,15 @@ int Model::_current_speed = EASY_SPEED;
 //=======================================
 // Constructeurs & Destructeur
 //=======================================
+
 Model::Model(int w, int h)
     :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0),
       _canpop(true), _magnetpicked(false),_paused(false),
       _magnetcpt(-1), _difficulte(0),
       _coin_counter(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70),
       _score_counter(0, SCREEN_WIDTH - 500, SCREEN_HEIGHT-70),
-      _diamond_counter(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70)
+      _diamond_counter(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70),
+      _diamonds_loose(0)
 {
     _coin_counter.setTexture(ONE_COIN);
     _diamond_counter.setTexture(ONE_DIAMOND);
@@ -147,6 +149,16 @@ void Model::set_paused(bool paused)
 void Model::setView(View *view)
 {
     _view = view;
+}
+
+int Model::getDiamonds_loose() const
+{
+    return _diamonds_loose;
+}
+
+void Model::addDiamonds_loose(int diamonds_loose)
+{
+    _diamonds_loose += diamonds_loose;
 }
 
 //====================================================
@@ -586,12 +598,13 @@ void Model::saveDiamond()
         cerr << "ouverture en lecture impossible";
         exit(EXIT_FAILURE);
     }
-    if(_diamond_counter.getValue() > 0)
+    if(_diamond_counter.getValue() > 0 || _diamonds_loose > 0)
     {
         ofstream writeDiamonds(FICHIER_DIAMOND, ios::out);
         if(writeDiamonds)
         {
             total += _diamond_counter.getValue();
+            total -= _diamonds_loose;
             writeDiamonds << to_string(total);
             writeDiamonds.close();
         }
@@ -637,6 +650,7 @@ void Model::reset()
     _current_speed = EASY_SPEED;
     _magnetpicked = false;
     _score_timer.reset();
+    _diamonds_loose = 0;
 }
 
 
@@ -653,6 +667,62 @@ void Model::actualiseSpeed(int speed)
     for(auto o : _obstacles) {o->actualiseSpeed(speed) ;}
 }
 
-
-//====================================================
-
+bool Model::looseMoney(int value, string type)
+{
+    int test;
+    if(type == "coins" && value<= _coin_counter.getValue())
+    {
+        ifstream readCoins(FICHIER_COIN, ios::in);
+        if(readCoins)
+        {
+            readCoins >> test;
+            readCoins.close();
+        }
+        else
+        {
+            cerr << "ouverture en lecture impossible";
+            exit(EXIT_FAILURE);
+        }
+        ofstream writeCoins(FICHIER_COIN, ios::out);
+        if(writeCoins)
+        {
+            test -= value;
+            writeCoins << test;
+            writeCoins.close();
+        }
+        else
+        {
+            cerr << "ouverture en lecture impossible";
+            exit(EXIT_FAILURE);
+        }
+        return true;
+    }
+    else if (type == "diamonds" && value<=_diamond_counter.getValue())
+    {
+        ifstream readDiamonds(FICHIER_DIAMOND, ios::in);
+        if(readDiamonds)
+        {
+            readDiamonds >> test;
+            readDiamonds.close();
+        }
+        else
+        {
+            cerr << "ouverture en lecture impossible";
+            exit(EXIT_FAILURE);
+        }
+        ofstream writeDiamonds(FICHIER_DIAMOND, ios::out);
+        if(writeDiamonds)
+        {
+            test -= value;
+            writeDiamonds << test;
+            writeDiamonds.close();
+        }
+        else
+        {
+            cerr << "ouverture en lecture impossible";
+            exit(EXIT_FAILURE);
+        }
+        return true;
+    }
+    return false;
+}

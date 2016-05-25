@@ -14,6 +14,8 @@ protected:
     bool _choose;
     bool _lock;
     bool _loaded;
+    int _value;
+    string _type;
 
     Preview *_preview;
 
@@ -31,16 +33,19 @@ public:
     void setLock(bool l);
     bool getLoaded() const;
     void setLoaded(bool loaded);
+    int getValue() const;
+    string getType() const;
+
     Preview *getPreview();
 
     void drawText(sf::RenderWindow *w);
     void drawPreview(sf::RenderWindow *w);
-    void initialiseBall(const std::string B, const std::string Name);
-    void initialiseBackground(const std::string BackBig, const std::string BackLittle, const std::string Name);
+    void initialiseBall(const std::string B, const std::string Name, int value, string type);
+    void initialiseBackground(const std::string BackBig, const std::string BackLittle, const std::string Name, int value, string type);
+    void initialiseValueAndType(int v, int t);
     void reset();
     void LockOrNot(int i);
     void unLock(int l);
-
 
 };
 
