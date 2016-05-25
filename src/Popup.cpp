@@ -3,11 +3,11 @@
 
 Popup::Popup()
 {
-
+    
 }
 
 Popup::Popup(string text, string left_text, string right_text)
-    : _answered {false}, _answer{true}
+    : _answered {false}, _answer{true}, _read_text{false}
 {
     this->setSize(sf::Vector2f(700, 250));
     this->setOrigin(sf::Vector2f(350, 125));
@@ -79,6 +79,21 @@ void Popup::set_color_timebar(sf::Color color)
 int Popup::get_size_timebar() const
 { return _timebar.getSize().x; }
 
+bool Popup::get_read_text() const
+{ return _read_text; }
+
+void Popup::set_read_text(bool read)
+{ _read_text = read; }
+
+std::string Popup::get_temp_name() const
+{ return _temp_name.first; }
+
+void Popup::set_temp_name(const std::string &temp_name)
+{
+    _temp_name.first = temp_name;
+    this->actualise_read_name();
+}
+
 
 /*!
  * \brief Popup::draw
@@ -129,16 +144,60 @@ void Popup::treat_events(sf::RenderWindow *w, sf::Event &event)
                 _answered = true;
                 _answer = false;
             }
+        }
+
+        else if(_read_text && event.type == sf::Event::TextEntered)
+        {
+            if(event.text.unicode == 8) //backspace
+            {
+                if(_temp_name.first.size() > 0)
+                    _temp_name.first.pop_back();
+            }
+            else if(event.text.unicode >= 97 && event.text.unicode <= 122) //si la touche entrée est bien une lettre
+            {
+                if(_temp_name.first.size() < 6)
+                    _temp_name.first += static_cast<char>(event.text.unicode);
+            }
+            else if(event.text.unicode == 13) //retour chariot
+            {
+                _answered = true;
+                _answer = true;
+            }
+
+            this->actualise_read_name();
 
         }
     }
 }
 
+
 void Popup::reset()
 {
     _timebar.setSize(sf::Vector2f(0, 25));
+    _temp_name.first.clear();
+    _temp_name.second.clear();
     _answered = false;
     _answer = true;
+}
+
+
+void Popup::actualise_read_name()
+{
+    if(_read_text)
+    {
+        _temp_name.second.clear();
+        for(unsigned int i=0; i < _temp_name.first.size() ; i++)
+        {
+            _temp_name.second += _temp_name.first.at(i);
+            _temp_name.second += " ";
+        }
+        while(_temp_name.second.size() < 11)
+        {
+            _temp_name.second += " _";
+        }
+
+        this->initialise("SAISISSEZ VOTRE NOM: " + _temp_name.second , "VALIDER", "QUITTER");
+    }
 }
 
 

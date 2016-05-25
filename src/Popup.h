@@ -17,6 +17,8 @@ protected:
     sf::RectangleShape _timebar; //temps restant pour répondre
     bool _answered;
     bool _answer; //oui ou non
+    bool _read_text; //saisie du nom
+    std::pair<std::string, std::string> _temp_name; //nom qui sera retourné lors de la fin du jeu
 
 public:
     Popup();
@@ -31,10 +33,15 @@ public:
     void set_size_timebar(unsigned int size);
     void set_color_timebar(sf::Color color);
     int get_size_timebar() const;
+    bool get_read_text() const;
+    void set_read_text(bool read);
+    std::string get_temp_name() const;
+    void set_temp_name(const std::string &temp_name);
 
     void draw(sf::RenderWindow *w);
     void treat_events(sf::RenderWindow *w, sf::Event &event);
     void reset();
+    void actualise_read_name();
 };
 
 #endif // POPUP_H
