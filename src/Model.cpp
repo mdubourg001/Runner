@@ -669,60 +669,69 @@ void Model::actualiseSpeed(int speed)
 
 bool Model::looseMoney(int value, string type)
 {
-    int test;
-    if(type == "coins" && value<= _coin_counter.getValue())
+    if(type == "coins")
     {
-        ifstream readCoins(FICHIER_COIN, ios::in);
-        if(readCoins)
+        int totalCoins;
+        ifstream readTotalCoins(FICHIER_COIN, ios::in);
+        if(readTotalCoins)
         {
-            readCoins >> test;
-            readCoins.close();
+            readTotalCoins >> totalCoins;
+            readTotalCoins.close();
         }
         else
         {
             cerr << "ouverture en lecture impossible";
             exit(EXIT_FAILURE);
         }
-        ofstream writeCoins(FICHIER_COIN, ios::out);
-        if(writeCoins)
+        if(value<= totalCoins)
         {
-            test -= value;
-            writeCoins << test;
-            writeCoins.close();
+            ofstream writeCoins(FICHIER_COIN, ios::out);
+            if(writeCoins)
+            {
+                totalCoins -= value;
+                writeCoins << totalCoins;
+                writeCoins.close();
+            }
+            else
+            {
+                cerr << "ouverture en lecture impossible";
+                exit(EXIT_FAILURE);
+            }
+            return true;
         }
-        else
-        {
-            cerr << "ouverture en lecture impossible";
-            exit(EXIT_FAILURE);
-        }
-        return true;
+
     }
-    else if (type == "diamonds" && value<=_diamond_counter.getValue())
+    else if (type == "diamonds")
     {
-        ifstream readDiamonds(FICHIER_DIAMOND, ios::in);
-        if(readDiamonds)
+        int totalDiamonds;
+        ifstream readTotalDiamonds(FICHIER_DIAMOND, ios::in);
+        if(readTotalDiamonds)
         {
-            readDiamonds >> test;
-            readDiamonds.close();
+            readTotalDiamonds >> totalDiamonds;
+            readTotalDiamonds.close();
         }
         else
         {
             cerr << "ouverture en lecture impossible";
             exit(EXIT_FAILURE);
         }
-        ofstream writeDiamonds(FICHIER_DIAMOND, ios::out);
-        if(writeDiamonds)
+        if(value<= totalDiamonds)
         {
-            test -= value;
-            writeDiamonds << test;
-            writeDiamonds.close();
+            ofstream writeDiamonds(FICHIER_DIAMOND, ios::out);
+            if(writeDiamonds)
+            {
+                totalDiamonds -= value;
+                writeDiamonds << totalDiamonds;
+                writeDiamonds.close();
+            }
+            else
+            {
+                cerr << "ouverture en lecture impossible";
+                exit(EXIT_FAILURE);
+            }
+            return true;
         }
-        else
-        {
-            cerr << "ouverture en lecture impossible";
-            exit(EXIT_FAILURE);
-        }
-        return true;
+
     }
     return false;
 }

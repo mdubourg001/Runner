@@ -138,6 +138,8 @@ void Item::initialiseBall(const std::string B, const std::string Name, int value
     _preview->setBallTexture(B);
     this->setName(Name);
     _loaded = true;
+    _value = value;
+    _type = type;
 }
 
 
@@ -153,6 +155,8 @@ void Item::initialiseBackground(const std::string BackBig, const std::string Bac
     _preview->setBackgroundTexture(BackBig, BackLittle);
     this->setName(Name);
     _loaded = true;
+    _value = value;
+    _type = type;
 }
 
 void Item::LockOrNot(int i)

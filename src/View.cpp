@@ -1188,20 +1188,30 @@ bool View::treatEvents()
                                     if(cs == ball)
                                     {
                                         if(_model->looseMoney(_items.at(i)->getValue(), _items.at(i)->getType()) == true)
+                                        {
                                             _items.at(i)->unLock(i);
+                                            _items.at(i)->setChoose(true);
+                                        }
                                         this->recup();
+                                        break;
                                     }
                                     else if(cs == back)
                                     {
                                         if(_model->looseMoney(_items.at(i)->getValue(), _items.at(i)->getType()) == true)
+                                        {
                                             _items.at(i)->unLock(i+6);
+                                            _items.at(i)->setChoose(true);
+                                        }
                                         this->recup();
+                                        break;
                                     }
                                 }
-                                if(!_items.at(i)->isLock())
-                                    _items.at(i)->setChoose(true);
                                 else
-                                    _items.at(0)->setChoose(true);
+                                {
+                                    _items.at(i)->setChoose(true);
+                                    break;
+                                }
+                                //_items.at(0)->setChoose(true);
                                 break;
                             }
                         }
