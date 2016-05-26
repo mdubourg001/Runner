@@ -17,24 +17,24 @@ Obstacle::Obstacle(int category, int ms)
     switch(_category)
     {
     case 1:
-        _cubes.push_back(new Cube(rand()%5 + 1, 1));
+        _cubes.push_back(new Cube(rand()%NBR_CUBES + 1, 1));
         break;
 
     case 2:
-        _cubes.push_back(new Cube(rand()%5 + 1, 1));
-        _cubes.push_back(new Cube(rand()%5 + 1, 2));
+        _cubes.push_back(new Cube(rand()%NBR_CUBES + 1, 1));
+        _cubes.push_back(new Cube(rand()%NBR_CUBES + 1, 2));
         break;
 
     case 3:
-        _cubes.push_back(new Cube(rand()%5 + 1, 1));
-        _cubes.push_back(new Cube(rand()%5 + 1, 2));
-        _cubes.push_back(new Cube(rand()%5 + 1, 3));
+        _cubes.push_back(new Cube(rand()%NBR_CUBES + 1, 1));
+        _cubes.push_back(new Cube(rand()%NBR_CUBES + 1, 2));
+        _cubes.push_back(new Cube(rand()%NBR_CUBES + 1, 3));
         break;
     case 4:
-        _cubes.push_back(new Cube(rand()%5 + 1, 1));
-        _cubes.push_back(new Cube(rand()%5 + 1, 2));
-        _cubes.push_back(new Cube(rand()%5 + 1, 3));
-        _cubes.push_back(new Cube(rand()%5 + 1, 4));
+        _cubes.push_back(new Cube(rand()%NBR_CUBES + 1, 1));
+        _cubes.push_back(new Cube(rand()%NBR_CUBES + 1, 2));
+        _cubes.push_back(new Cube(rand()%NBR_CUBES + 1, 3));
+        _cubes.push_back(new Cube(rand()%NBR_CUBES + 1, 4));
         break;
 
     default:

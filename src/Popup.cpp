@@ -27,12 +27,12 @@ Popup::Popup(string text, string left_text, string right_text)
 
     _left.initialise(GREENCUBE, GREENCUBE, left_text
                      ,POLICEMENU, sf::Color::Black
-                     , SCREEN_WIDTH/2 - 125
-                     , SCREEN_HEIGHT/2 + 20);
+                     , POS_X_BUTTON_LEFT_POPUP
+                     , POS_Y_BUTTON_POPUP);
     _right.initialise(REDCUBE, REDCUBE, right_text
                       ,POLICEMENU, sf::Color::Black
-                      , SCREEN_WIDTH/2 + 75
-                      , SCREEN_HEIGHT/2 + 20);
+                      , POS_X_BUTTON_RIGHT_POPUP
+                      , POS_Y_BUTTON_POPUP);
 
     _timebar.setSize(sf::Vector2f(250, 25));
     _timebar.setOutlineThickness(5);

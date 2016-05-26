@@ -10,7 +10,7 @@
 Cube::Cube(int color, int stage)
     : _color {color} //1->red 2->blue 3->green 4->yellow 5->purple
 {
-    this->setOrigin(25, 25);
+    this->setOrigin(CUBE_WIDTH/2, CUBE_WIDTH/2);
 
     switch (_color)
     {
@@ -58,16 +58,16 @@ Cube::Cube(int color, int stage)
     switch(stage)
     {
     case 1:
-        this->setPosition(sf::Vector2f(SCREEN_WIDTH + 100, SCREEN_HEIGHT - SCREEN_HEIGHT/4 + 40));
+        this->setPosition(sf::Vector2f(POS_X_OBSTACLE, POS_Y_OBSTACLE_1));
         break;
     case 2:
-        this->setPosition(sf::Vector2f(SCREEN_WIDTH + 100, SCREEN_HEIGHT - SCREEN_HEIGHT/4));
+        this->setPosition(sf::Vector2f(POS_X_OBSTACLE, POS_Y_OBSTACLE_2));
         break;
     case 3:
-        this->setPosition(sf::Vector2f(SCREEN_WIDTH + 100, SCREEN_HEIGHT - SCREEN_HEIGHT/4 - 40));
+        this->setPosition(sf::Vector2f(POS_X_OBSTACLE, POS_Y_OBSTACLE_3));
         break;
     case 4:
-        this->setPosition(sf::Vector2f(SCREEN_WIDTH + 100, SCREEN_HEIGHT - SCREEN_HEIGHT/4 - 80));
+        this->setPosition(sf::Vector2f(POS_X_OBSTACLE, POS_Y_OBSTACLE_4));
     default:
         break;
     }

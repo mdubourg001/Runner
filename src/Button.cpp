@@ -52,7 +52,7 @@ void Button::initialise(std::string texture, std::string texture_hover,
     }
     if(!_scaled)
     {
-        this->scale(0.83, 0.83);
+        this->scale(SCALE_BUTTON, SCALE_BUTTON);
          _scaled = true;
     }
     _text.setOrigin(_text.getLocalBounds().width/2, _text.getLocalBounds().height/2);

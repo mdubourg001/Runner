@@ -102,31 +102,32 @@ void Player::jump()
 void Player::treatCollisions(std::vector<Coin *> coins, std::vector<Diamond *> diamonds, std::vector<Bonus *> bonus, std::vector<Obstacle *> obstacles)
 {
     for(unsigned int i=0 ; i<coins.size() ; i++) //collision entre la balle et les pièces
-        if((_posx - 25 <= coins.at(i)->getPosition().x + 25 && _posx - 25 >= coins.at(i)->getPosition().x -25
-                && _posy - 25 <= coins.at(i)->getPosition().y + 25 && _posy - 25 >= coins.at(i)->getPosition().y -25)
-                || (_posx + 25 >= coins.at(i)->getPosition().x - 25 && _posx + 25 <= coins.at(i)->getPosition().x + 25
-                && _posy + 25 >= coins.at(i)->getPosition().y - 25 && _posy + 25 <= coins.at(i)->getPosition().y + 25))
+        if((_posx - BALL_WIDTH/2 <= coins.at(i)->getPosition().x + BALL_WIDTH/2 && _posx - BALL_WIDTH/2 >= coins.at(i)->getPosition().x - BALL_WIDTH/2
+                && _posy - BALL_WIDTH/2 <= coins.at(i)->getPosition().y + BALL_WIDTH/2 && _posy - BALL_WIDTH/2 >= coins.at(i)->getPosition().y - BALL_WIDTH/2)
+                || (_posx + BALL_WIDTH/2 >= coins.at(i)->getPosition().x - BALL_WIDTH/2 && _posx + BALL_WIDTH/2 <= coins.at(i)->getPosition().x + BALL_WIDTH/2
+                && _posy + BALL_WIDTH/2 >= coins.at(i)->getPosition().y - BALL_WIDTH/2 && _posy + BALL_WIDTH/2 <= coins.at(i)->getPosition().y + BALL_WIDTH/2))
             coins.at(i)->setPicked(true);
 
     for(unsigned int i=0 ; i<diamonds.size() ; i++) //collision entre la balle et les diamants
-        if((_posx - 25 <= diamonds.at(i)->getPosition().x + 25 && _posx - 25 >= diamonds.at(i)->getPosition().x -25
-                && _posy - 25 <= diamonds.at(i)->getPosition().y + 25 && _posy - 25 >= diamonds.at(i)->getPosition().y -25)
-                || (_posx + 25 >= diamonds.at(i)->getPosition().x - 25 && _posx + 25 <= diamonds.at(i)->getPosition().x + 25
-                && _posy + 25 >= diamonds.at(i)->getPosition().y - 25 && _posy + 25 <= diamonds.at(i)->getPosition().y + 25))
+        if((_posx - BALL_WIDTH/2 <= diamonds.at(i)->getPosition().x + BALL_WIDTH/2 && _posx - BALL_WIDTH/2 >= diamonds.at(i)->getPosition().x - BALL_WIDTH/2
+                && _posy - BALL_WIDTH/2 <= diamonds.at(i)->getPosition().y + BALL_WIDTH/2 && _posy - BALL_WIDTH/2 >= diamonds.at(i)->getPosition().y - BALL_WIDTH/2)
+                || (_posx + BALL_WIDTH/2 >= diamonds.at(i)->getPosition().x - BALL_WIDTH/2 && _posx + BALL_WIDTH/2 <= diamonds.at(i)->getPosition().x + BALL_WIDTH/2
+                && _posy + BALL_WIDTH/2 >= diamonds.at(i)->getPosition().y - BALL_WIDTH/2 && _posy + BALL_WIDTH/2 <= diamonds.at(i)->getPosition().y + BALL_WIDTH/2))
             diamonds.at(i)->setPicked(true);
 
     for(unsigned int i=0 ; i<bonus.size() ; i++) //collision entre la balle et les bonus
-        if((_posx - 25 <= bonus.at(i)->getPosition().x + 25 && _posx - 25 >= bonus.at(i)->getPosition().x -25
-                && _posy - 25 <= bonus.at(i)->getPosition().y + 25 && _posy - 25 >= bonus.at(i)->getPosition().y -25)
-                || (_posx + 25 >= bonus.at(i)->getPosition().x - 25 && _posx + 25 <= bonus.at(i)->getPosition().x + 25
-                && _posy + 25 >= bonus.at(i)->getPosition().y - 25 && _posy + 25 <= bonus.at(i)->getPosition().y + 25))
+        if((_posx - BALL_WIDTH/2 <= bonus.at(i)->getPosition().x + BALL_WIDTH/2 && _posx - BALL_WIDTH/2 >= bonus.at(i)->getPosition().x - BALL_WIDTH/2
+                && _posy - BALL_WIDTH/2 <= bonus.at(i)->getPosition().y + BALL_WIDTH/2 && _posy - BALL_WIDTH/2 >= bonus.at(i)->getPosition().y - BALL_WIDTH/2)
+                || (_posx + BALL_WIDTH/2 >= bonus.at(i)->getPosition().x - BALL_WIDTH/2 && _posx + BALL_WIDTH/2 <= bonus.at(i)->getPosition().x + BALL_WIDTH/2
+                && _posy + BALL_WIDTH/2 >= bonus.at(i)->getPosition().y - BALL_WIDTH/2 && _posy + BALL_WIDTH/2 <= bonus.at(i)->getPosition().y + BALL_WIDTH/2))
             bonus.at(i)->setPicked(true);
 
     for(unsigned int i=0 ; i<obstacles.size() ; i++) //collision entre la balle et les obstacles
-        if(((_posx - 25 <= obstacles.at(i)->getPos().x + 25 && _posx - 25 >= obstacles.at(i)->getPos().x -25
-                && _posy - 25 <= obstacles.at(i)->getPos().y && _posy - 25 >= obstacles.at(i)->getPos().y - obstacles.at(i)->getSize().y)
-                || (_posx + 25 >= obstacles.at(i)->getPos().x - 25 && _posx + 25 <= obstacles.at(i)->getPos().x + 25
-                && _posy + 25 >= obstacles.at(i)->getPos().y - obstacles.at(i)->getSize().y && _posy + 25 <= obstacles.at(i)->getPos().y + 25)) && _invincibility == false)
+        if(((_posx - BALL_WIDTH/2 <= obstacles.at(i)->getPos().x + BALL_WIDTH/2 && _posx - BALL_WIDTH/2 >= obstacles.at(i)->getPos().x - BALL_WIDTH/2
+                && _posy - BALL_WIDTH/2 <= obstacles.at(i)->getPos().y && _posy - BALL_WIDTH/2 >= obstacles.at(i)->getPos().y - obstacles.at(i)->getSize().y)
+                || (_posx + BALL_WIDTH/2 >= obstacles.at(i)->getPos().x - BALL_WIDTH/2 && _posx + BALL_WIDTH/2 <= obstacles.at(i)->getPos().x + BALL_WIDTH/2
+                && _posy + BALL_WIDTH/2 >= obstacles.at(i)->getPos().y - obstacles.at(i)->getSize().y && _posy + BALL_WIDTH/2 <= obstacles.at(i)->getPos().y + BALL_WIDTH/2))
+                && _invincibility == false)
         {
             obstacles.at(i)->setDestroyed(true);
             looseLife();
@@ -170,10 +171,10 @@ void Player::drawShadow(sf::RenderWindow* window)
  */
 void Player::looseLife()
 {
-    if(_shield>0)
-        _shield-=80;
+    if(_shield > 0)
+        _shield -= BALL_WIN_AND_LOOZ_LIFE;
     else if(_health > 0)
-        _health-=80;
+        _health -= BALL_WIN_AND_LOOZ_LIFE;
 }
 
 /*!
@@ -182,15 +183,15 @@ void Player::looseLife()
  */
 void Player::winLife()
 {
-    if(_health<400)
-        _health+=80;
-    else if (_shield<400)
-        _shield+=80;
+    if(_health < BALL_LIFE)
+        _health += BALL_WIN_AND_LOOZ_LIFE;
+    else if (_shield < BALL_LIFE)
+        _shield += BALL_WIN_AND_LOOZ_LIFE;
 }
 
 void Player::revive()
 {
-    _health = 400;
+    _health = BALL_LIFE;
 }
 
 void Player::die()

@@ -22,7 +22,7 @@ HighscoresGrid::HighscoresGrid()
                        - this->getPosition().y))/5;
 
     _delimiters = vector<sf::RectangleShape>(6);
-    for(unsigned int i=0 ; i<5 ; i++)
+    for(unsigned int i=0 ; i<NBR_SCORES ; i++)
     {
         _delimiters.push_back(sf::RectangleShape()); //délimiteurs horizontaux
         _delimiters.at(i).setSize(sf::Vector2f(this->getSize().x
@@ -62,7 +62,7 @@ HighscoresGrid::HighscoresGrid()
     _pseudonyms.reserve(5);
     _scores = vector<sf::Text>();
     _pseudonyms.reserve(5);
-    for(unsigned int i=0 ; i<5 ; i++)
+    for(unsigned int i=0 ; i<NBR_SCORES ; i++)
     {
         _pseudonyms.push_back(sf::Text());
         _pseudonyms.at(i).setString("LE PSEUDO");
@@ -102,10 +102,10 @@ sf::Vector2f HighscoresGrid::get_button_pos() const
 
 void HighscoresGrid::synchronise(vector<pair<string, long>> *highscores)
 {
-    for(unsigned int it=0 ; it<5 ; it++)
+    for(unsigned int it=0 ; it<NBR_SCORES ; it++)
         _pseudonyms.at(it).setString(highscores->at(it).first);
 
-    for(unsigned int it=0 ; it<5 ; it++)
+    for(unsigned int it=0 ; it<NBR_SCORES ; it++)
         _scores.at(it).setString(to_string(highscores->at(it).second));
 }
 
@@ -133,10 +133,10 @@ void HighscoresGrid::draw(sf::RenderWindow *w)
 
 void HighscoresGrid::reset()
 {
-    for(unsigned int it=0 ; it<5 ; it++)
+    for(unsigned int it=0 ; it<NBR_SCORES ; it++)
         _pseudonyms.at(it).setString("NOONE");
 
-    for(unsigned int it=0 ; it<5 ; it++)
+    for(unsigned int it=0 ; it<NBR_SCORES ; it++)
         _scores.at(it).setString(to_string(0));
 }
 

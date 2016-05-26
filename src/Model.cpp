@@ -15,9 +15,9 @@ Model::Model(int w, int h)
     :  _w(w), _h(h), _difficulte(0), _diamonds_loose(0),
       _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0),
       _canpop(true), _magnetpicked(false),_paused(false),
-      _coin_counter(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70),
-      _score_counter(0, SCREEN_WIDTH - 500, SCREEN_HEIGHT-70),
-      _diamond_counter(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70)
+      _coin_counter(0, POS_X_COIN_COUNTER, POS_Y_COUNTER),
+      _score_counter(0, POS_X_SCORE_COUNTER, POS_Y_COUNTER),
+      _diamond_counter(0, POS_X_DIAMOND_COUNTER, POS_Y_COUNTER)
 
 {
     _coin_counter.setTexture(ONE_COIN);
@@ -338,7 +338,7 @@ void Model::nextStep()
                     {
                     case randombonus:
                         int t;
-                        t = (rand()%7);
+                        t = (rand()%6);
                         switch(t)
                         {
                         case 0:
@@ -459,7 +459,7 @@ void Model::addDiamond()
  */
 void Model::addBonus()
 {
-    switch(rand()%9)
+    switch(rand()%8)
     {
     case 1:
         _bonus.push_back(new Bonus(MAGNET, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 7));
@@ -537,7 +537,7 @@ void Model::saveScore()
     ifstream readHS(FICHIER_SCORE, ios::in);
     if(readHS)
     {
-        while(getline(readHS, temp) && it < 5)
+        while(getline(readHS, temp) && it < NBR_SCORES)
         {
             temp_scores.at(it).first = temp.substr(0, temp.find(" ")); //on récupère le pseudo du joueur
             temp_scores.at(it).second = atol(temp.substr(temp.find(" "), temp.length()-1).c_str()); //et son score
@@ -548,7 +548,7 @@ void Model::saveScore()
     else
         cerr << "IMPOSSIBLE D'OUVRIR " << FICHIER_SCORE << endl;
 
-    for(unsigned int i=0;i<5 && !asChanged;i++)
+    for(unsigned int i=0; i<NBR_SCORES && !asChanged;i++)
     {
         if(temp_scores.at(i).second < _score_counter.getValue())
         {
@@ -567,7 +567,7 @@ void Model::saveScore()
         ofstream writeHS(FICHIER_SCORE, ios::out);
         if(writeHS)
         {
-            for(unsigned int i=0; i<5;i++)
+            for(unsigned int i=0; i<NBR_SCORES; i++)
                 writeHS << _highscores.at(i).first + " " + to_string(_highscores.at(i).second) << endl;
             writeHS.close();
         }
@@ -697,7 +697,7 @@ void Model::reset()
     _obstacles.clear();
     _diamonds.clear();
     _bonus.clear();
-    _player.setHealth(400);
+    _player.setHealth(BALL_LIFE);
     _player.setShield(0);
     _player.set_dead(false);
     _player.set_nb_deaths(0);
@@ -713,7 +713,7 @@ void Model::reset_highscores()
     ofstream writeHS(FICHIER_SCORE, ios::out);
     if(writeHS)
     {
-        for(unsigned int i=0; i<5;i++)
+        for(unsigned int i=0; i<NBR_SCORES; i++)
             writeHS << "NOONE" << " " << to_string(0) << endl;
         writeHS.close();
     }
@@ -754,7 +754,7 @@ bool Model::looseMoney(int value, string type)
             cerr << "ouverture en lecture impossible";
             exit(EXIT_FAILURE);
         }
-        if(value<= totalCoins)
+        if(value <= totalCoins)
         {
             ofstream writeCoins(FICHIER_COIN, ios::out);
             if(writeCoins)
@@ -786,7 +786,7 @@ bool Model::looseMoney(int value, string type)
             cerr << "ouverture en lecture impossible";
             exit(EXIT_FAILURE);
         }
-        if(value<= totalDiamonds)
+        if(value <= totalDiamonds)
         {
             ofstream writeDiamonds(FICHIER_DIAMOND, ios::out);
             if(writeDiamonds)

@@ -156,10 +156,10 @@ void Item::LockOrNot(int l)
 void Item::unLock(int l)
 {
     ifstream readLock(FICHIER_LOCK_ITEM, ios::in);
-    string line[14];
+    string line[NBR_ITEM];
     if(readLock)
     {
-        for(unsigned int i=0;i<14;i++)
+        for(unsigned int i=0; i<NBR_ITEM; i++)
         {
             getline(readLock,line[i]);
             line[i] += "\n";
@@ -176,7 +176,7 @@ void Item::unLock(int l)
     ofstream writeLock(FICHIER_LOCK_ITEM, ios::out);
     if(writeLock)
     {
-        for(unsigned int i=0;i<14;i++)
+        for(unsigned int i=0; i<NBR_ITEM; i++)
         {
             writeLock << line[i];
         }

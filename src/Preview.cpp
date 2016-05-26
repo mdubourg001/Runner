@@ -9,7 +9,7 @@ Preview::Preview()
 
     _playerTexture.loadFromFile(BALL_IMAGE);
     _playerSprite.setTexture(_playerTexture);
-    _playerSprite.setPosition(sf::Vector2f(SCREEN_WIDTH/2 + SCREEN_WIDTH/9 ,SCREEN_HEIGHT-SCREEN_HEIGHT/5));
+    _playerSprite.setPosition(sf::Vector2f(POS_X_PLAYER_PREVIEW, POS_Y_PLAYER_PREVIEW));
     _playerSprite.setOrigin(sf::Vector2f(25, 25));
 }
 

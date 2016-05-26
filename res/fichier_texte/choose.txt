@@ -1,4 +1,2 @@
 ball_two
 background_three
-
-

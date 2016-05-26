@@ -74,7 +74,7 @@ void Counter::increment()
  */
 void Counter::hundredincrement()
 {
-    _value+=100;
+    _value += 100;
 }
 
 /*!

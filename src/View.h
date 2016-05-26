@@ -113,7 +113,6 @@ private:
 
     sf::RectangleShape _rectBall;
     sf::RectangleShape _rectBack;
-    sf::RectangleShape _rectScreen;
 
     std::vector<Item*> _items;
 
