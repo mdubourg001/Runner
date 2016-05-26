@@ -1,7 +1,6 @@
 #include "AnimatedSprite.h"
-#include <iostream>
 
-//=======================CONSTRUCTEUR==========================
+//===============CONSTRUCTEUR & DESTRUCTEUR===========================
 
 AnimatedSprite::AnimatedSprite(std::string texture, int ms,
                                int posx, int posy, int width, int height, int nbrsprites)
@@ -26,7 +25,20 @@ AnimatedSprite::AnimatedSprite(std::string texture, int ms,
 AnimatedSprite::~AnimatedSprite()
 { }
 
-//===============================================================
+//====================================================================
+
+//======================ACCESSEURS====================================
+
+/*!
+ * \brief AnimatedSprite::actualiseSpeed
+ * \param speed
+ * actualise la _movespeed du sprite lorsque le jeu s'accélère
+ */
+void AnimatedSprite::actualiseSpeed(int speed)
+{ _movespeed = speed; }
+
+//================================================================
+
 //============AUTRES METHODES====================================
 
 
@@ -59,15 +71,4 @@ void AnimatedSprite::animate(int value)
     }
 }
 
-
-/*!
- * \brief AnimatedSprite::actualiseSpeed
- * \param speed
- * actualise la _movespeed du sprite lorsque le jeu s'accélère
- */
-void AnimatedSprite::actualiseSpeed(int speed)
-{
-    _movespeed = speed;
-}
-
-//================================================================
+//====================================================================

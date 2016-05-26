@@ -1,9 +1,9 @@
 #include "Button.h"
-#include "main.h"
 
-//===========CONSTRCUTEUR & INITIALISATION==============================
+//===========CONSTRUCTEUR & INITIALISATION==============================
 
 Button::Button()
+    : _scaled(false)
 { }
 
 void Button::initialise(std::string texture, std::string texture_hover,
@@ -50,14 +50,18 @@ void Button::initialise(std::string texture, std::string texture_hover,
         _texture.setSmooth(true);
         this->setTexture(_texture);
     }
-
-    this->scale(0.83, 0.83);
+    if(!_scaled)
+    {
+        this->scale(0.83, 0.83);
+         _scaled = true;
+    }
     _text.setOrigin(_text.getLocalBounds().width/2, _text.getLocalBounds().height/2);
     _text.setPosition(this->getPosition().x + _texture.getSize().x/2
                       , this->getPosition().y + _texture.getSize().y);
 }
 
 //==========================================================================
+
 //==============================ACCESSEURS==================================
 
 sf::Vector2f Button::getPos() const
@@ -72,9 +76,7 @@ bool Button::isSelected() const
 { return _selected; }
 
 void Button::setSelected(bool selected)
-{
-    _selected = selected;
-}
+{ _selected = selected; }
 
 sf::Color Button::getColor() const
 { return _textcolor; }
@@ -111,12 +113,8 @@ sf::FloatRect Button::get_size() const
     return this->getLocalBounds();
 }
 
-sf::Text Button::getText()
-{
-    return _text;
-}
-
 //==============================================================
+
 //===============AUTRES METHODES================================
 
 /*!
@@ -128,6 +126,11 @@ void Button::draw(sf::RenderWindow *w)
 {
     w->draw(*this);
     w->draw(_text);
+}
+
+void Button::button_scale(float x)
+{
+    this->scale(x,x);
 }
 
 //==============================================================

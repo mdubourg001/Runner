@@ -33,12 +33,11 @@ Counter::Counter(int value, int posx, int posy)
 }
 
 //==========================================================================
+
 //===============================ACCESSEURS=================================
 
 int Counter::getValue() const
-{
-    return _value;
-}
+{ return _value; }
 
 void Counter::setValue(int value)
 {
@@ -57,6 +56,7 @@ void Counter::setTexture(std::string filename)
 }
 
 //==========================================================================
+
 //=========================AUTRES METHODES==================================
 
 /*!
@@ -75,15 +75,6 @@ void Counter::increment()
 void Counter::hundredincrement()
 {
     _value+=100;
-}
-
-/*!
- * \brief Counter::decrement
- * décremente le compteur de 1
- */
-void Counter::decrement()
-{
-    _value--;
 }
 
 /*!

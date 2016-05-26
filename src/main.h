@@ -82,8 +82,7 @@
 #define FICHIER_ENGLISH "res/fichier_texte/english.txt"
 #define FICHIER_FRENCH "res/fichier_texte/french.txt"
 #define FICHIER_LOCK_ITEM "res/fichier_texte/lock.txt"
-
-#define SON_PIECE "res/piece.wav"
+#define FICHIER_CHOOSE "res/fichier_texte/choose.txt"
 
 
 enum direction

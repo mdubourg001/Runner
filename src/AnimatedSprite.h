@@ -3,6 +3,7 @@
 
 #include "main.h"
 #include <chrono>
+#include <iostream>
 
 class Player;
 
@@ -20,9 +21,10 @@ public:
     AnimatedSprite(std::string texture, int ms, int posx, int posy, int width, int height, int nbrsprites);
     ~AnimatedSprite() = 0;
 
+    void actualiseSpeed(int speed);
+
     virtual void move();
     void animate(int value);
-    void actualiseSpeed(int speed);
 
 };
 

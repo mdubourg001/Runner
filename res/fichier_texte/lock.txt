@@ -1,12 +1,12 @@
 unlock
 unlock
 unlock
-lock
-lock
-lock
 unlock
-lock
-lock
+unlock
+unlock
+unlock
+unlock
+unlock
 
 
 

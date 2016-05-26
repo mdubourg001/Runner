@@ -21,17 +21,16 @@ public:
 
     void setMvtx(int mvtx);
     void setMvty(int mvty);
-
+    void changeDirection(direction d);
+    int getMvtx() const;
+    int getMvty() const;
     sf::Vector2f getPos() const;
     int getPosx() const;
     int getPosy() const;
-    int getMvtx() const;
-    int getMvty() const;
     int getWidth() const;
     int getHeight() const;
     direction getDirection() const;
 
-    void changeDirection(direction d);
     void move();
 };
 

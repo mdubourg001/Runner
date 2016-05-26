@@ -7,7 +7,6 @@
 class Coin : public AnimatedSprite
 {
 protected:
-    int _value;
     int _alpha_opacity;
 
     bool _picked;
@@ -29,8 +28,8 @@ public:
     bool getDestroyed() const;
     void set_ball_detected(bool detected);
     bool get_ball_detected() const;
-
     bool clock_has_ticked() const;
+
     void move_magnet(Player* player);
     void draw_alpha(sf::RenderWindow *w);
 };

@@ -31,34 +31,24 @@ Moment::Moment(const Moment &t)
     this->_microseconds = t.get_microseconds();
 }
 
-//-- getters --
+//===============ACCESEURS ===================
 
-int Moment::get_hours() const
-{
-    return _hours;
-}
+unsigned int Moment::get_hours() const
+{ return _hours; }
 
-int Moment::get_min() const
-{
-    return _min;
-}
+unsigned int Moment::get_min() const
+{ return _min; }
 
-int Moment::get_sec() const
-{
-    return _sec;
-}
+unsigned int Moment::get_sec() const
+{ return _sec; }
 
-int Moment::get_milliseconds() const
-{
-    return _milliseconds;
-}
+unsigned int Moment::get_milliseconds() const
+{ return _milliseconds; }
 
-int Moment::get_microseconds() const
-{
-    return _microseconds;
-}
+unsigned int Moment::get_microseconds() const
+{ return _microseconds; }
 
-//-- convertions --
+//=====================CONVERTIONS==================
 
 double Moment::to_hours()
 // les millisecondes et les microsecondes sont négligeables
@@ -109,7 +99,7 @@ double Moment::to_microseconds()
     return value;
 }
 
-//-- operators --
+//===================OPERATEURS======================
 
 Moment Moment::operator +(const Moment& t)
 {
@@ -131,7 +121,7 @@ Moment Moment::operator -(const Moment& t)
     return temp;
 }
 
-//-- others --
+//=================AUTRES METHODES==================
 
 string Moment::toString() const
 {

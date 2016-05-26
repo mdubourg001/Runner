@@ -25,6 +25,7 @@ Coin::~Coin()
 { }
 
 //================================================================
+
 //=========================ACCESSEURS=============================
 
 void Coin::setPicked(bool picked)
@@ -34,36 +35,25 @@ void Coin::setPicked(bool picked)
 }
 
 bool Coin::isPicked() const
-{
-    return _picked;
-}
+{ return _picked; }
 
 void Coin::setDestroyed(bool destroyed)
-{
-    _destroyed = destroyed;
-}
+{  _destroyed = destroyed; }
 
 bool Coin::getDestroyed() const
-{
-    return _destroyed;
-}
+{ return _destroyed; }
 
 bool Coin::get_ball_detected() const
-{
-    return _ball_detect;
-}
+{ return _ball_detect; }
 
 void Coin::set_ball_detected(bool detected)
-{
-    _ball_detect = detected;
-}
+{ _ball_detect = detected; }
 
 bool Coin::clock_has_ticked() const
-{
-    return _alpha_clock.has_ticked();
-}
+{ return _alpha_clock.has_ticked(); }
 
 //================================================================
+
 //=======================AUTRES METHODES==========================
 
 /*!

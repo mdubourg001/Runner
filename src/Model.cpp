@@ -10,13 +10,15 @@ int Model::_current_speed = EASY_SPEED;
 //=======================================
 // Constructeurs & Destructeur
 //=======================================
+
 Model::Model(int w, int h)
-    :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0),
+    :  _w(w), _h(h), _difficulte(0), _diamonds_loose(0),
+      _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0),
       _canpop(true), _magnetpicked(false),_paused(false),
-      _magnetcpt(-1), _difficulte(0),
       _coin_counter(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70),
       _score_counter(0, SCREEN_WIDTH - 500, SCREEN_HEIGHT-70),
       _diamond_counter(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70)
+
 {
     _coin_counter.setTexture(ONE_COIN);
     _diamond_counter.setTexture(ONE_DIAMOND);
@@ -49,6 +51,9 @@ Model::~Model()
 
 //==================ACCESSEURS========================
 
+void Model::setView(View *view)
+{ _view = view; }
+
 Player* Model::getPlayer()
 {
     Player* ptr = &_player;
@@ -71,41 +76,6 @@ Counter* Model::getCounterDiamond()
 {
     Counter* ctr = &_diamond_counter;
     return ctr;
-}
-
-std::vector<Coin*>* Model::Coins()
-{
-    std::vector<Coin*>* ptr = &_coins;
-    return ptr;
-}
-
-std::vector<Diamond*>* Model::Diamonds()
-{
-    std::vector<Diamond*>* ptr = &_diamonds;
-    return ptr;
-}
-
-std::vector<Bonus*>* Model::Awards()
-{
-    std::vector<Bonus*>* ptr = &_bonus;
-    return ptr;
-}
-
-std::vector<Obstacle*>* Model::Obstacles()
-{
-    std::vector<Obstacle*>* ptr = &_obstacles;
-    return ptr;
-}
-
-std::vector<pair<string, long> > *Model::Highscores()
-{
-    std::vector<pair<string, long> >* ptr = &_highscores;
-    return ptr;
-}
-
-void Model::setDifficulte(int d)
-{
-    _difficulte = d;
 }
 
 void Model::setPlayerDirection(direction d)
@@ -142,27 +112,57 @@ void Model::setPlayerDirection(direction d)
     }
 }
 
-int Model::getCurrentSpeed()
-{
-    return _current_speed;
-}
+void Model::setDifficulte(int d)
+{ _difficulte = d; }
 
 bool Model::is_paused() const
-{
-    return _paused;
-}
+{ return _paused; }
 
 void Model::set_paused(bool paused)
+{ _paused = paused; }
+
+int Model::getCurrentSpeed()
+{ return _current_speed; }
+
+int Model::getDiamonds_loose() const
+{ return _diamonds_loose; }
+
+void Model::addDiamonds_loose(int diamonds_loose)
+{ _diamonds_loose += diamonds_loose; }
+
+std::vector<Coin*>* Model::Coins()
 {
-    _paused = paused;
+    std::vector<Coin*>* ptr = &_coins;
+    return ptr;
 }
 
-void Model::setView(View *view)
+std::vector<Diamond*>* Model::Diamonds()
 {
-    _view = view;
+    std::vector<Diamond*>* ptr = &_diamonds;
+    return ptr;
 }
+
+std::vector<Bonus*>* Model::Awards()
+{
+    std::vector<Bonus*>* ptr = &_bonus;
+    return ptr;
+}
+
+std::vector<Obstacle*>* Model::Obstacles()
+{
+    std::vector<Obstacle*>* ptr = &_obstacles;
+    return ptr;
+}
+
+std::vector<pair<string, long> > *Model::Highscores()
+{
+    std::vector<pair<string, long> >* ptr = &_highscores;
+    return ptr;
+}
+
 
 //====================================================
+
 //==================AUTRES METHODES===================
 
 /*!
@@ -336,12 +336,42 @@ void Model::nextStep()
                     _player.setInvincibility(false);
                     switch(bt)
                     {
+                    case randombonus:
+                        int t;
+                        t = (rand()%7);
+                        switch(t)
+                        {
+                        case 0:
+                            _magnetpicked = true;
+                            _bonus_timer.reset();
+                            _bonus_timer.start();
+                            break;
+                        case 1:
+                            _player.winLife();
+                            break;
+                        case 2:
+                            _player.setInvincibility(true);
+                            _bonus_timer.reset();
+                            _bonus_timer.start();
+                            break;
+                        case 3:
+                            /* BONUS PLUME */
+                            break;
+                        case 4:
+                            _current_speed = HOURGLASS_SPEED;
+                            actualiseSpeed(HOURGLASS_SPEED);
+                            _bonus_timer.reset();
+                            _bonus_timer.start();
+                            break;
+                        case 5:
+                            _coin_counter.hundredincrement();
+                            break;
+                        }
+                        break;
                     case magnet:
                         _magnetpicked = true;
                         _bonus_timer.reset();
                         _bonus_timer.start();
-                        break;
-                    case randombonus:
                         break;
                     case shield:
                         _player.winLife();
@@ -355,6 +385,7 @@ void Model::nextStep()
                         _bonus_timer.start();
                         break;
                     case feather:
+                        /* BONUS PLUME */
                         break;
                     case hourglass:
                         _current_speed = HOURGLASS_SPEED;
@@ -466,9 +497,6 @@ void Model::addBonus()
         _bonus.push_back(new Bonus(REDCOIN, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
         bt = redcoin;
         break;
-    case 8:
-        //teleportation ou lance ball
-        break;
     }
 }
 
@@ -512,7 +540,7 @@ void Model::saveScore()
         while(getline(readHS, temp) && it < 5)
         {
             temp_scores.at(it).first = temp.substr(0, temp.find(" ")); //on récupère le pseudo du joueur
-            temp_scores.at(it).second = stoi(temp.substr(temp.find(" "), temp.length()-1)); //et son score
+            temp_scores.at(it).second = atol(temp.substr(temp.find(" "), temp.length()-1).c_str()); //et son score
             it++;
         }
         readHS.close();
@@ -606,12 +634,13 @@ void Model::saveDiamond()
         cerr << "ouverture en lecture impossible";
         exit(EXIT_FAILURE);
     }
-    if(_diamond_counter.getValue() > 0)
+    if(_diamond_counter.getValue() > 0 || _diamonds_loose > 0)
     {
         ofstream writeDiamonds(FICHIER_DIAMOND, ios::out);
         if(writeDiamonds)
         {
             total += _diamond_counter.getValue();
+            total -= _diamonds_loose;
             writeDiamonds << to_string(total);
             writeDiamonds.close();
         }
@@ -620,6 +649,24 @@ void Model::saveDiamond()
             cerr << "ouverture en écriture impossible";
             exit(EXIT_FAILURE);
         }
+    }
+}
+
+void Model::saveChoose()
+{
+    ofstream writeChoose (FICHIER_CHOOSE, ios::in);
+    if(writeChoose)
+    {
+        if(_view->getAsChanged())
+        {
+            writeChoose << _view->getBall_choose() << endl;
+            writeChoose << _view->getBack_choose() << endl;
+        }
+    }
+    else
+    {
+        cerr << "ouverture en écriture impossible";
+        exit(EXIT_FAILURE);
     }
 }
 
@@ -632,6 +679,7 @@ void Model::save()
     this->saveScore();
     this->saveCoin();
     this->saveDiamond();
+    this->saveChoose();
 }
 
 
@@ -657,6 +705,7 @@ void Model::reset()
     _current_speed = EASY_SPEED;
     _magnetpicked = false;
     _score_timer.reset();
+    _diamonds_loose = 0;
 }
 
 void Model::reset_highscores()
@@ -689,6 +738,71 @@ void Model::actualiseSpeed(int speed)
     for(auto o : _obstacles) {o->actualiseSpeed(speed) ;}
 }
 
+bool Model::looseMoney(int value, string type)
+{
+    if(type == "coins")
+    {
+        int totalCoins;
+        ifstream readTotalCoins(FICHIER_COIN, ios::in);
+        if(readTotalCoins)
+        {
+            readTotalCoins >> totalCoins;
+            readTotalCoins.close();
+        }
+        else
+        {
+            cerr << "ouverture en lecture impossible";
+            exit(EXIT_FAILURE);
+        }
+        if(value<= totalCoins)
+        {
+            ofstream writeCoins(FICHIER_COIN, ios::out);
+            if(writeCoins)
+            {
+                totalCoins -= value;
+                writeCoins << totalCoins;
+                writeCoins.close();
+            }
+            else
+            {
+                cerr << "ouverture en lecture impossible";
+                exit(EXIT_FAILURE);
+            }
+            return true;
+        }
 
-//====================================================
+    }
+    else if (type == "diamonds")
+    {
+        int totalDiamonds;
+        ifstream readTotalDiamonds(FICHIER_DIAMOND, ios::in);
+        if(readTotalDiamonds)
+        {
+            readTotalDiamonds >> totalDiamonds;
+            readTotalDiamonds.close();
+        }
+        else
+        {
+            cerr << "ouverture en lecture impossible";
+            exit(EXIT_FAILURE);
+        }
+        if(value<= totalDiamonds)
+        {
+            ofstream writeDiamonds(FICHIER_DIAMOND, ios::out);
+            if(writeDiamonds)
+            {
+                totalDiamonds -= value;
+                writeDiamonds << totalDiamonds;
+                writeDiamonds.close();
+            }
+            else
+            {
+                cerr << "ouverture en lecture impossible";
+                exit(EXIT_FAILURE);
+            }
+            return true;
+        }
 
+    }
+    return false;
+}

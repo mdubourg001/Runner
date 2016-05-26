@@ -1,5 +1,7 @@
 #include "clock.h"
 
+//=====================CONSTRUCTEUR===========================
+
 Clock::Clock()
     :_timelapse {0}
     , _limit {0}
@@ -62,6 +64,8 @@ vector<Moment> Clock::get_ticks() const
     return moments;
 }
 
+//==================ACCESSEURS=======================
+
 bool Clock::is_running() const
 {
     return _running;
@@ -71,6 +75,10 @@ bool Clock::has_ticked() const
 {
     return _has_ticked;
 }
+
+//====================================================
+
+//===================AUTRES METHODES==================
 
 /*!
  * \brief Clock::start
@@ -169,3 +177,4 @@ Moment Clock::get_time_since(chrono::time_point<chrono::_V2::system_clock> time_
                   (chrono::system_clock::now() - time_point).count());
 }
 
+//======================================================

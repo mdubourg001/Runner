@@ -1,6 +1,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
+#include "main.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
@@ -15,6 +16,7 @@ protected:
     sf::Color _textcolor;
     bool _selected;
     bool _isbig;
+    bool _scaled;
 
 public:
     Button();
@@ -25,19 +27,16 @@ public:
     sf::FloatRect get_bounds() const;
     bool isSelected() const;
     void setSelected(bool selected);
-    bool getIsbig() const;
-    void setIsbig(bool isbig);
+    sf::Color getColor() const;
+    void setColor(sf::Color color);
     void setLittleTexture();
     void setBigTexture();
     std::string getString() const;
     void setString(std::string string);
-    sf::Color getColor() const;
-    void setColor(sf::Color color);
     sf::FloatRect get_size() const;
-    sf::Text getText();
-
 
     void draw(sf::RenderWindow *w);
+    void button_scale(float x);
 
 };
 

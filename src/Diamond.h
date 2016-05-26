@@ -7,7 +7,6 @@
 class Diamond : public AnimatedSprite
 {
 protected:
-    int _value;
     bool _picked;
 
 public:

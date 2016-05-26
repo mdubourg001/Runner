@@ -13,8 +13,8 @@ private:
     bool _invincibility;
     bool _dead;
     sf::CircleShape _shadow;
-    int _health;
-    int _shield;
+    unsigned int _health;
+    unsigned int _shield;
     unsigned int _nb_deaths;
 
 public:
@@ -28,19 +28,20 @@ public:
     bool isInvincibility() const;
     void setInvincibility(bool isInvincibility);
     void setPosition(int x, int y);
-    int getHealth() const;
-    int getShield() const;
-    void setHealth(int h);
-    void setShield(int s);
+    unsigned int getHealth() const;
+    unsigned int getShield() const;
+    void setHealth(unsigned int h);
+    void setShield(unsigned int s);
     bool is_dead() const;
     void set_dead(bool dead);
-    int get_nb_deaths() const;
+    unsigned int get_nb_deaths() const;
     void set_nb_deaths(unsigned int nb);
 
     void jump();
+    void treatCollisions(std::vector<Coin*> coins, std::vector<Diamond*> diamonds,
+                         std::vector<Bonus*> bonus, std::vector<Obstacle*> obstacles);
     void rotate(sf::Sprite &p);
     void drawShadow(sf::RenderWindow *window);
-    void treatCollisions(std::vector<Coin*> coins, std::vector<Diamond*> diamonds, std::vector<Bonus*> bonus, std::vector<Obstacle*> obstacles);
     void looseLife();
     void winLife();
     void revive();

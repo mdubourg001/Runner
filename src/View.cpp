@@ -13,13 +13,17 @@ using namespace std;
 // Constructeur
 //=======================================
 
+
+
 View::View(int w, int h)
-    : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(0, 0 , SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5),
+    :  _background(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5),
+      _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5),
+      cpt1(0), cpt2(0),
+      _loaded(false), _asChanged(false),
+      _popup_displayed(false), _popup_confirm(false),
       gs(intro), lg(fr), dif(facile), cs(ball),
-      _loaded(false),
       _totalCoin(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70),
-      _totalDiamond(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70),
-      _popup_displayed(false), _popup_confirm(false)
+      _totalDiamond(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D
     _window->setFramerateLimit(FRAMERATE_LIMIT); //fixe la limite de fps
@@ -65,6 +69,17 @@ void View::load()
     for(unsigned int i=0;i<14;i++)
         _items.push_back(new Item());
 
+    for(unsigned int i=0;i<_items.size();i++)
+    {
+        if(cs == ball)
+        {
+            _items.at(i)->LockOrNot(i);
+        }
+        else if (cs == back)
+        {
+            _items.at(i)->LockOrNot(i+6);
+        }
+    }
 
     _items.at(0)->setSelected(true);
     _items.at(0)->setChoose(true);
@@ -169,10 +184,19 @@ void View::load()
     //========================================================================//
     //============BOUTONS DU SHOP=============================================//
 
-    _buy_button.initialise(ONE_COIN, ONE_COIN, "ACHETER",
-                           POLICEMENU, sf::Color::Black, 500, (SCREEN_HEIGHT/4)+475);
-    _select_button.initialise(GREENCUBE, REDCUBE, "SELECTIONNER",
-                              POLICEMENU, sf::Color::Black, 700, (SCREEN_HEIGHT/4)+475);
+    for(unsigned int i=0;i<_items.size();i++)
+    {
+        if(_items.at(i)->isLock())
+        {
+            _buy_button.initialise(ONE_COIN, ONE_COIN, "ACHETER",
+                                   POLICEMENU, sf::Color::Black, 500, (SCREEN_HEIGHT/4)+475);
+        }
+        else if(!_items.at(i)->isLock())
+        {
+            _select_button.initialise(GREENCUBE, REDCUBE, "SELECTIONNER",
+                                      POLICEMENU, sf::Color::Black, 500, (SCREEN_HEIGHT/4)+475);
+        }
+    }
 
     //========================================================================//
 
@@ -263,6 +287,8 @@ void View::load()
     _popup = new Popup("TEST", "TEST", "TEST");
     _popup->setOrigin(_popup->getSize().x/2, _popup->getSize().y/2);
     _popup->setPosition(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+
+    this->recup();
 }
 
 void View::loadNextShop()
@@ -271,6 +297,9 @@ void View::loadNextShop()
     {
         if( _items.at(0)->isChoose())
         {
+            _ball_choose = "ball_one";
+            _asChanged = true;
+
             if (!_player.loadFromFile(BALL_IMAGE))
             {
                 std::cerr << "Error when loading image file: "
@@ -280,6 +309,9 @@ void View::loadNextShop()
         }
         if( _items.at(1)->isChoose())
         {
+            _ball_choose = "ball_two";
+            _asChanged = true;
+
             if (!_player.loadFromFile(BALL_TWO_IMAGE))
             {
                 std::cerr << "Error when loading image file: "
@@ -289,6 +321,9 @@ void View::loadNextShop()
         }
         if( _items.at(2)->isChoose())
         {
+            _ball_choose = "ball_three";
+            _asChanged = true;
+
             if (!_player.loadFromFile(BALL_THREE_IMAGE))
             {
                 std::cerr << "Error when loading image file: "
@@ -298,6 +333,9 @@ void View::loadNextShop()
         }
         if( _items.at(3)->isChoose())
         {
+            _ball_choose = "ball_four";
+            _asChanged = true;
+
             if (!_player.loadFromFile(BALL_FOUR_IMAGE))
             {
                 std::cerr << "Error when loading image file: "
@@ -307,6 +345,9 @@ void View::loadNextShop()
         }
         if( _items.at(4)->isChoose())
         {
+            _ball_choose = "ball_five";
+            _asChanged = true;
+
             if (!_player.loadFromFile(BALL_FIVE_IMAGE))
             {
                 std::cerr << "Error when loading image file: "
@@ -316,6 +357,9 @@ void View::loadNextShop()
         }
         if ( _items.at(5)->isChoose())
         {
+            _ball_choose = "ball_six";
+            _asChanged = true;
+
             if (!_player.loadFromFile(BALL_SIX_IMAGE))
             {
                 std::cerr << "Error when loading image file: "
@@ -328,6 +372,9 @@ void View::loadNextShop()
     {
         if( _items.at(0)->isChoose())
         {
+            _back_choose = "background_one";
+            _asChanged = true;
+
             if (!_background.loadTextures(BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
             {
                 std::cerr << "ERROR when loading image file: "
@@ -338,6 +385,9 @@ void View::loadNextShop()
         }
         if( _items.at(1)->isChoose())
         {
+            _back_choose = "background_two";
+            _asChanged = true;
+
             if (!_background.loadTextures(BACKGROUND_TWO_IMAGE_B, BACKGROUND_TWO_IMAGE_B, BACKGROUND_TWO_IMAGE_L, BACKGROUND_TWO_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
             {
                 std::cerr << "ERROR when loading image file: "
@@ -348,6 +398,9 @@ void View::loadNextShop()
         }
         if(_items.at(2)->isChoose())
         {
+            _back_choose = "background_three";
+            _asChanged = true;
+
             if (!_background.loadTextures(BACKGROUND_THREE_IMAGE_B, BACKGROUND_THREE_IMAGE_B, BACKGROUND_THREE_IMAGE_L, BACKGROUND_THREE_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
             {
                 std::cerr << "ERROR when loading image file: "
@@ -368,26 +421,54 @@ View::~View() //destructeur de la classe View
         delete _window;
 }
 
+//=======================================
+// Accesseurs
+//=======================================
+
 void View::setModel(Model * model) //setter qui permet de modifier le modele associé à la vue
-{
-    _model = model;
-}
+{ _model = model; }
 
-difficulte View::getDiff()
-{
-    return dif;
-}
+difficulte View::getDiff() const
+{ return dif; }
 
-choixShop View::getCs()
-{
-    return cs;
-}
+gamestates View::getGs() const
+{ return gs; }
 
+choixShop View::getCs() const
+{ return cs; }
 
 bool View::getLoaded() const
-{
-    return _loaded;
-}
+{ return _loaded; }
+
+sf::Texture View::getPlayer() const
+{ return _player; }
+
+void View::setPlayer(const sf::Texture &player)
+{ _player = player; }
+
+string View::getBall_choose() const
+{ return _ball_choose; }
+
+void View::setBall_choose(const string &ball_choose)
+{ _ball_choose = ball_choose; }
+
+string View::getBack_choose() const
+{ return _back_choose; }
+
+void View::setBack_choose(const string &back_choose)
+{ _back_choose = back_choose; }
+
+bool View::getAsChanged() const
+{ return _asChanged; }
+
+void View::setAsChanged(bool asChanged)
+{ _asChanged = asChanged; }
+
+bool View::get_popup_displayed() const
+{ return _popup_displayed; }
+
+void View::set_popup_displayed(bool popup_displayed)
+{ _popup_displayed = popup_displayed; }
 
 string View::get_player_name() const
 {
@@ -560,7 +641,6 @@ void View::synchronise()
         {
             if(_totalDiamond.getValue() >= (int)pow(2, _model->getPlayer()->get_nb_deaths()-1)) //si le joueur possède assez de diamants
             {
-                std::cout << _totalDiamond.getValue() << std::endl;
                 _model->getPlayer()->revive();
                 _model->Obstacles()->clear();
                 _popup->initialise("REPRISE DANS " + std::to_string(2 - _revive_timer.get_time_since_begin().get_sec() + 1), "PREPAREZ", "VOUS");
@@ -575,6 +655,7 @@ void View::synchronise()
                     _revive_timer.reset();
                     _revive_timer.set_alarm(Moment(0, 0, 5, 0, 0));
                     _totalDiamond.setValue(_totalDiamond.getValue() - (int)pow(2, _model->getPlayer()->get_nb_deaths()-1));
+                    _model->addDiamonds_loose((int)pow(2, _model->getPlayer()->get_nb_deaths()-1));
                 }
             }
             else //sinon si il n'en a pas assez
@@ -636,21 +717,21 @@ void View::synchroniseShop()
     {
         if(lg == fr)
         {
-            if(!_items.at(0)->getLoaded()) _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley");
-            if(!_items.at(1)->getLoaded()) _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Bleue clair");
-            if(!_items.at(2)->getLoaded()) _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Rouge et Noir");
-            if(!_items.at(3)->getLoaded()) _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Bleu fonce");
-            if(!_items.at(4)->getLoaded()) _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Rouge et Blanc");
-            if(!_items.at(5)->getLoaded()) _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Verte");
+            if(!_items.at(0)->getLoaded()) _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley", 0, "none");
+            if(!_items.at(1)->getLoaded()) _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Bleue clair", 100, "coins");
+            if(!_items.at(2)->getLoaded()) _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Rouge et Noir", 200, "coins");
+            if(!_items.at(3)->getLoaded()) _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Bleu fonce", 500, "coins");
+            if(!_items.at(4)->getLoaded()) _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Rouge et Blanc", 2, "diamonds");
+            if(!_items.at(5)->getLoaded()) _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Verte", 5, "diamonds");
         }
         else if (lg == ang)
         {
-            if(!_items.at(0)->getLoaded()) _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley");
-            if(!_items.at(1)->getLoaded()) _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Light blue");
-            if(!_items.at(2)->getLoaded()) _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Red and Black");
-            if(!_items.at(3)->getLoaded()) _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Dark blue");
-            if(!_items.at(4)->getLoaded()) _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Red and White");
-            if(!_items.at(5)->getLoaded()) _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Green");
+            if(!_items.at(0)->getLoaded()) _items.at(0)->initialiseBall(BALL_IMAGE, "Smiley", 0, "none");
+            if(!_items.at(1)->getLoaded()) _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Light blue", 100, "coins");
+            if(!_items.at(2)->getLoaded()) _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Red and Black", 200, "coins");
+            if(!_items.at(3)->getLoaded()) _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Dark blue", 500, "coins");
+            if(!_items.at(4)->getLoaded()) _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Red and White", 2, "diamonds");
+            if(!_items.at(5)->getLoaded()) _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Green", 5, "diamonds");
         }
     }
 }
@@ -676,15 +757,15 @@ void View::synchroniseShopBack()
 
         if (lg == fr)
         {
-            _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "Ville");
-            _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "Ville ancienne");
+            _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "Ville", 0, "none");
+            _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "Ville ancienne", 1000, "coins");
         }
         else if (lg == ang)
         {
-            _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "City");
-            _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "City Oldschool");
+            _items.at(0)->initialiseBackground(BACKGROUND_IMAGE_PREVIEW_B, BACKGROUND_IMAGE_PREVIEW_L, "City", 0, "none");
+            _items.at(1)->initialiseBackground(BACKGROUND_TWO_IMAGE_PREVIEW_B, BACKGROUND_TWO_IMAGE_PREVIEW_L, "City Oldschool", 1000, "coins");
         }
-        _items.at(2)->initialiseBackground(BACKGROUND_THREE_IMAGE_PREVIEW_B, BACKGROUND_THREE_IMAGE_PREVIEW_L, "DuckHunt");
+        _items.at(2)->initialiseBackground(BACKGROUND_THREE_IMAGE_PREVIEW_B, BACKGROUND_THREE_IMAGE_PREVIEW_L, "DuckHunt", 3, "diamonds");
     }
 }
 
@@ -698,7 +779,7 @@ void View::recupBest()
         while(getline(readHS, temp) && it < 5)
         {
             _model->Highscores()->at(it).first = temp.substr(0, temp.find(" ")); //on récupère le pseudo du joueur
-            _model->Highscores()->at(it).second = stoi(temp.substr(temp.find(" "), temp.length()-1)); //et son score
+            _model->Highscores()->at(it).second = atol(temp.substr(temp.find(" "), temp.length()-1).c_str()); //et son score
             it++;
         }
         readHS.close();
@@ -724,7 +805,7 @@ void View::recupDiamonds()
 {
     ifstream readDiamonds (FICHIER_DIAMOND, ios::in);
     string line = "";
-    if( readDiamonds.fail())
+    if(readDiamonds.fail())
     {
         cerr << "ouverture en lecture impossible" << endl;
         exit(EXIT_FAILURE);
@@ -734,26 +815,108 @@ void View::recupDiamonds()
     readDiamonds.close();
 }
 
+void View::recupChoose()
+{
+    ifstream readChoose (FICHIER_CHOOSE, ios::in);
+    string line = "";
+    if(readChoose.fail())
+    {
+        cerr << "ouverture en lecture impossible" << endl;
+        exit(EXIT_FAILURE);
+    }
+    getline(readChoose, line);
+    if(line == "ball_one")
+    {
+        _player.loadFromFile(BALL_IMAGE);
+        _ball_choose = "ball_one";
+    }
+    else if (line == "ball_four")
+    {
+        _player.loadFromFile(BALL_FOUR_IMAGE);
+        _ball_choose = "ball_four";
+    }
+    else if (line == "ball_five")
+    {
+        _player.loadFromFile(BALL_FIVE_IMAGE);
+        _ball_choose = "ball_five";
+    }
+    else if (line == "ball_six")
+    {
+        _player.loadFromFile(BALL_SIX_IMAGE);
+        _ball_choose = "ball_six";
+    }
+
+    getline(readChoose, line);
+    if(line == "background_one")
+    {
+        _background.loadTextures(BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_L);
+        _back_choose = "background_one";
+    }
+    else if(line == "background_two")
+        {
+        _background.loadTextures(BACKGROUND_TWO_IMAGE_B, BACKGROUND_TWO_IMAGE_B, BACKGROUND_TWO_IMAGE_L, BACKGROUND_TWO_IMAGE_L);
+        _back_choose = "background_two";
+        }
+    else if(line == "background_three")
+        {
+        _background.loadTextures(BACKGROUND_THREE_IMAGE_B, BACKGROUND_THREE_IMAGE_B, BACKGROUND_THREE_IMAGE_L, BACKGROUND_THREE_IMAGE_L);
+            _back_choose = "background_three";
+        }
+    else if (line == "ball_two")
+    {
+        _player.loadFromFile(BALL_TWO_IMAGE);
+        _ball_choose = "ball_two";
+    }
+    else if (line == "ball_three")
+    {
+        _player.loadFromFile(BALL_THREE_IMAGE);
+        _ball_choose = "ball_two";
+    }
+    else if (line == "ball_four")
+    {
+        _player.loadFromFile(BALL_FOUR_IMAGE);
+        _ball_choose = "ball_four";
+    }
+    else if (line == "ball_five")
+    {
+        _player.loadFromFile(BALL_FIVE_IMAGE);
+        _ball_choose = "ball_five";
+    }
+    else if (line == "ball_six")
+    {
+        _player.loadFromFile(BALL_SIX_IMAGE);
+        _ball_choose = "ball_six";
+    }
+
+    getline(readChoose, line);
+    if(line == "background_one")
+    {
+        _background.loadTextures(BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_L);
+        _back_choose = "background_one";
+    }
+    else if(line == "background_two")
+    {
+        _background.loadTextures(BACKGROUND_TWO_IMAGE_B, BACKGROUND_TWO_IMAGE_B, BACKGROUND_TWO_IMAGE_L, BACKGROUND_TWO_IMAGE_L);
+        _back_choose = "background_two";
+    }
+    else if(line == "background_three")
+    {
+        _background.loadTextures(BACKGROUND_THREE_IMAGE_B, BACKGROUND_THREE_IMAGE_B, BACKGROUND_THREE_IMAGE_L, BACKGROUND_THREE_IMAGE_L);
+        _back_choose = "background_three";
+    }
+}
+
 void View::recup()
 {
     this->recupBest();
     this->recupCoins();
     this->recupDiamonds();
-}
-
-bool View::get_popup_displayed() const
-{
-    return _popup_displayed;
-}
-
-void View::set_popup_displayed(bool popup_displayed)
-{
-    _popup_displayed = popup_displayed;
+    this->recupChoose();
 }
 
 //=======================================
 // Fonction de dessin
-//======================================Awards=
+//======================================
 void View::draw()
 {
     _window->clear();
@@ -999,7 +1162,6 @@ bool View::treatEvents()
                 {
                     _window->close(); //la fenetre est fermée
                     result = false;
-                    _model->save();
 
                 }
                 else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs!= menu && gs!=intro && gs!= game)
@@ -1158,41 +1320,54 @@ bool View::treatEvents()
 
                     if(x>= 460 && x<=585 && y>=670 && y<=740)
                     {
-                        for(unsigned int i=0; i<_items.size();i++)
+                        for(unsigned int i=0;i<_items.size();i++)
                         {
-                            if(_items.at(i)->isSelected() && _items.at(i)->isLock())
+                            if(_items.at(i)->isChoose())
                             {
-                                if(cs == ball)
-                                    _items.at(i)->unLock(i);
-                                else if(cs == back)
-                                    _items.at(i)->unLock(i+6);
+                                _items.at(i)->setChoose(false);
+                                break;
                             }
                         }
-                    }
-                    else if (x>=630 && x<=820 && y>=670 && y<=740)
                         for(unsigned int i=0; i<_items.size();i++)
                         {
-                            if(_items.at(i)->isSelected() && !_items.at(i)->isLock())
+                            if(_items.at(i)->isSelected())
                             {
-                                for(unsigned int j=0; j<_items.size();j++)
+                                if(_items.at(i)->isLock())
                                 {
-                                    if(_items.at(j)->isChoose())
+                                    if(cs == ball)
                                     {
-                                        _items.at(j)->setChoose(false);
+                                        if(_model->looseMoney(_items.at(i)->getValue(), _items.at(i)->getType()) == true)
+                                        {
+                                            _items.at(i)->unLock(i);
+                                            _items.at(i)->setChoose(true);
+                                        }
+                                        this->recup();
+                                        _items.at(i)->LockOrNot(i);
+                                        break;
+                                    }
+                                    else if(cs == back)
+                                    {
+                                        if(_model->looseMoney(_items.at(i)->getValue(), _items.at(i)->getType()) == true)
+                                        {
+                                            _items.at(i)->unLock(i+6);
+                                            _items.at(i)->setChoose(true);
+                                        }
+                                        this->recup();
+                                        _items.at(i)->LockOrNot(i+6);
                                         break;
                                     }
                                 }
-                                _items.at(i)->setChoose(true);
+                                else
+                                {
+                                    _items.at(i)->setChoose(true);
+                                    break;
+                                }
                                 break;
                             }
-                            else if(_items.at(i)->isSelected() && _items.at(i)->isLock())
-                            {
-                                // pop-up
-                                cout << "doit etre acheter" << endl;
-                            }
-
                         }
-                    this->loadNextShop();
+                        this->loadNextShop();
+                    }
+
                 }
                 else if (event.type == sf::Event::MouseButtonPressed && gs == settings)
                 {
@@ -1275,13 +1450,16 @@ bool View::treatEvents()
                     int yM = event.mouseMove.y;
 
                     if(xM>= 460 && xM<=585 && yM>=670 && yM<=740)
+                    {
                         _buy_button.setSelected(true);
-                    else
-                        _buy_button.setSelected(false);
-                    if (xM>=630 && xM<=820 && yM>=670 && yM<=740)
                         _select_button.setSelected(true);
+                    }
                     else
+                    {
+                        _buy_button.setSelected(false);
                         _select_button.setSelected(false);
+                    }
+
                 }
             }
         }
@@ -1292,11 +1470,6 @@ bool View::treatEvents()
         }
     }
     return result;
-}
-
-gamestates View::getGs()
-{
-    return gs;
 }
 
 void View::toEnglish()

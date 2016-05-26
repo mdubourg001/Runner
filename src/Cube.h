@@ -15,8 +15,6 @@ public:
     Cube(int color, int stage);
 
     void setColor(int color);
-    void isDestroyed() const;
-    bool setDestroyed(bool destroyed);
     sf::Vector2f getPos() const;
     sf::Vector2f getOri() const;
 

@@ -14,6 +14,8 @@ protected:
     bool _choose;
     bool _lock;
     bool _loaded;
+    int _value;
+    string _type;
 
     Preview *_preview;
 
@@ -21,26 +23,28 @@ public:
     Item();
     ~Item();
 
-    sf::Text getName();
+    sf::Text getName() const;
     void setName(std::string texte);
-    bool isSelected();
+    bool isSelected() const;
     void setSelected(bool s);
-    bool isChoose();
+    bool isChoose() const;
     void setChoose(bool c);
-    bool isLock();
+    bool isLock() const;
     void setLock(bool l);
     bool getLoaded() const;
     void setLoaded(bool loaded);
-    Preview *getPreview();
+    Preview *getPreview() const;
+    int getValue() const;
+    string getType() const;
+
 
     void drawText(sf::RenderWindow *w);
     void drawPreview(sf::RenderWindow *w);
-    void initialiseBall(const std::string B, const std::string Name);
-    void initialiseBackground(const std::string BackBig, const std::string BackLittle, const std::string Name);
+    void initialiseBall(const std::string B, const std::string Name, int value, string type);
+    void initialiseBackground(const std::string BackBig, const std::string BackLittle, const std::string Name, int value, string type);
     void reset();
-    void LockOrNot(int i);
+    void LockOrNot(int l);
     void unLock(int l);
-
 
 };
 
