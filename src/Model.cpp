@@ -335,12 +335,42 @@ void Model::nextStep()
                     _player.setInvincibility(false);
                     switch(bt)
                     {
+                    case randombonus:
+                        int t;
+                        t = (rand()%7);
+                        switch(t)
+                        {
+                        case 0:
+                            _magnetpicked = true;
+                            _bonus_timer.reset();
+                            _bonus_timer.start();
+                            break;
+                        case 1:
+                            _player.winLife();
+                            break;
+                        case 2:
+                            _player.setInvincibility(true);
+                            _bonus_timer.reset();
+                            _bonus_timer.start();
+                            break;
+                        case 3:
+                            /* BONUS PLUME */
+                            break;
+                        case 4:
+                            _current_speed = HOURGLASS_SPEED;
+                            actualiseSpeed(HOURGLASS_SPEED);
+                            _bonus_timer.reset();
+                            _bonus_timer.start();
+                            break;
+                        case 5:
+                            _coin_counter.hundredincrement();
+                            break;
+                        }
+                        break;
                     case magnet:
                         _magnetpicked = true;
                         _bonus_timer.reset();
                         _bonus_timer.start();
-                        break;
-                    case randombonus:
                         break;
                     case shield:
                         _player.winLife();
@@ -616,6 +646,26 @@ void Model::saveDiamond()
     }
 }
 
+void Model::saveChoose()
+{
+    ofstream writeChoose (FICHIER_CHOOSE, ios::in);
+    if(writeChoose)
+    {
+        if(_view->getAsChanged())
+        {
+            cout << _view->getBall_choose() << endl;
+            cout << _view->getBack_choose() << endl;
+            writeChoose << _view->getBall_choose() << endl;
+            writeChoose << _view->getBack_choose() << endl;
+        }
+    }
+    else
+    {
+        cerr << "ouverture en écriture impossible";
+        exit(EXIT_FAILURE);
+    }
+}
+
 /*!
  * \brief Model::save
  * sauvegarde le jeu
@@ -625,6 +675,7 @@ void Model::save()
     this->saveScore();
     this->saveCoin();
     this->saveDiamond();
+    this->saveChoose();
 }
 
 

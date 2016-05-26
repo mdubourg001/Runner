@@ -127,6 +127,10 @@ private:
     int cpt1=0;
     int cpt2=0;
 
+    string _ball_choose;
+    string _back_choose;
+    bool _asChanged;
+
 public:
     View(int w, int h);
     ~View();
@@ -156,6 +160,16 @@ public:
     void recupBest();
     void recupCoins();
     void recupDiamonds();
+    void recupChoose();
     void recup();
+    sf::Texture getPlayer() const;
+    void setPlayer(const sf::Texture &player);
+
+    string getBall_choose() const;
+    void setBall_choose(const string &ball_choose);
+    string getBack_choose() const;
+    void setBack_choose(const string &back_choose);
+    bool getAsChanged() const;
+    void setAsChanged(bool asChanged);
 };
 #endif

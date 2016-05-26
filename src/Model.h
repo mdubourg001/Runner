@@ -98,6 +98,7 @@ public:
     void saveScore();
     void saveCoin();
     void saveDiamond();
+    void saveChoose();
     void save();
     void reset();
     void actualiseSpeed(int speed);

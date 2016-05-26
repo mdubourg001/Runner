@@ -13,10 +13,12 @@ using namespace std;
 // Constructeur
 //=======================================
 
+
+
 View::View(int w, int h)
     : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(0, 0 , SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5),
       gs(intro), lg(fr), dif(facile), cs(ball),
-      _loaded(false),
+      _loaded(false), _asChanged(false),
       _totalCoin(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70),
       _totalDiamond(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70),
       _popup_displayed(false), _popup_confirm(false)
@@ -63,6 +65,17 @@ void View::load()
     for(unsigned int i=0;i<14;i++)
         _items.push_back(new Item());
 
+    for(unsigned int i=0;i<_items.size();i++)
+    {
+        if(cs == ball)
+        {
+            _items.at(i)->LockOrNot(i);
+        }
+        else if (cs == back)
+        {
+            _items.at(i)->LockOrNot(i+6);
+        }
+    }
 
     _items.at(0)->setSelected(true);
     _items.at(0)->setChoose(true);
@@ -174,14 +187,12 @@ void View::load()
             _buy_button.initialise(ONE_COIN, ONE_COIN, "ACHETER",
                                    POLICEMENU, sf::Color::Black, 500, (SCREEN_HEIGHT/4)+475);
         }
-        else
+        else if(!_items.at(i)->isLock())
         {
             _select_button.initialise(GREENCUBE, REDCUBE, "SELECTIONNER",
                                       POLICEMENU, sf::Color::Black, 500, (SCREEN_HEIGHT/4)+475);
         }
     }
-
-
 
     //========================================================================//
 
@@ -286,6 +297,9 @@ void View::loadNextShop()
     {
         if( _items.at(0)->isChoose())
         {
+            _ball_choose = "ball_one";
+            _asChanged = true;
+
             if (!_player.loadFromFile(BALL_IMAGE))
             {
                 std::cerr << "Error when loading image file: "
@@ -295,6 +309,9 @@ void View::loadNextShop()
         }
         if( _items.at(1)->isChoose())
         {
+            _ball_choose = "ball_two";
+            _asChanged = true;
+
             if (!_player.loadFromFile(BALL_TWO_IMAGE))
             {
                 std::cerr << "Error when loading image file: "
@@ -304,6 +321,9 @@ void View::loadNextShop()
         }
         if( _items.at(2)->isChoose())
         {
+            _ball_choose = "ball_three";
+            _asChanged = true;
+
             if (!_player.loadFromFile(BALL_THREE_IMAGE))
             {
                 std::cerr << "Error when loading image file: "
@@ -313,6 +333,9 @@ void View::loadNextShop()
         }
         if( _items.at(3)->isChoose())
         {
+            _ball_choose = "ball_four";
+            _asChanged = true;
+
             if (!_player.loadFromFile(BALL_FOUR_IMAGE))
             {
                 std::cerr << "Error when loading image file: "
@@ -322,6 +345,9 @@ void View::loadNextShop()
         }
         if( _items.at(4)->isChoose())
         {
+            _ball_choose = "ball_five";
+            _asChanged = true;
+
             if (!_player.loadFromFile(BALL_FIVE_IMAGE))
             {
                 std::cerr << "Error when loading image file: "
@@ -331,6 +357,9 @@ void View::loadNextShop()
         }
         if ( _items.at(5)->isChoose())
         {
+            _ball_choose = "ball_six";
+            _asChanged = true;
+
             if (!_player.loadFromFile(BALL_SIX_IMAGE))
             {
                 std::cerr << "Error when loading image file: "
@@ -343,6 +372,9 @@ void View::loadNextShop()
     {
         if( _items.at(0)->isChoose())
         {
+            _back_choose = "background_one";
+            _asChanged = true;
+
             if (!_background.loadTextures(BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
             {
                 std::cerr << "ERROR when loading image file: "
@@ -353,6 +385,9 @@ void View::loadNextShop()
         }
         if( _items.at(1)->isChoose())
         {
+            _back_choose = "background_two";
+            _asChanged = true;
+
             if (!_background.loadTextures(BACKGROUND_TWO_IMAGE_B, BACKGROUND_TWO_IMAGE_B, BACKGROUND_TWO_IMAGE_L, BACKGROUND_TWO_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
             {
                 std::cerr << "ERROR when loading image file: "
@@ -363,6 +398,9 @@ void View::loadNextShop()
         }
         if(_items.at(2)->isChoose())
         {
+            _back_choose = "background_three";
+            _asChanged = true;
+
             if (!_background.loadTextures(BACKGROUND_THREE_IMAGE_B, BACKGROUND_THREE_IMAGE_B, BACKGROUND_THREE_IMAGE_L, BACKGROUND_THREE_IMAGE_L)) //charge le fichier city.png et le place dans la texture background
             {
                 std::cerr << "ERROR when loading image file: "
@@ -402,6 +440,46 @@ choixShop View::getCs()
 bool View::getLoaded() const
 {
     return _loaded;
+}
+
+sf::Texture View::getPlayer() const
+{
+    return _player;
+}
+
+void View::setPlayer(const sf::Texture &player)
+{
+    _player = player;
+}
+
+string View::getBall_choose() const
+{
+    return _ball_choose;
+}
+
+void View::setBall_choose(const string &ball_choose)
+{
+    _ball_choose = ball_choose;
+}
+
+string View::getBack_choose() const
+{
+    return _back_choose;
+}
+
+void View::setBack_choose(const string &back_choose)
+{
+    _back_choose = back_choose;
+}
+
+bool View::getAsChanged() const
+{
+    return _asChanged;
+}
+
+void View::setAsChanged(bool asChanged)
+{
+    _asChanged = asChanged;
 }
 
 void View::synchronise()
@@ -737,7 +815,7 @@ void View::recupDiamonds()
 {
     ifstream readDiamonds (FICHIER_DIAMOND, ios::in);
     string line = "";
-    if( readDiamonds.fail())
+    if(readDiamonds.fail())
     {
         cerr << "ouverture en lecture impossible" << endl;
         exit(EXIT_FAILURE);
@@ -747,11 +825,103 @@ void View::recupDiamonds()
     readDiamonds.close();
 }
 
+void View::recupChoose()
+{
+    ifstream readChoose (FICHIER_CHOOSE, ios::in);
+    string line = "";
+    if(readChoose.fail())
+    {
+        cerr << "ouverture en lecture impossible" << endl;
+        exit(EXIT_FAILURE);
+    }
+    getline(readChoose, line);
+    if(line == "ball_one")
+    {
+        _player.loadFromFile(BALL_IMAGE);
+        _ball_choose = "ball_one";
+    }
+    else if (line == "ball_four")
+    {
+        _player.loadFromFile(BALL_FOUR_IMAGE);
+        _ball_choose = "ball_four";
+    }
+    else if (line == "ball_five")
+    {
+        _player.loadFromFile(BALL_FIVE_IMAGE);
+        _ball_choose = "ball_five";
+    }
+    else if (line == "ball_six")
+    {
+        _player.loadFromFile(BALL_SIX_IMAGE);
+        _ball_choose = "ball_six";
+    }
+
+    getline(readChoose, line);
+    if(line == "background_one")
+    {
+        _background.loadTextures(BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_L);
+        _back_choose = "background_one";
+    }
+    else if(line == "background_two")
+        {
+        _background.loadTextures(BACKGROUND_TWO_IMAGE_B, BACKGROUND_TWO_IMAGE_B, BACKGROUND_TWO_IMAGE_L, BACKGROUND_TWO_IMAGE_L);
+        _back_choose = "background_two";
+        }
+    else if(line == "background_three")
+        {
+        _background.loadTextures(BACKGROUND_THREE_IMAGE_B, BACKGROUND_THREE_IMAGE_B, BACKGROUND_THREE_IMAGE_L, BACKGROUND_THREE_IMAGE_L);
+            _back_choose = "background_three";
+        }
+    else if (line == "ball_two")
+    {
+        _player.loadFromFile(BALL_TWO_IMAGE);
+        _ball_choose = "ball_two";
+    }
+    else if (line == "ball_three")
+    {
+        _player.loadFromFile(BALL_THREE_IMAGE);
+        _ball_choose = "ball_two";
+    }
+    else if (line == "ball_four")
+    {
+        _player.loadFromFile(BALL_FOUR_IMAGE);
+        _ball_choose = "ball_four";
+    }
+    else if (line == "ball_five")
+    {
+        _player.loadFromFile(BALL_FIVE_IMAGE);
+        _ball_choose = "ball_five";
+    }
+    else if (line == "ball_six")
+    {
+        _player.loadFromFile(BALL_SIX_IMAGE);
+        _ball_choose = "ball_six";
+    }
+
+    getline(readChoose, line);
+    if(line == "background_one")
+    {
+        _background.loadTextures(BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_B, BACKGROUND_IMAGE_L, BACKGROUND_IMAGE_L);
+        _back_choose = "background_one";
+    }
+    else if(line == "background_two")
+    {
+        _background.loadTextures(BACKGROUND_TWO_IMAGE_B, BACKGROUND_TWO_IMAGE_B, BACKGROUND_TWO_IMAGE_L, BACKGROUND_TWO_IMAGE_L);
+        _back_choose = "background_two";
+    }
+    else if(line == "background_three")
+    {
+        _background.loadTextures(BACKGROUND_THREE_IMAGE_B, BACKGROUND_THREE_IMAGE_B, BACKGROUND_THREE_IMAGE_L, BACKGROUND_THREE_IMAGE_L);
+        _back_choose = "background_three";
+    }
+}
+
 void View::recup()
 {
     this->recupBest();
     this->recupCoins();
     this->recupDiamonds();
+    this->recupChoose();
 }
 
 bool View::get_popup_displayed() const
@@ -1193,6 +1363,7 @@ bool View::treatEvents()
                                             _items.at(i)->setChoose(true);
                                         }
                                         this->recup();
+                                        _items.at(i)->LockOrNot(i);
                                         break;
                                     }
                                     else if(cs == back)
@@ -1203,6 +1374,7 @@ bool View::treatEvents()
                                             _items.at(i)->setChoose(true);
                                         }
                                         this->recup();
+                                        _items.at(i)->LockOrNot(i+6);
                                         break;
                                     }
                                 }
@@ -1211,7 +1383,6 @@ bool View::treatEvents()
                                     _items.at(i)->setChoose(true);
                                     break;
                                 }
-                                //_items.at(0)->setChoose(true);
                                 break;
                             }
                         }
