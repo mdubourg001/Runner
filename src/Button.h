@@ -22,6 +22,7 @@ public:
                     std::string font, sf::Color color,  int posx, int posy);
 
     sf::Vector2f getPos() const;
+    sf::FloatRect get_bounds() const;
     bool isSelected() const;
     void setSelected(bool selected);
     bool getIsbig() const;

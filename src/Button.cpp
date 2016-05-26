@@ -63,6 +63,11 @@ void Button::initialise(std::string texture, std::string texture_hover,
 sf::Vector2f Button::getPos() const
 { return this->getPosition(); }
 
+sf::FloatRect Button::get_bounds() const
+{
+    return this->getLocalBounds();
+}
+
 bool Button::isSelected() const
 { return _selected; }
 

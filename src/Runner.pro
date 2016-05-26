@@ -25,7 +25,8 @@ SOURCES += main.cpp \
     Popup.cpp \
     utils.cpp \
     clock.cpp \
-    moment.cpp
+    moment.cpp \
+    HighscoresGrid.cpp
 
 HEADERS += \
     Player.h \
@@ -47,4 +48,5 @@ HEADERS += \
     Popup.h \
     utils.h \
     clock.h \
-    moment.h
+    moment.h \
+    HighscoresGrid.h

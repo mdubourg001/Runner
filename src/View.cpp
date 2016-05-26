@@ -59,6 +59,8 @@ void View::load()
 {
     _totalCoin.setTexture(ONE_COIN);
     _totalDiamond.setTexture(ONE_DIAMOND);
+    _highscores_grid.synchronise(_model->Highscores());
+
 
     for(unsigned int i=0;i<14;i++)
         _items.push_back(new Item());
@@ -204,10 +206,6 @@ void View::load()
     _text_pause.setString("PAUSE (P)");
     _text_pause.setCharacterSize(150);
     _text_pause.setPosition(SCREEN_WIDTH/2 - SCREEN_WIDTH/5, SCREEN_HEIGHT/2 - SCREEN_HEIGHT/5);
-
-    _topScores.setFont(_font);
-    _topScores.setColor(sf::Color::Black);
-    _topScores.setPosition(_highscores_button.first.getPos().x+400,_highscores_button.first.getPos().y);
 
     _healthRect.setSize(sf::Vector2f(400,50));
     _healthRect.setPosition(225,710);
@@ -391,6 +389,11 @@ bool View::getLoaded() const
     return _loaded;
 }
 
+string View::get_player_name() const
+{
+    return _popup->get_temp_name();
+}
+
 void View::synchronise()
 {
     _background_timer.update();
@@ -519,13 +522,11 @@ void View::synchronise()
                                + std::to_string((int)pow(2, _model->getPlayer()->get_nb_deaths()-1)) + " DIAMANT?", "OUI", "NON");
             if(_revive_timer.is_running() && _revive_timer.has_ticked()) //si le temps de réponse est écoulé
             {
-                gs = menu;
-                _model->save();
-                _model->reset();
                 _model->getPlayer()->set_dead(false);
                 this->recup();
-                set_popup_displayed(false);
                 _popup->reset();
+                _popup->set_read_text(true);
+                _popup->initialise("SAISISSEZ VOTRE NOM: _ _ _ _ _ _", "VALIDER", "QUITTER");
                 _revive_timer.stop();
                 _revive_timer.reset();
                 _revive_timer.set_alarm(Moment(0, 0, 5, 0, 0));
@@ -544,7 +545,6 @@ void View::synchronise()
                 }
                 else //sinon si elle est négative
                 {
-                    _model->save();
                     _model->getPlayer()->set_dead(false);
                     this->recup();
                     _popup->reset();
@@ -584,7 +584,6 @@ void View::synchronise()
                 if(_popup->answered())
                 {
                     gs = menu;
-                    _model->save();
                     _model->getPlayer()->set_dead(false);
                     this->recup();
                     _popup->reset();
@@ -603,7 +602,7 @@ void View::synchronise()
             {
                 if(_popup->getanswer())
                 {
-                    //enregistrer dans les highscores si > aux autres
+                    _model->save();
                 }
                 gs = menu;
                 _model->save();
@@ -691,19 +690,20 @@ void View::synchroniseShopBack()
 
 void View::recupBest()
 {
-    ifstream readHS (FICHIER_SCORE, ios::in );
-    string best[5];
-    if(readHS.fail())
+    unsigned int it = 0;
+    string temp;
+    ifstream readHS(FICHIER_SCORE, ios::in);
+    if(readHS)
     {
-        cerr << "ouverture en lecture impossible" << endl;
-        exit(EXIT_FAILURE);
+        while(getline(readHS, temp) && it < 5)
+        {
+            _model->Highscores()->at(it).first = temp.substr(0, temp.find(" ")); //on récupère le pseudo du joueur
+            _model->Highscores()->at(it).second = stoi(temp.substr(temp.find(" "), temp.length()-1)); //et son score
+            it++;
+        }
+        readHS.close();
     }
-    for(int i=0;i<5;i++)
-    {
-        getline(readHS, best[i]);
-    }
-    _topScores.setString(best[0] + "\n \n" + best[1] + "\n \n" + best[2] + "\n \n" + best[3] + "\n \n" + best[4]);
-    readHS.close();
+    _highscores_grid.synchronise(_model->Highscores());
 }
 
 void View::recupCoins()
@@ -970,7 +970,7 @@ void View::drawHighscores()
 
     _window->draw(_backgroundMenuSprite);
 
-    _window->draw(_topScores);
+    _highscores_grid.draw(_window);
 
     _window->display();
 }
@@ -1223,6 +1223,20 @@ bool View::treatEvents()
                     {
                         dif = difficile;
                         _model->setDifficulte(1300);
+                    }
+                }
+                else if(event.type == sf::Event::MouseButtonPressed && gs == highscores)
+                {
+                    x = event.mouseButton.x;
+                    y = event.mouseButton.y;
+
+                    if(x<_highscores_grid.get_button_pos().x + _highscores_grid.get_button_bounds().width
+                            && x>_highscores_grid.get_button_pos().x
+                            && y<_highscores_grid.get_button_pos().y + _highscores_grid.get_button_bounds().height
+                            && y>_highscores_grid.get_button_pos().y)
+                    {
+                        _highscores_grid.reset();
+                        _model->reset_highscores();
                     }
                 }
                 else if (event.type == sf::Event::MouseMoved && gs == menu)

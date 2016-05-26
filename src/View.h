@@ -11,6 +11,7 @@
 #include "Model.h"
 #include "Popup.h"
 #include "clock.h"
+#include "HighscoresGrid.h"
 
 enum gamestates
 {
@@ -93,7 +94,6 @@ private:
     Button _select_button;
 
     sf::Text _healthText;
-    sf::Text _topScores;
     sf::Text _textBall;
     sf::Text _textBack;
     sf::Text _textPass;
@@ -124,6 +124,8 @@ private:
     bool _popup_displayed;
     bool _popup_confirm;
 
+    HighscoresGrid _highscores_grid;
+
     int cpt1=0;
     int cpt2=0;
 
@@ -135,6 +137,7 @@ public:
     difficulte getDiff();
     choixShop getCs();
     bool getLoaded() const;
+    string get_player_name() const;
     bool get_popup_displayed() const;
     void set_popup_displayed(bool popup_displayed);
 

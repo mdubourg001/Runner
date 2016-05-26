@@ -48,6 +48,7 @@ protected:
     std::vector<Diamond*> _diamonds;
     std::vector<Bonus*> _bonus;
     std::vector<Obstacle*> _obstacles;
+    std::vector<std::pair<std::string, long>> _highscores;
 
     Counter _coin_counter;
     Counter _score_counter;
@@ -85,6 +86,7 @@ public:
     std::vector<Diamond *> *Diamonds();
     std::vector<Bonus *> *Awards();
     std::vector<Obstacle*>* Obstacles();
+    std::vector<pair<string, long>>* Highscores();
 
     void movePlayer();
     void addCoin();
@@ -97,6 +99,7 @@ public:
     void saveDiamond();
     void save();
     void reset();
+    void reset_highscores();
     void actualiseSpeed(int speed);
 };
 #endif

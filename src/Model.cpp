@@ -21,6 +21,13 @@ Model::Model(int w, int h)
     _coin_counter.setTexture(ONE_COIN);
     _diamond_counter.setTexture(ONE_DIAMOND);
 
+    _highscores = vector<pair<string, long>>();
+    _highscores.resize(5);
+    for(unsigned int i = 0 ; i < 5 ; i++)
+    {
+        _highscores.push_back(pair<string, long>());
+    }
+
     srand(time(NULL));
 
     _jump_timer.set_alarm(Moment(0, 0, 0, 11, 0));
@@ -87,6 +94,12 @@ std::vector<Bonus*>* Model::Awards()
 std::vector<Obstacle*>* Model::Obstacles()
 {
     std::vector<Obstacle*>* ptr = &_obstacles;
+    return ptr;
+}
+
+std::vector<pair<string, long> > *Model::Highscores()
+{
+    std::vector<pair<string, long> >* ptr = &_highscores;
     return ptr;
 }
 
@@ -489,38 +502,45 @@ void Model::drawInterface(sf::RenderWindow *w)
  */
 void Model::saveScore()
 {
-    int best[5];
+    vector<pair<string, long>> temp_scores(5);
     bool asChanged = false;
+    unsigned int it = 0;
+    string temp;
     ifstream readHS(FICHIER_SCORE, ios::in);
     if(readHS)
     {
-        for(unsigned int i=0; i<5;i++)
-            readHS >> best[i];
+        while(getline(readHS, temp) && it < 5)
+        {
+            temp_scores.at(it).first = temp.substr(0, temp.find(" ")); //on récupère le pseudo du joueur
+            temp_scores.at(it).second = stoi(temp.substr(temp.find(" "), temp.length()-1)); //et son score
+            it++;
+        }
         readHS.close();
     }
     else
-    {
-        cerr << "ouverture en lecture impossible";
-        exit(EXIT_FAILURE);
-    }
+        cerr << "IMPOSSIBLE D'OUVRIR " << FICHIER_SCORE << endl;
+
     for(unsigned int i=0;i<5 && !asChanged;i++)
     {
-        if(best[i] < _score_counter.getValue())
+        if(temp_scores.at(i).second < _score_counter.getValue())
         {
             asChanged = true;
 
-            for(unsigned int j=4;j>i;j--)
-                best[j] = best[j-1];
-            best[i] = _score_counter.getValue();
+            for(unsigned int j=4;j>i-1;j--)
+                temp_scores.at(j) = temp_scores.at(j-1);
+            temp_scores.at(i) = make_pair((_view->get_player_name().empty() ? "noname" : _view->get_player_name())
+                                          , _score_counter.getValue());
+            _score_counter.setValue(0);
         }
     }
     if(asChanged)
     {
+        _highscores = temp_scores;
         ofstream writeHS(FICHIER_SCORE, ios::out);
         if(writeHS)
         {
             for(unsigned int i=0; i<5;i++)
-                writeHS << best[i] << endl;
+                writeHS << _highscores.at(i).first + " " + to_string(_highscores.at(i).second) << endl;
             writeHS.close();
         }
         else
@@ -637,6 +657,22 @@ void Model::reset()
     _current_speed = EASY_SPEED;
     _magnetpicked = false;
     _score_timer.reset();
+}
+
+void Model::reset_highscores()
+{
+    ofstream writeHS(FICHIER_SCORE, ios::out);
+    if(writeHS)
+    {
+        for(unsigned int i=0; i<5;i++)
+            writeHS << "NOONE" << " " << to_string(0) << endl;
+        writeHS.close();
+    }
+    else
+    {
+        cerr << "ouverture en écriture impossible";
+        exit(EXIT_FAILURE);
+    }
 }
 
 
