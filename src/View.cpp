@@ -184,19 +184,8 @@ void View::load()
     //========================================================================//
     //============BOUTONS DU SHOP=============================================//
 
-    for(unsigned int i=0;i<_items.size();i++)
-    {
-        if(_items.at(i)->isLock())
-        {
-            _buy_button.initialise(ONE_COIN, ONE_COIN, "ACHETER",
-                                   POLICEMENU, sf::Color::Black, 500, POS_BUTTON_SHOP);
-        }
-        else if(!_items.at(i)->isLock())
-        {
-            _select_button.initialise(GREENCUBE, REDCUBE, "SELECTIONNER",
-                                      POLICEMENU, sf::Color::Black, 500, POS_BUTTON_SHOP);
-        }
-    }
+    _buy_button.initialise(ONE_COIN, ONE_COIN, "ACHETER OU JOUER AVEC",
+                           POLICEMENU, sf::Color::Black, 500, POS_BUTTON_SHOP);
 
     //========================================================================//
 
@@ -230,6 +219,16 @@ void View::load()
     _text_pause.setString("PAUSE (P)");
     _text_pause.setCharacterSize(150);
     _text_pause.setPosition(SCREEN_WIDTH/2 - SCREEN_WIDTH/5, SCREEN_HEIGHT/2 - SCREEN_HEIGHT/5);
+
+    _total.setFont(_font);
+    _total.setColor(sf::Color::Black);
+    _total.setString("Total : ");
+    _total.setPosition(SCREEN_WIDTH - 450, SCREEN_HEIGHT-70);
+
+    _cost.setFont(_font);
+    _cost.setColor(sf::Color::Black);
+    _cost.setString("Cout : ");
+    _cost.setPosition(SCREEN_WIDTH - 450, SCREEN_HEIGHT-140);
 
     _healthRect.setSize(sf::Vector2f(BALL_LIFE,HEALTH_RECT_HEIGHT));
     _healthRect.setPosition(POS_X_HEALTH_RECT,POS_Y_HEALTH_RECT);
@@ -656,7 +655,6 @@ void View::synchronise()
                                    "                DOMMAGE.");
                 if(_popup->answered())
                 {
-                    gs = menu;
                     _model->getPlayer()->set_dead(false);
                     this->recup();
                     _popup->reset();
@@ -1040,7 +1038,10 @@ void View::drawShop()
 
     for(auto i : _items)
         if(i->isSelected())
+        {
             i->drawPreview(_window);
+            i->drawCost(_window);
+        }
 
     for(auto i : _items)
     {
@@ -1083,6 +1084,8 @@ void View::drawShop()
 
     _totalCoin.draw(_window);
     _totalDiamond.draw(_window);
+    _window->draw(_total);
+    _window->draw(_cost);
 
     _window->display();
 }
@@ -1301,6 +1304,10 @@ bool View::treatEvents()
                                             _items.at(i)->unLock(i);
                                             _items.at(i)->setChoose(true);
                                         }
+                                        else
+                                        {
+                                            // pop up pas assez de sous
+                                        }
                                         this->recup();
                                         _items.at(i)->LockOrNot(i);
                                         break;
@@ -1311,6 +1318,10 @@ bool View::treatEvents()
                                         {
                                             _items.at(i)->unLock(i+NBR_BALL);
                                             _items.at(i)->setChoose(true);
+                                        }
+                                        else
+                                        {
+                                            // pop up pas assez de sous
                                         }
                                         this->recup();
                                         _items.at(i)->LockOrNot(i+NBR_BALL);

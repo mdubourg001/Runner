@@ -10,7 +10,8 @@
 
 
 Item::Item()
-    : _selected(false), _choose(false), _loaded(false), _value(0), _type("none")
+    : _selected(false), _choose(false), _loaded(false), _value(0), _type("none"),
+      _cost(_value, SCREEN_WIDTH - 300, SCREEN_HEIGHT - 140)
 {
     _font.loadFromFile(POLICE);
     _name.setFont(_font);
@@ -105,6 +106,11 @@ void Item::initialiseBall(const std::string B, const std::string Name, int value
     _loaded = true;
     _value = value;
     _type = type;
+    if(_type == "coins")
+        _cost.setTexture(ONE_COIN);
+    else if (_type == "diamonds")
+        _cost.setTexture(ONE_DIAMOND);
+    _cost.setValue(_value);
 }
 
 /*!
@@ -187,4 +193,9 @@ void Item::unLock(int l)
         cerr << "ouverture en écriture imossible";
         exit(EXIT_FAILURE);
     }
+}
+
+void Item::drawCost(sf::RenderWindow *w)
+{
+    _cost.draw(w);
 }

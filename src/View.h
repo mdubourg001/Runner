@@ -110,6 +110,8 @@ private:
     sf::Text _textBack;
     sf::Text _textPass;
     sf::Text _text_pause;
+    sf::Text _cost;
+    sf::Text _total;
 
     sf::RectangleShape _rectBall;
     sf::RectangleShape _rectBack;

@@ -19,6 +19,8 @@ protected:
 
     Preview *_preview;
 
+    Counter _cost;
+
 public:
     Item();
     ~Item();
@@ -45,6 +47,7 @@ public:
     void reset();
     void LockOrNot(int l);
     void unLock(int l);
+    void drawCost(sf::RenderWindow *w);
 
 };
 
