@@ -231,19 +231,19 @@ void View::load()
     _text_pause.setCharacterSize(150);
     _text_pause.setPosition(SCREEN_WIDTH/2 - SCREEN_WIDTH/5, SCREEN_HEIGHT/2 - SCREEN_HEIGHT/5);
 
-    _healthRect.setSize(sf::Vector2f(BALL_LIFE,50));
+    _healthRect.setSize(sf::Vector2f(BALL_LIFE,HEALTH_RECT_HEIGHT));
     _healthRect.setPosition(POS_X_HEALTH_RECT,POS_Y_HEALTH_RECT);
     _healthRect.setFillColor(sf::Color(100,255,100,255));
 
 
-    _backhealthRect.setSize(sf::Vector2f(BALL_LIFE,50));
+    _backhealthRect.setSize(sf::Vector2f(BALL_LIFE,HEALTH_RECT_HEIGHT));
     _backhealthRect.setPosition(POS_X_HEALTH_RECT,POS_Y_HEALTH_RECT);
     _backhealthRect.setFillColor(sf::Color(255,100,100,255));
     _backhealthRect.setOutlineThickness(THICKNESS);
     _backhealthRect.setOutlineColor(sf::Color::Black);
 
-    _shieldRect.setSize(sf::Vector2f(-50,50));
-    _shieldRect.setPosition(POS_X_SHIELD_RECT,POS_Y_HEALTH_RECT);
+    _shieldRect.setSize(sf::Vector2f(0,HEALTH_RECT_HEIGHT));
+    _shieldRect.setPosition(POS_X_HEALTH_RECT,POS_Y_HEALTH_RECT);
     _shieldRect.setFillColor(sf::Color(170,170,170,255));
 
     _healthText.setFont(_font);
@@ -251,7 +251,6 @@ void View::load()
     _healthText.setString("SANTE");
     _healthText.setCharacterSize(60);
     _healthText.setPosition(10,690);
-
 
     _rectBall.setSize(sf::Vector2f(SCREEN_WIDTH/2,50));
     _rectBall.setFillColor(sf::Color(100,100,100,255));
@@ -277,7 +276,7 @@ void View::load()
     _loaded = true;
     _textPass.setString("<  APPUYEZ SUR ESPACE POUR COMMENCER  >");
 
-    _popup = new Popup("TEST", "TEST", "TEST");
+    _popup = new Popup("NEW POPUP");
     _popup->setOrigin(_popup->getSize().x/2, _popup->getSize().y/2);
     _popup->setPosition(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
 
@@ -507,8 +506,8 @@ void View::synchronise()
 
     //===================//
 
-    _healthRect.setSize(sf::Vector2f(_model->getPlayer()->getHealth(),_healthRect.getSize().y));
-    _shieldRect.setSize(sf::Vector2f(-_model->getPlayer()->getShield(),_shieldRect.getSize().y));
+    _healthRect.setSize(sf::Vector2f(_model->getPlayer()->getHealth(), _healthRect.getSize().y));
+    _shieldRect.setSize(sf::Vector2f(_model->getPlayer()->getShield(), _shieldRect.getSize().y));
 
     if(_model->getPlayer()->getHealth() == 0 && !get_popup_displayed())
     {
