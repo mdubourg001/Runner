@@ -9,22 +9,22 @@ using namespace std;
 class Moment
 {
 protected:
-    int _hours;
-    int _min;
-    int _sec;
-    int _milliseconds;
-    int _microseconds;
+    unsigned int _hours;
+    unsigned int _min;
+    unsigned int _sec;
+    unsigned int _milliseconds;
+    unsigned int _microseconds;
 
 public:
     Moment();
     Moment(int hours, int min, int sec, int milli, int micro);
     Moment(const Moment& t);
 
-    int get_hours() const;
-    int get_min() const;
-    int get_sec() const;
-    int get_milliseconds() const;
-    int get_microseconds() const;
+    unsigned int get_hours() const;
+    unsigned int get_min() const;
+    unsigned int get_sec() const;
+    unsigned int get_milliseconds() const;
+    unsigned int get_microseconds() const;
 
     double to_hours();
     double to_min();
@@ -32,10 +32,10 @@ public:
     double to_milliseconds();
     double to_microseconds();
 
-    string  toString() const;
-
     Moment operator+ (const Moment& t);
     Moment operator- (const Moment& t);
+
+    string  toString() const;
 };
 
 #endif // MOMENT_H

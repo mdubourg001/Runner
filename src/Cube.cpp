@@ -74,6 +74,7 @@ Cube::Cube(int color, int stage)
 }
 
 //======================================================================
+
 //=========================ACCESSEURS===================================
 
 void Cube::setColor(int color)
@@ -123,16 +124,13 @@ void Cube::setColor(int color)
 }
 
 sf::Vector2f Cube::getPos() const
-{
-    return getPosition();
-}
+{ return getPosition(); }
 
 sf::Vector2f Cube::getOri() const
-{
-    return getOrigin();
-}
+{ return getOrigin(); }
 
 //=================================================================
+
 //======================AUTRES METHODES============================
 
 /*!

@@ -16,12 +16,14 @@ using namespace std;
 
 
 View::View(int w, int h)
-    : _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5), _background(0, 0 , SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5),
-      gs(intro), lg(fr), dif(facile), cs(ball),
+    :  _background(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5),
+      _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5),
+      cpt1(0), cpt2(0),
       _loaded(false), _asChanged(false),
+      _popup_displayed(false), _popup_confirm(false),
+      gs(intro), lg(fr), dif(facile), cs(ball),
       _totalCoin(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70),
-      _totalDiamond(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70),
-      _popup_displayed(false), _popup_confirm(false)
+      _totalDiamond(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close); //RenderWindow est une classe qui définie une fenêtre qui peut etre utilisée pour faire du dessin 2D
     _window->setFramerateLimit(FRAMERATE_LIMIT); //fixe la limite de fps
@@ -421,66 +423,54 @@ View::~View() //destructeur de la classe View
         delete _window;
 }
 
+//=======================================
+// Accesseurs
+//=======================================
+
 void View::setModel(Model * model) //setter qui permet de modifier le modele associé à la vue
-{
-    _model = model;
-}
+{ _model = model; }
 
-difficulte View::getDiff()
-{
-    return dif;
-}
+difficulte View::getDiff() const
+{ return dif; }
 
-choixShop View::getCs()
-{
-    return cs;
-}
+gamestates View::getGs() const
+{ return gs; }
 
+choixShop View::getCs() const
+{ return cs; }
 
 bool View::getLoaded() const
-{
-    return _loaded;
-}
+{ return _loaded; }
 
 sf::Texture View::getPlayer() const
-{
-    return _player;
-}
+{ return _player; }
 
 void View::setPlayer(const sf::Texture &player)
-{
-    _player = player;
-}
+{ _player = player; }
 
 string View::getBall_choose() const
-{
-    return _ball_choose;
-}
+{ return _ball_choose; }
 
 void View::setBall_choose(const string &ball_choose)
-{
-    _ball_choose = ball_choose;
-}
+{ _ball_choose = ball_choose; }
 
 string View::getBack_choose() const
-{
-    return _back_choose;
-}
+{ return _back_choose; }
 
 void View::setBack_choose(const string &back_choose)
-{
-    _back_choose = back_choose;
-}
+{ _back_choose = back_choose; }
 
 bool View::getAsChanged() const
-{
-    return _asChanged;
-}
+{ return _asChanged; }
 
 void View::setAsChanged(bool asChanged)
-{
-    _asChanged = asChanged;
-}
+{ _asChanged = asChanged; }
+
+bool View::get_popup_displayed() const
+{ return _popup_displayed; }
+
+void View::set_popup_displayed(bool popup_displayed)
+{ _popup_displayed = popup_displayed; }
 
 void View::synchronise()
 {
@@ -924,19 +914,9 @@ void View::recup()
     this->recupChoose();
 }
 
-bool View::get_popup_displayed() const
-{
-    return _popup_displayed;
-}
-
-void View::set_popup_displayed(bool popup_displayed)
-{
-    _popup_displayed = popup_displayed;
-}
-
 //=======================================
 // Fonction de dessin
-//======================================Awards=
+//======================================
 void View::draw()
 {
     _window->clear();
@@ -1182,7 +1162,6 @@ bool View::treatEvents()
                 {
                     _window->close(); //la fenetre est fermée
                     result = false;
-                    _model->save();
 
                 }
                 else if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape) && gs!= menu && gs!=intro && gs!= game)
@@ -1477,11 +1456,6 @@ bool View::treatEvents()
         }
     }
     return result;
-}
-
-gamestates View::getGs()
-{
-    return gs;
 }
 
 void View::toEnglish()

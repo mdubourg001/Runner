@@ -47,23 +47,34 @@ class Item;
 class View
 {
 private:
-    int _w, _h;
-
     sf::RenderWindow * _window;
     Model* _model;
+    SlidingBackground _background;
 
-    sf::Texture _player;
-    sf::Sprite _playerSprite;
+    int _w, _h;
     int _x_player;
     int _y_player;
+    int cpt1;
+    int cpt2;
 
-    sf::Texture _playerStar;
+    bool _loaded;
+    bool _asChanged;
 
-    SlidingBackground _background;
+    bool _popup_displayed;
+    bool _popup_confirm;
+
+    string _ball_choose;
+    string _back_choose;
+
 
     sf::RectangleShape _healthRect;
     sf::RectangleShape _backhealthRect;
     sf::RectangleShape _shieldRect;
+
+    sf::Texture _playerStar;
+
+    sf::Texture _player;
+    sf::Sprite _playerSprite;
 
     sf::Texture _backgroundIntro;
     sf::Sprite _backgroundIntroSprite;
@@ -89,6 +100,7 @@ private:
     std::pair<Button, Button> _easy_button;
     std::pair<Button, Button> _medium_button;
     std::pair<Button, Button> _hard_button;
+
     Button _buy_button;
     Button _select_button;
 
@@ -110,7 +122,6 @@ private:
     difficulte dif;
     choixShop cs;
 
-    bool _loaded;
 
     Counter _best;
     Counter _totalCoin;
@@ -118,58 +129,53 @@ private:
 
     Clock _background_timer;
     Clock _animation_timer;
+    Clock _revive_timer;
 
     Popup* _popup;
-    Clock _revive_timer;
-    bool _popup_displayed;
-    bool _popup_confirm;
-
-    int cpt1=0;
-    int cpt2=0;
-
-    string _ball_choose;
-    string _back_choose;
-    bool _asChanged;
 
 public:
     View(int w, int h);
     ~View();
 
-    gamestates getGs();
-    difficulte getDiff();
-    choixShop getCs();
-    bool getLoaded() const;
-    bool get_popup_displayed() const;
-    void set_popup_displayed(bool popup_displayed);
-
-    void setModel(Model * model);
     void load();
     void loadNextShop();
-    void draw();
-    void drawIntro();
-    void drawMenu();
-    void drawSettings();
-    void drawShop();
-    void drawHighscores();
-    void toEnglish();
-    void toFrench();
-    void synchronise();
-    void synchroniseShop();
-    void synchroniseShopBack();
-    bool treatEvents();
-    void recupBest();
-    void recupCoins();
-    void recupDiamonds();
-    void recupChoose();
-    void recup();
+
+    void setModel(Model * model);
+    difficulte getDiff() const;
+    gamestates getGs() const;
+    choixShop getCs() const;
+    bool getLoaded() const;
     sf::Texture getPlayer() const;
     void setPlayer(const sf::Texture &player);
-
     string getBall_choose() const;
     void setBall_choose(const string &ball_choose);
     string getBack_choose() const;
     void setBack_choose(const string &back_choose);
     bool getAsChanged() const;
     void setAsChanged(bool asChanged);
+    bool get_popup_displayed() const;
+    void set_popup_displayed(bool popup_displayed);
+
+    void synchronise();
+    void synchroniseShop();
+    void synchroniseShopBack();
+
+    void recupBest();
+    void recupCoins();
+    void recupDiamonds();
+    void recupChoose();
+    void recup();
+
+    void draw();
+    void drawIntro();
+    void drawMenu();
+    void drawSettings();
+    void drawShop();
+    void drawHighscores();
+
+    bool treatEvents();
+
+    void toEnglish();
+    void toFrench();
 };
 #endif

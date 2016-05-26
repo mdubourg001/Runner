@@ -10,17 +10,14 @@ Diamond::~Diamond()
 { }
 
 //======================================================
+
 //=================ACCESSEURS===========================
 
 void Diamond::setPicked(bool picked)
-{
-    _picked = picked;
-}
+{ _picked = picked; }
 
 bool Diamond::isPicked() const
-{
-    return _picked;
-}
+{ return _picked; }
 
 //======================================================
 

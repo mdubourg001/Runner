@@ -22,11 +22,11 @@ Player::~Player()
 // Accesseurs
 //=======================================
 
-void Player::setJumping(bool isjumping)
-{ _jumping = isjumping; }
-
 bool Player::isJumping() const
 { return _jumping; }
+
+void Player::setJumping(bool isjumping)
+{ _jumping = isjumping; }
 
 bool Player::isInvincibility() const
 { return _invincibility; }
@@ -40,11 +40,29 @@ void Player::setPosition(int x, int y)
    _posy = y;
 }
 
+unsigned int Player::getHealth() const
+{ return _health; }
+
+unsigned int Player::getShield() const
+{ return _shield; }
+
+void Player::setHealth(unsigned int h)
+{ _health = h; }
+
+void Player::setShield(unsigned int s)
+{ _shield = s; }
+
 bool Player::is_dead() const
 { return _dead; }
 
 void Player::set_dead(bool dead)
 { _dead = dead; }
+
+unsigned int Player::get_nb_deaths() const
+{ return _nb_deaths; }
+
+void Player::set_nb_deaths(unsigned int nb)
+{ _nb_deaths = nb; }
 
 //=======================================
 // Méthodes
@@ -145,32 +163,6 @@ void Player::drawShadow(sf::RenderWindow* window)
     _shadow.setPosition(sf::Vector2f(_posx, SCREEN_HEIGHT-SCREEN_HEIGHT/6));
     window->draw(_shadow);
 }
-
-int Player::getHealth() const
-{
-    return _health;
-}
-int Player::getShield() const
-{
-    return _shield;
-}
-void Player::setHealth(int h)
-{
-    _health = h;
-}
-
-void Player::setShield(int s)
-{
-    _shield = s;
-}
-
-int Player::get_nb_deaths() const
-{
-    return _nb_deaths;
-}
-
-void Player::set_nb_deaths(unsigned int nb)
-{ _nb_deaths = nb; }
 
 /*!
  * \brief Player::looseLife

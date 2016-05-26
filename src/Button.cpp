@@ -1,7 +1,6 @@
 #include "Button.h"
-#include "main.h"
 
-//===========CONSTRCUTEUR & INITIALISATION==============================
+//===========CONSTRUCTEUR & INITIALISATION==============================
 
 Button::Button()
     : _scaled(false)
@@ -62,6 +61,7 @@ void Button::initialise(std::string texture, std::string texture_hover,
 }
 
 //==========================================================================
+
 //==============================ACCESSEURS==================================
 
 sf::Vector2f Button::getPos() const
@@ -71,9 +71,7 @@ bool Button::isSelected() const
 { return _selected; }
 
 void Button::setSelected(bool selected)
-{
-    _selected = selected;
-}
+{ _selected = selected; }
 
 sf::Color Button::getColor() const
 { return _textcolor; }
@@ -110,12 +108,8 @@ sf::FloatRect Button::get_size() const
     return this->getLocalBounds();
 }
 
-sf::Text Button::getText()
-{
-    return _text;
-}
-
 //==============================================================
+
 //===============AUTRES METHODES================================
 
 /*!

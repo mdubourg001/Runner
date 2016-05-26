@@ -10,7 +10,7 @@
 
 
 Item::Item()
-    : _selected(false), _choose(false), _loaded(false), _value(0)
+    : _selected(false), _choose(false), _loaded(false), _value(0), _type("none")
 {
     _font.loadFromFile(POLICE);
     _name.setFont(_font);
@@ -24,74 +24,50 @@ Item::~Item()
 }
 
 //====================================================
+
 //==================ACCESSEURS========================
 
-sf::Text Item::getName()
-{
-    return _name;
-}
+sf::Text Item::getName() const
+{ return _name; }
 
 void Item::setName(std::string texte)
-{
-    _name.setString(texte);
-}
+{ _name.setString(texte); }
+
+bool Item::isSelected() const
+{ return _selected; }
 
 void Item::setSelected(bool s)
-{
-    _selected = s;
-}
+{ _selected = s; }
 
-bool Item::isSelected()
-{
-    return _selected;
-}
+bool Item::isChoose() const
+{ return _choose; }
 
 void Item::setChoose(bool c)
-{
-    _choose = c;
-}
+{ _choose = c; }
 
-bool Item::isChoose()
-{
-    return _choose;
-}
+bool Item::isLock() const
+{ return _lock; }
 
 void Item::setLock(bool l)
-{
-    _lock = l;
-}
-
-bool Item::isLock()
-{
-    return _lock;
-}
+{ _lock = l; }
 
 bool Item::getLoaded() const
-{
-    return _loaded;
-}
+{ return _loaded; }
 
 void Item::setLoaded(bool loaded)
-{
-    _loaded = loaded;
-}
+{ _loaded = loaded; }
 
-Preview *Item::getPreview()
-{
-    return _preview;
-}
+Preview *Item::getPreview() const
+{ return _preview; }
 
 int Item::getValue() const
-{
-    return _value;
-}
+{ return _value; }
 
 string Item::getType() const
-{
-    return _type;
-}
+{ return _type; }
 
 //=====================================================
+
 //================AUTRES METHODES======================
 
 /*!
@@ -104,17 +80,6 @@ void Item::drawText(sf::RenderWindow *w)
     _name.setPosition(sf::Vector2f(getPosition().x + 20, getPosition().y + 10));
     w->draw(_name);
 }
-
-
-/*!
- * \brief Item::reset
- * remet la preview de cet item à 0
- */
-void Item::reset()
-{
-    _preview->reset();
-}
-
 
 /*!
  * \brief Item::drawPreview
@@ -142,7 +107,6 @@ void Item::initialiseBall(const std::string B, const std::string Name, int value
     _type = type;
 }
 
-
 /*!
  * \brief Item::initialiseBackground
  * \param BackBig
@@ -159,14 +123,22 @@ void Item::initialiseBackground(const std::string BackBig, const std::string Bac
     _type = type;
 }
 
-void Item::LockOrNot(int i)
+/*!
+ * \brief Item::reset
+ * remet la preview de cet item à 0
+ */
+void Item::reset()
+{
+    _preview->reset();
+}
+
+void Item::LockOrNot(int l)
 {
     ifstream readLock(FICHIER_LOCK_ITEM, ios::in);
     string line = "";
-    string test = "";
     if(readLock)
     {
-        for(int j=-1; j<i;j++)
+        for(int j=-1; j<l;j++)
             getline(readLock, line);
         if(line == "unlock")
             _lock = false;
@@ -187,7 +159,7 @@ void Item::unLock(int l)
     string line[14];
     if(readLock)
     {
-        for(int i=0;i<14;i++)
+        for(unsigned int i=0;i<14;i++)
         {
             getline(readLock,line[i]);
             line[i] += "\n";
@@ -200,10 +172,11 @@ void Item::unLock(int l)
         exit(EXIT_FAILURE);
     }
     line[l] = "unlock\n";
+
     ofstream writeLock(FICHIER_LOCK_ITEM, ios::out);
     if(writeLock)
     {
-        for(int i=0;i<14;i++)
+        for(unsigned int i=0;i<14;i++)
         {
             writeLock << line[i];
         }

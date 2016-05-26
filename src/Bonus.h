@@ -8,7 +8,6 @@
 class Bonus : public AnimatedSprite
 {
 protected:
-    int _value;
     bool _picked;
 
 public:

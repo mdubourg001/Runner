@@ -12,13 +12,13 @@ int Model::_current_speed = EASY_SPEED;
 //=======================================
 
 Model::Model(int w, int h)
-    :  _w(w), _h(h), _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0),
+    :  _w(w), _h(h), _difficulte(0), _diamonds_loose(0),
+      _player(SCREEN_WIDTH/15, SCREEN_HEIGHT-SCREEN_HEIGHT/5, 50, 50, 0, 0, 400, 0),
       _canpop(true), _magnetpicked(false),_paused(false),
-      _magnetcpt(-1), _difficulte(0),
       _coin_counter(0, SCREEN_WIDTH -130, SCREEN_HEIGHT - 70),
       _score_counter(0, SCREEN_WIDTH - 500, SCREEN_HEIGHT-70),
-      _diamond_counter(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70),
-      _diamonds_loose(0)
+      _diamond_counter(0, SCREEN_WIDTH - 300, SCREEN_HEIGHT-70)
+
 {
     _coin_counter.setTexture(ONE_COIN);
     _diamond_counter.setTexture(ONE_DIAMOND);
@@ -44,6 +44,9 @@ Model::~Model()
 
 //==================ACCESSEURS========================
 
+void Model::setView(View *view)
+{ _view = view; }
+
 Player* Model::getPlayer()
 {
     Player* ptr = &_player;
@@ -66,35 +69,6 @@ Counter* Model::getCounterDiamond()
 {
     Counter* ctr = &_diamond_counter;
     return ctr;
-}
-
-std::vector<Coin*>* Model::Coins()
-{
-    std::vector<Coin*>* ptr = &_coins;
-    return ptr;
-}
-
-std::vector<Diamond*>* Model::Diamonds()
-{
-    std::vector<Diamond*>* ptr = &_diamonds;
-    return ptr;
-}
-
-std::vector<Bonus*>* Model::Awards()
-{
-    std::vector<Bonus*>* ptr = &_bonus;
-    return ptr;
-}
-
-std::vector<Obstacle*>* Model::Obstacles()
-{
-    std::vector<Obstacle*>* ptr = &_obstacles;
-    return ptr;
-}
-
-void Model::setDifficulte(int d)
-{
-    _difficulte = d;
 }
 
 void Model::setPlayerDirection(direction d)
@@ -131,37 +105,50 @@ void Model::setPlayerDirection(direction d)
     }
 }
 
-int Model::getCurrentSpeed()
-{
-    return _current_speed;
-}
+void Model::setDifficulte(int d)
+{ _difficulte = d; }
 
 bool Model::is_paused() const
-{
-    return _paused;
-}
+{ return _paused; }
 
 void Model::set_paused(bool paused)
-{
-    _paused = paused;
-}
+{ _paused = paused; }
 
-void Model::setView(View *view)
-{
-    _view = view;
-}
+int Model::getCurrentSpeed()
+{ return _current_speed; }
 
 int Model::getDiamonds_loose() const
-{
-    return _diamonds_loose;
-}
+{ return _diamonds_loose; }
 
 void Model::addDiamonds_loose(int diamonds_loose)
+{ _diamonds_loose += diamonds_loose; }
+
+std::vector<Coin*>* Model::Coins()
 {
-    _diamonds_loose += diamonds_loose;
+    std::vector<Coin*>* ptr = &_coins;
+    return ptr;
+}
+
+std::vector<Diamond*>* Model::Diamonds()
+{
+    std::vector<Diamond*>* ptr = &_diamonds;
+    return ptr;
+}
+
+std::vector<Bonus*>* Model::Awards()
+{
+    std::vector<Bonus*>* ptr = &_bonus;
+    return ptr;
+}
+
+std::vector<Obstacle*>* Model::Obstacles()
+{
+    std::vector<Obstacle*>* ptr = &_obstacles;
+    return ptr;
 }
 
 //====================================================
+
 //==================AUTRES METHODES===================
 
 /*!
@@ -384,6 +371,7 @@ void Model::nextStep()
                         _bonus_timer.start();
                         break;
                     case feather:
+                        /* BONUS PLUME */
                         break;
                     case hourglass:
                         _current_speed = HOURGLASS_SPEED;
@@ -494,9 +482,6 @@ void Model::addBonus()
     case 7:
         _bonus.push_back(new Bonus(REDCOIN, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
         bt = redcoin;
-        break;
-    case 8:
-        //teleportation ou lance ball
         break;
     }
 }
@@ -653,8 +638,6 @@ void Model::saveChoose()
     {
         if(_view->getAsChanged())
         {
-            cout << _view->getBall_choose() << endl;
-            cout << _view->getBack_choose() << endl;
             writeChoose << _view->getBall_choose() << endl;
             writeChoose << _view->getBack_choose() << endl;
         }

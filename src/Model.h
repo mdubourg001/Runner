@@ -35,14 +35,16 @@ class Model
 {
 protected:
     int _w, _h;
+    int _difficulte;
+    static int _current_speed;
+    int _diamonds_loose;
+
     Player _player;
     View* _view;
 
     bool _canpop;
     bool _magnetpicked;
     bool _paused;
-    int _magnetcpt;
-    int _difficulte;
 
     std::vector<Coin*> _coins;
     std::vector<Diamond*> _diamonds;
@@ -61,16 +63,12 @@ protected:
     Clock _spawn_timer;
     Clock _bonus_timer;
 
-    static int _current_speed;
-    int _diamonds_loose;
-
 public:
     Model(int w, int h);
     ~Model();
 
-    void setView(View *view);
 
-    void nextStep();
+    void setView(View *view);
     Player* getPlayer();
     Counter* getCounterScore();
     Counter* getCounterCoin();
@@ -79,31 +77,37 @@ public:
     void setDifficulte(int d);
     bool is_paused() const;
     void set_paused(bool paused);
+    static int getCurrentSpeed();
     int getDiamonds_loose() const;
     void addDiamonds_loose(int diamonds_loose);
-
-    static int getCurrentSpeed();
 
     std::vector<Coin *> *Coins();
     std::vector<Diamond *> *Diamonds();
     std::vector<Bonus *> *Awards();
     std::vector<Obstacle*>* Obstacles();
 
+    void nextStep();
+
     void movePlayer();
+
     void addCoin();
     void addDiamond();
     void addBonus();
     void addObstacle();
+
     void drawInterface(sf::RenderWindow *w);
+
     void saveScore();
     void saveCoin();
     void saveDiamond();
     void saveChoose();
     void save();
-    void reset();
-    void actualiseSpeed(int speed);
-    bool looseMoney(int value, string type);
 
+    void reset();
+
+    void actualiseSpeed(int speed);
+
+    bool looseMoney(int value, string type);
 
 };
 #endif
