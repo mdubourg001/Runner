@@ -12,5 +12,6 @@ HEALTH
 PRESS SPACE TO START
 Ball : 
 Background : 
-Buy
-Select
+Cost : 
+Buy or Play with
+

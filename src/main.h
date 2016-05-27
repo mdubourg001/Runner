@@ -87,7 +87,7 @@
 #define BACKGROUND_THREE_IMAGE_PREVIEW_B  "res/preview/backDuckHunt_preview.png"
 
 #define BALL_IMAGE  "res/ball/ball.png"
-#define BALL_STAR_IMAGE  "res/ball/ball_v5.png"
+#define BALL_STAR_IMAGE  "res/ball/ball_star.png"
 #define BALL_TWO_IMAGE  "res/ball/ball_v2.png"
 #define BALL_THREE_IMAGE  "res/ball/ball_v3.png"
 #define BALL_FOUR_IMAGE  "res/ball/ball_v4.png"

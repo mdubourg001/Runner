@@ -18,7 +18,6 @@ using namespace std;
 View::View(int w, int h)
     :  _background(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 2, 5),
       _w(w),_h(h), _x_player(SCREEN_WIDTH/15), _y_player(SCREEN_HEIGHT-SCREEN_HEIGHT/5),
-      cpt1(0), cpt2(0),
       _loaded(false), _asChanged(false),
       _popup_displayed(false), _popup_confirm(false),
       gs(intro), lg(fr), dif(facile), cs(ball),
@@ -44,6 +43,8 @@ View::View(int w, int h)
         _backgroundIntroSprite.setPosition(sf::Vector2f(0.f,0.f)); //définie la position du sprite de background
     }
 
+    _star_cpt.first = _star_cpt.second = 0;
+
     _textPass.setFont(_font);
     _textPass.setColor(sf::Color::Black);
     _textPass.setString("<  PATIENTEZ, CHARGEMENT DU JEU...  >");
@@ -57,6 +58,7 @@ View::View(int w, int h)
     _animation_timer.start();
 
     _revive_timer.set_alarm(Moment(0, 0, 5, 0, 0));
+
 }
 
 void View::load()
@@ -518,20 +520,18 @@ void View::synchronise()
     if(_model->getPlayer()->isInvincibility() == true)
     {
 
-        if(cpt1 >= 10 && cpt2 >= 10)
-        {
-            cpt1=0;
-            cpt2=0;
-        }
-        if(cpt1 < 10)
+        if(_star_cpt.first >= 10 && _star_cpt.second >= 10)
+            _star_cpt.first = _star_cpt.second = 0;
+
+        if(_star_cpt.first < 10)
         {
             _playerSprite.setTexture(_player);
-            cpt1++;
+            _star_cpt.first++;
         }
-        else if(cpt2 < 10)
+        else if(_star_cpt.second < 10)
         {
             _playerSprite.setTexture(_playerStar);
-            cpt2++;
+            _star_cpt.second++;
         }
 
     }
@@ -711,7 +711,7 @@ void View::synchroniseShop()
             if(!_items.at(1)->getLoaded()) _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Bleue clair", 100, "coins");
             if(!_items.at(2)->getLoaded()) _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Rouge et Noir", 200, "coins");
             if(!_items.at(3)->getLoaded()) _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Bleu fonce", 500, "coins");
-            if(!_items.at(4)->getLoaded()) _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Rouge et Blanc", 2, "diamonds");
+            if(!_items.at(4)->getLoaded()) _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Gris", 2, "diamonds");
             if(!_items.at(5)->getLoaded()) _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Verte", 5, "diamonds");
         }
         else if (lg == ang)
@@ -720,7 +720,7 @@ void View::synchroniseShop()
             if(!_items.at(1)->getLoaded()) _items.at(1)->initialiseBall(BALL_TWO_IMAGE, "Light blue", 100, "coins");
             if(!_items.at(2)->getLoaded()) _items.at(2)->initialiseBall(BALL_THREE_IMAGE, "Red and Black", 200, "coins");
             if(!_items.at(3)->getLoaded()) _items.at(3)->initialiseBall(BALL_FOUR_IMAGE, "Dark blue", 500, "coins");
-            if(!_items.at(4)->getLoaded()) _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Red and White", 2, "diamonds");
+            if(!_items.at(4)->getLoaded()) _items.at(4)->initialiseBall(BALL_FIVE_IMAGE, "Grey", 2, "diamonds");
             if(!_items.at(5)->getLoaded()) _items.at(5)->initialiseBall(BALL_SIX_IMAGE, "Green", 5, "diamonds");
         }
     }
@@ -1488,9 +1488,9 @@ void View::toEnglish()
         getline(readEnglish,line);
         _textBack.setString(line);
         getline(readEnglish,line);
-        _buy_button.setString(line);
+        _cost.setString(line);
         getline(readEnglish,line);
-        _select_button.setString(line);
+        _buy_button.setString(line);
 
         readEnglish.close();
     }
@@ -1546,9 +1546,11 @@ void View::toFrench()
         getline(readFrench,line);
         _textBack.setString(line);
         getline(readFrench,line);
+        _cost.setString(line);
+        getline(readFrench,line);
         _buy_button.setString(line);
         getline(readFrench,line);
-        _select_button.setString(line);
+
 
         readFrench.close();
     }

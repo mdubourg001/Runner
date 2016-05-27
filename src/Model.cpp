@@ -338,7 +338,7 @@ void Model::nextStep()
                     {
                     case randombonus:
                         int t;
-                        t = (rand()%6);
+                        t = (rand()%5);
                         switch(t)
                         {
                         case 0:
@@ -355,16 +355,15 @@ void Model::nextStep()
                             _bonus_timer.start();
                             break;
                         case 3:
-                            /* BONUS PLUME */
-                            break;
-                        case 4:
                             _current_speed = HOURGLASS_SPEED;
                             actualiseSpeed(HOURGLASS_SPEED);
                             _bonus_timer.reset();
                             _bonus_timer.start();
                             break;
-                        case 5:
+                        case 4:
                             _coin_counter.hundredincrement();
+                            break;
+                        default:
                             break;
                         }
                         break;
@@ -383,9 +382,6 @@ void Model::nextStep()
                         _player.setInvincibility(true);
                         _bonus_timer.reset();
                         _bonus_timer.start();
-                        break;
-                    case feather:
-                        /* BONUS PLUME */
                         break;
                     case hourglass:
                         _current_speed = HOURGLASS_SPEED;
@@ -459,7 +455,7 @@ void Model::addDiamond()
  */
 void Model::addBonus()
 {
-    switch(rand()%8)
+    switch(rand()%7)
     {
     case 1:
         _bonus.push_back(new Bonus(MAGNET, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 7));
@@ -490,10 +486,6 @@ void Model::addBonus()
         bt = star;
         break;
     case 6:
-        _bonus.push_back(new Bonus(FEATHER, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
-        bt = feather;
-        break;
-    case 7:
         _bonus.push_back(new Bonus(REDCOIN, _current_speed, SCREEN_WIDTH + 10, SCREEN_HEIGHT-SCREEN_HEIGHT/2.5, 50, 50, 0));
         bt = redcoin;
         break;

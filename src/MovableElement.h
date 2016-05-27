@@ -17,7 +17,7 @@ protected:
 public:
     MovableElement();
     MovableElement(int posx, int posy, int width, int height, int mvtx, int mvty);
-    ~MovableElement();
+    virtual ~MovableElement() = 0;
 
     void setMvtx(int mvtx);
     void setMvty(int mvty);

@@ -55,8 +55,6 @@ private:
     int _w, _h;
     int _x_player;
     int _y_player;
-    int cpt1;
-    int cpt2;
 
     bool _loaded;
     bool _asChanged;
@@ -101,6 +99,8 @@ private:
     std::pair<Button, Button> _easy_button;
     std::pair<Button, Button> _medium_button;
     std::pair<Button, Button> _hard_button;
+
+    std::pair<int, int> _star_cpt;
 
     Button _buy_button;
     Button _select_button;

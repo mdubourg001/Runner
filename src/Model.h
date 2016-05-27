@@ -24,7 +24,6 @@ enum BonusType
     shield,
     health,
     star,
-    feather,
     hourglass,
     redcoin
 };

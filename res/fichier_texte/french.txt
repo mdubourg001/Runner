@@ -12,5 +12,6 @@ SANTE
 APPUYER SUR ESPACE POUR COMMENCER
 Balle : 
 Fond : 
-Acheter
-Selectionner
+Cout : 
+Acheter ou Jouer avec
+
