@@ -247,7 +247,7 @@ void View::load()
     _backhealthRect.setOutlineColor(sf::Color::Black);
 
     _shieldRect.setSize(sf::Vector2f(0,HEALTH_RECT_HEIGHT));
-    _shieldRect.setPosition(POS_X_HEALTH_RECT,POS_Y_HEALTH_RECT);
+    _shieldRect.setPosition(POS_X_HEALTH_RECT + BALL_LIFE ,POS_Y_HEALTH_RECT);
     _shieldRect.setFillColor(sf::Color(170,170,170,255));
 
     _healthText.setFont(_font);
@@ -518,6 +518,7 @@ void View::synchronise()
     //===================//
 
     _healthRect.setSize(sf::Vector2f(_model->getPlayer()->getHealth(), _healthRect.getSize().y));
+    _shieldRect.setPosition(POS_X_HEALTH_RECT + BALL_LIFE - _model->getPlayer()->getShield(), POS_Y_HEALTH_RECT);
     _shieldRect.setSize(sf::Vector2f(_model->getPlayer()->getShield(), _shieldRect.getSize().y));
 
     if(_model->getPlayer()->getHealth() == 0 && !get_popup_displayed())
