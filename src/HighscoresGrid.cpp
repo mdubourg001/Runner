@@ -99,7 +99,11 @@ sf::Vector2f HighscoresGrid::get_button_pos() const
     return _clear_button.getPos();
 }
 
-
+/*!
+ * \brief HighscoresGrid::synchronise
+ * \param highscores
+ * synchronise le vecteur du modèle avec le tableau de Highscores
+ */
 void HighscoresGrid::synchronise(vector<pair<string, long>> *highscores)
 {
     for(unsigned int it=0 ; it<NBR_SCORES ; it++)
@@ -109,6 +113,11 @@ void HighscoresGrid::synchronise(vector<pair<string, long>> *highscores)
         _scores.at(it).setString(to_string(highscores->at(it).second));
 }
 
+/*!
+ * \brief HighscoresGrid::draw
+ * \param w
+ * Désinne la grid, ainsi que les scores et pseudo des joueurs
+ */
 void HighscoresGrid::draw(sf::RenderWindow *w)
 {
     w->draw(*this);
@@ -131,6 +140,10 @@ void HighscoresGrid::draw(sf::RenderWindow *w)
     _clear_button.draw(w);
 }
 
+/*!
+ * \brief HighscoresGrid::reset
+ * remet la grille à 0
+ */
 void HighscoresGrid::reset()
 {
     for(unsigned int it=0 ; it<NBR_SCORES ; it++)

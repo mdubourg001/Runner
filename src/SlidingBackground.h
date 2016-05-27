@@ -7,13 +7,13 @@
 class SlidingBackground
 {
 protected:
-    sf::Sprite _leftBig;
-    sf::Sprite _rightBig;
+    sf::Sprite _leftBig; // Sprite 1
+    sf::Sprite _rightBig; // Sprite 2
     sf::Texture _leftTextureBig;
     sf::Texture _rightTextureBig;
 
-    sf::Sprite _leftLittle;
-    sf::Sprite _rightLittle;
+    sf::Sprite _leftLittle; // Sprite 1 qui suit
+    sf::Sprite _rightLittle; // Sprite 2 qui suit
     sf::Texture _leftTextureLittle;
     sf::Texture _rightTextureLittle;
 

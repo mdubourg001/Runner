@@ -10,12 +10,12 @@ class Item : public sf::RectangleShape
 protected:
     sf::Text _name;
     sf::Font _font;
-    bool _selected;
-    bool _choose;
-    bool _lock;
+    bool _selected; // permet de savoir sur quel item nous somme positionner dans le shop
+    bool _choose; // permet de choisir, ainsi jouer avec cet item
+    bool _lock; // permet de savoir si il est débloquer ou non
     bool _loaded;
-    int _value;
-    string _type;
+    int _value; // son prix
+    string _type; // avec quelle monnaie doit on l'acheter (diamants ou pieces)
 
     Preview *_preview;
 

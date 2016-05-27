@@ -643,7 +643,11 @@ void Model::saveDiamond()
         }
     }
 }
-
+/*!
+ * \brief Model::saveChoose
+ * sauvegarde le choix de skin de balle et de fond pour qu'ils
+ * soient automatiquement utiliser lorsque le jeu sera relancé
+ */
 void Model::saveChoose()
 {
     ofstream writeChoose (FICHIER_CHOOSE, ios::in);
@@ -699,7 +703,10 @@ void Model::reset()
     _score_timer.reset();
     _diamonds_loose = 0;
 }
-
+/*!
+ * \brief Model::reset_highscores
+ * Remet tout les highscores à zero
+ */
 void Model::reset_highscores()
 {
     ofstream writeHS(FICHIER_SCORE, ios::out);
@@ -730,6 +737,14 @@ void Model::actualiseSpeed(int speed)
     for(auto o : _obstacles) {o->actualiseSpeed(speed) ;}
 }
 
+/*!
+ * \brief Model::looseMoney
+ * \param value
+ * \param type
+ * vérifie que l'utilisateur a assez de sous pour payer l'item
+ * puis lui enlever ces sous
+ * \return vrai ou faux si l'achat a bien était effectué
+ */
 bool Model::looseMoney(int value, string type)
 {
     if(type == "coins")

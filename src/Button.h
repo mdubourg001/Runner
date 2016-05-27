@@ -16,7 +16,6 @@ protected:
     sf::Color _textcolor;
     bool _selected;
     bool _isbig;
-    bool _scaled;
 
 public:
     Button();
@@ -36,7 +35,6 @@ public:
     sf::FloatRect get_size() const;
 
     void draw(sf::RenderWindow *w);
-    void button_scale(float x);
 
 };
 

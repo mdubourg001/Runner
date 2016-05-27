@@ -60,7 +60,10 @@ View::View(int w, int h)
     _revive_timer.set_alarm(Moment(0, 0, 5, 0, 0));
 
 }
-
+/*!
+ * \brief View::load
+ * charge un maximum de choses avant que le jeu ne se lance
+ */
 void View::load()
 {
     _totalCoin.setTexture(ONE_COIN);
@@ -284,6 +287,10 @@ void View::load()
     this->recup();
 }
 
+/*!
+ * \brief View::loadNextShop
+ * charge les nouveaux skins de balles après avoir quitter le shop
+ */
 void View::loadNextShop()
 {
     if(cs == ball)
@@ -467,7 +474,10 @@ string View::get_player_name() const
 {
     return _popup->get_temp_name();
 }
-
+/*!
+ * \brief View::synchronise
+ * synchronise le jeu
+ */
 void View::synchronise()
 {
     _background_timer.update();
@@ -691,7 +701,10 @@ void View::synchronise()
     }
 }
 
-
+/*!
+ * \brief View::synchroniseShop
+ * synchronise le shop afin de savoir quel item est selectionner
+ */
 void View::synchroniseShop()
 {
     for(auto i : _items)
@@ -725,7 +738,10 @@ void View::synchroniseShop()
         }
     }
 }
-
+/*!
+ * \brief View::synchroniseShopBack
+ * synchronise le shop mais du côté des background
+ */
 void View::synchroniseShopBack()
 {
     for(auto i : _items)
@@ -758,7 +774,10 @@ void View::synchroniseShopBack()
         _items.at(2)->initialiseBackground(BACKGROUND_THREE_IMAGE_PREVIEW_B, BACKGROUND_THREE_IMAGE_PREVIEW_L, "DuckHunt", 3, "diamonds");
     }
 }
-
+/*!
+ * \brief View::recupBest
+ * récupere les meilleurs scores
+ */
 void View::recupBest()
 {
     unsigned int it = 0;
@@ -776,7 +795,10 @@ void View::recupBest()
     }
     _highscores_grid.synchronise(_model->Highscores());
 }
-
+/*!
+ * \brief View::recupCoins
+ * récupere le nombre de pièces rammaser aux parties précédentes
+ */
 void View::recupCoins()
 {
     ifstream readCoins (FICHIER_COIN, ios::in);
@@ -790,7 +812,10 @@ void View::recupCoins()
     _totalCoin.setValue(atoi(line.c_str()));
     readCoins.close();
 }
-
+/*!
+ * \brief View::recupDiamonds
+ * récupere le nombre de diamants rammaser aux parties précédentes
+ */
 void View::recupDiamonds()
 {
     ifstream readDiamonds (FICHIER_DIAMOND, ios::in);
@@ -804,7 +829,11 @@ void View::recupDiamonds()
     _totalDiamond.setValue(atoi(line.c_str()));
     readDiamonds.close();
 }
-
+/*!
+ * \brief View::recupChoose
+ * récupere le skin de ball et de fond qui ont était utilisé en dernier
+ * dans la partie précédente
+ */
 void View::recupChoose()
 {
     ifstream readChoose (FICHIER_CHOOSE, ios::in);
@@ -863,7 +892,10 @@ void View::recupChoose()
             _back_choose = "background_three";
         }
 }
-
+/*!
+ * \brief View::recup
+ * récupere les données des parties précédentes
+ */
 void View::recup()
 {
     this->recupBest();
@@ -875,6 +907,10 @@ void View::recup()
 //=======================================
 // Fonction de dessin
 //======================================
+/*!
+ * \brief View::draw
+ * déssine l'écran de jeu
+ */
 void View::draw()
 {
     _window->clear();
@@ -939,7 +975,10 @@ void View::draw()
 
     _window->display();
 }
-
+/*!
+ * \brief View::drawIntro
+ * déssine l'écran d'introduction
+ */
 void View::drawIntro()
 {
     _window->clear();
@@ -950,7 +989,10 @@ void View::drawIntro()
     _window->display();
 
 }
-
+/*!
+ * \brief View::drawMenu
+ * désinne le menu
+ */
 void View::drawMenu()
 {
     _window->clear();
@@ -987,7 +1029,10 @@ void View::drawMenu()
 
     _window->display();
 }
-
+/*!
+ * \brief View::drawSettings
+ * déssine les paramètres
+ */
 void View::drawSettings()
 {
     _window->clear();
@@ -1031,7 +1076,10 @@ void View::drawSettings()
 
     _window->display();
 }
-
+/*!
+ * \brief View::drawShop
+ * déssine la boutique
+ */
 void View::drawShop()
 {
     _window->clear(sf::Color::White);
@@ -1060,19 +1108,7 @@ void View::drawShop()
         _buy_button.setColor(sf::Color::Black);
     }
 
-    if(_select_button.isSelected())
-    {
-        _select_button.setBigTexture();
-        _select_button.setColor(sf::Color::Red);
-    }
-    else
-    {
-        _select_button.setLittleTexture();
-        _select_button.setColor(sf::Color::Black);
-    }
-
     _buy_button.draw(_window);
-    _select_button.draw(_window);
 
     _window->draw(_rectBall);
     _window->draw(_rectBack);
@@ -1089,7 +1125,10 @@ void View::drawShop()
 
     _window->display();
 }
-
+/*!
+ * \brief View::drawHighscores
+ * déssine les meilleurs scores
+ */
 void View::drawHighscores()
 {
     _window->clear();
@@ -1104,6 +1143,11 @@ void View::drawHighscores()
 //=======================================
 // Traitement des evenements
 //=======================================
+/*!
+ * \brief View::treatEvents
+ * traite les évenements
+ * \return
+ */
 bool View::treatEvents()
 {
     bool result = false;
@@ -1423,12 +1467,10 @@ bool View::treatEvents()
                     if(xM>= 460 && xM<=585 && yM>=670 && yM<=740)
                     {
                         _buy_button.setSelected(true);
-                        _select_button.setSelected(true);
                     }
                     else
                     {
                         _buy_button.setSelected(false);
-                        _select_button.setSelected(false);
                     }
 
                 }
@@ -1443,6 +1485,12 @@ bool View::treatEvents()
     return result;
 }
 
+/*====================================================*/
+
+/*!
+ * \brief View::toEnglish
+ * modifie la langue du jeu et l'a met en anglais
+ */
 void View::toEnglish()
 {
     ifstream readEnglish(FICHIER_ENGLISH, ios::in);
@@ -1500,7 +1548,10 @@ void View::toEnglish()
         exit(EXIT_FAILURE);
     }
 }
-
+/*!
+ * \brief View::toFrench
+ * modifie la langue du jeu et l'a mets en français
+ */
 void View::toFrench()
 {
     ifstream readFrench(FICHIER_FRENCH, ios::in);

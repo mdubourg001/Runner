@@ -170,7 +170,10 @@ void Popup::treat_events(sf::RenderWindow *w, sf::Event &event)
     }
 }
 
-
+/*!
+ * \brief Popup::reset
+ * réinitialise le Popup
+ */
 void Popup::reset()
 {
     _timebar.setSize(sf::Vector2f(0, 25));
@@ -180,7 +183,10 @@ void Popup::reset()
     _answer = true;
 }
 
-
+/*!
+ * \brief Popup::actualise_read_name
+ * lit le pseudo du joueur
+ */
 void Popup::actualise_read_name()
 {
     if(_read_text)

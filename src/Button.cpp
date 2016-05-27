@@ -3,9 +3,19 @@
 //===========CONSTRUCTEUR & INITIALISATION==============================
 
 Button::Button()
-    : _scaled(false)
 { }
 
+/*!
+ * \brief Button::initialise
+ * \param texture
+ * \param texture_hover
+ * \param text
+ * \param font
+ * \param color
+ * \param posx
+ * \param posy
+ * Initialise les boutons
+ */
 void Button::initialise(std::string texture, std::string texture_hover,
                         std::string text, std::string font, sf::Color color,
                         int posx, int posy)
@@ -50,11 +60,9 @@ void Button::initialise(std::string texture, std::string texture_hover,
         _texture.setSmooth(true);
         this->setTexture(_texture);
     }
-    if(!_scaled)
-    {
-        this->scale(SCALE_BUTTON, SCALE_BUTTON);
-         _scaled = true;
-    }
+
+    this->scale(SCALE_BUTTON, SCALE_BUTTON);
+
     _text.setOrigin(_text.getLocalBounds().width/2, _text.getLocalBounds().height/2);
     _text.setPosition(this->getPosition().x + _texture.getSize().x/2
                       , this->getPosition().y + _texture.getSize().y);
@@ -126,11 +134,6 @@ void Button::draw(sf::RenderWindow *w)
 {
     w->draw(*this);
     w->draw(_text);
-}
-
-void Button::button_scale(float x)
-{
-    this->scale(x,x);
 }
 
 //==============================================================

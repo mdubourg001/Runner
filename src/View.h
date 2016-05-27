@@ -57,13 +57,13 @@ private:
     int _y_player;
 
     bool _loaded;
-    bool _asChanged;
+    bool _asChanged; // savoir si on a changé de skin
 
     bool _popup_displayed;
     bool _popup_confirm;
 
-    string _ball_choose;
-    string _back_choose;
+    string _ball_choose; // permet de savoir qu'elle balle est choisit pour l'enregistrer ensute
+    string _back_choose; // pareil pour le fond
 
 
     sf::RectangleShape _healthRect;
@@ -100,10 +100,9 @@ private:
     std::pair<Button, Button> _medium_button;
     std::pair<Button, Button> _hard_button;
 
-    std::pair<int, int> _star_cpt;
+    std::pair<int, int> _star_cpt; // afin de faire clignoter la balle quand le bonus étoile est actif
 
     Button _buy_button;
-    Button _select_button;
 
     sf::Text _healthText;
     sf::Text _textBall;
@@ -118,10 +117,10 @@ private:
 
     std::vector<Item*> _items;
 
-    gamestates gs;
+    gamestates gs; // état du jeu
     langue lg;
     difficulte dif;
-    choixShop cs;
+    choixShop cs; // dans quelle catégorie sommes nous ? balle ou fond
 
 
     Counter _best;

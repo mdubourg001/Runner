@@ -188,12 +188,19 @@ void Player::winLife()
     else if (_shield < BALL_LIFE)
         _shield += BALL_WIN_AND_LOOZ_LIFE;
 }
-
+/*!
+ * \brief Player::revive
+ * remet les points de vie du joueur
+ */
 void Player::revive()
 {
     _health = BALL_LIFE;
 }
-
+/*!
+ * \brief Player::die
+ * compteur le nombre de fois que le joueur est mort
+ * afin d'augmenter ensuite le prix d'une résurrection
+ */
 void Player::die()
 {
     _nb_deaths++;

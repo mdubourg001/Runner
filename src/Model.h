@@ -36,7 +36,7 @@ protected:
     int _w, _h;
     int _difficulte;
     static int _current_speed;
-    int _diamonds_loose;
+    int _diamonds_loose; // nombre de diamants dépenser sur cette partie
 
     Player _player;
     View* _view;
@@ -55,7 +55,7 @@ protected:
     Counter _score_counter;
     Counter _diamond_counter;
 
-    BonusType bt;
+    BonusType bt; // permet de savoir quelle bonus est ramassé
 
     Clock _jump_timer;
     Clock _score_timer;

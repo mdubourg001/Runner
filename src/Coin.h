@@ -11,9 +11,9 @@ protected:
 
     bool _picked;
     bool _destroyed;
-    bool _ball_detect;
+    bool _ball_detect; // pour gérer le bonus aimant
 
-    sf::Text _alphatext;
+    sf::Text _alphatext; // pour déssiner le +1 en rammasant une piece
     sf::Font _font;
 
     Clock _alpha_clock;

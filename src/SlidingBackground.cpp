@@ -74,7 +74,11 @@ bool SlidingBackground::loadTextures(std::string leftBig, std::string rightBig, 
     }
     return true;
 }
-
+/*!
+ * \brief SlidingBackground::draw
+ * \param window
+ * désinne le background
+ */
 void SlidingBackground::draw(sf::RenderWindow *window)
 {
     window->draw(_leftBig);

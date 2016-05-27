@@ -98,6 +98,7 @@ void Item::drawPreview(sf::RenderWindow *w)
  * \param B
  * \param Name
  * change la texture et le nom de la balle en fonction de l'item
+ * récupere son prix, son type d'achat
  */
 void Item::initialiseBall(const std::string B, const std::string Name, int value, string type)
 {
@@ -118,7 +119,8 @@ void Item::initialiseBall(const std::string B, const std::string Name, int value
  * \param BackBig
  * \param BackLittle
  * \param Name
- * initialise la preview
+ * change la texture et le nom du fond en fonction de l'item
+ * récupere son prix, son type d'achat
  */
 void Item::initialiseBackground(const std::string BackBig, const std::string BackLittle, const std::string Name, int value, string type)
 {
@@ -127,6 +129,11 @@ void Item::initialiseBackground(const std::string BackBig, const std::string Bac
     _loaded = true;
     _value = value;
     _type = type;
+    if(_type == "coins")
+        _cost.setTexture(ONE_COIN);
+    else if (_type == "diamonds")
+        _cost.setTexture(ONE_DIAMOND);
+    _cost.setValue(_value);
 }
 
 /*!
@@ -137,7 +144,12 @@ void Item::reset()
 {
     _preview->reset();
 }
-
+/*!
+ * \brief Item::LockOrNot
+ * \param l
+ * permet de savoir si un item est vérouiller (pas acheter)
+ * ou dévérouiller (déjà acheter)
+ */
 void Item::LockOrNot(int l)
 {
     ifstream readLock(FICHIER_LOCK_ITEM, ios::in);
@@ -158,7 +170,11 @@ void Item::LockOrNot(int l)
         exit(EXIT_FAILURE);
     }
 }
-
+/*!
+ * \brief Item::unLock
+ * \param l
+ * dévérouille un item lors de son achat
+ */
 void Item::unLock(int l)
 {
     ifstream readLock(FICHIER_LOCK_ITEM, ios::in);
@@ -194,7 +210,11 @@ void Item::unLock(int l)
         exit(EXIT_FAILURE);
     }
 }
-
+/*!
+ * \brief Item::drawCost
+ * \param w
+ * désinne le prix et le type de l'item pour un achat ultérieur
+ */
 void Item::drawCost(sf::RenderWindow *w)
 {
     _cost.draw(w);
